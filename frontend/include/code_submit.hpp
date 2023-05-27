@@ -30,6 +30,13 @@ public:
     }
 
     ~CodeDialog() = default;
+
+public:
+    static CodeDialog& getInstance() {
+        static CodeDialog instance;
+        return instance;
+    }
+
 private:
     SignUp signup;
 };

@@ -8,25 +8,18 @@ SignIn::SignIn(QWidget *parent) : QDialog(parent) {
 }
 
 SignIn::~SignIn() noexcept {
-  delete labelEmail;
-  delete labelAccount;
-  delete labelPassword;
-  delete labelTitle;
-  delete linePassword;
-  delete lineEmail;
-  delete buttonSubmit;
 }
 
 void SignIn::setupUI() {
-  labelEmail = new QLabel(tr("Email"));
-  labelPassword = new QLabel(tr("Password"));
-  labelAccount = new QLabel(tr("I haven't account yet?"));
-  labelTitle = new QLabel(tr("Login to MineLaucnh"));
+  labelEmail = new QLabel(tr("Email"),this);
+  labelPassword = new QLabel(tr("Password"),this);
+  labelAccount = new QLabel(tr("I haven't account yet?"),this);
+  labelTitle = new QLabel(tr("Login to MineLaucnh"),this);
 
-  linePassword = new QLineEdit();
-  lineEmail = new QLineEdit();
+  linePassword = new QLineEdit(this);
+  lineEmail = new QLineEdit(this);
 
-  buttonSubmit = new QPushButton(tr("Sign in"));
+  buttonSubmit = new QPushButton(tr("Sign in"),this);
 
   QToolButton *toolButton = new QToolButton();
   toolButton->setIcon(
@@ -50,28 +43,27 @@ void SignIn::setupUI() {
   QHBoxLayout *hbox_layout = new QHBoxLayout;
   hbox_layout->addWidget(buttonSubmit);
   hbox_layout->setAlignment(Qt::AlignHCenter);
-  hbox_layout->setSpacing(20);
 
   QHBoxLayout *tool_layout = new QHBoxLayout;
   tool_layout->addWidget(toolButton);
   tool_layout->setAlignment(Qt::AlignRight);
-  tool_layout->setSpacing(20);
 
   QHBoxLayout *centerLayout = new QHBoxLayout;
   centerLayout->addWidget(logo, 0, Qt::AlignCenter);
-  centerLayout->setSpacing(20);
 
   QVBoxLayout *layout = new QVBoxLayout(this);
   layout->insertLayout(0, centerLayout);
   layout->insertWidget(1, labelTitle);
   layout->addWidget(labelEmail);
   layout->addWidget(lineEmail);
+  layout->addSpacing(10);
   layout->addWidget(labelPassword);
   layout->addWidget(linePassword);
+  layout->addSpacing(10);
   layout->addLayout(tool_layout);
   layout->addLayout(hbox_layout);
-  layout->setContentsMargins(QMargins(10, 10, 10, 10));
-  layout->setSpacing(20);
+  layout->setContentsMargins(50, 20, 50, 20);
+  layout->setSpacing(5);
 
   QFont titleFont("Roboto", 20, QFont::Bold);
   QFont labelFont("Open Sans", 14);
@@ -88,11 +80,11 @@ void SignIn::setupUI() {
   linePassword->setStyleSheet(lineEditStyle);
   lineEmail->setStyleSheet(lineEditStyle);
 
-  auto result = signup.CalculateCenterMonitor();
+  auto result = SignUp::getInstance().CalculateCenterMonitor();
   QIcon icon("/home/ruslan/Documents/MineLaunch/resources/u_ajax.png");
 
   this->setWindowIcon(icon);
-  this->setFixedSize(550, 770);
+  this->setFixedSize(550, 700);
   this->move(std::get<0>(result), std::get<1>(result));
 
 

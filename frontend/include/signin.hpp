@@ -3,6 +3,7 @@
 
 
 #include "./signup.hpp"
+#include <QGridLayout>
 
 class SignIn : public QDialog{
 public:
@@ -13,7 +14,13 @@ public:
 private:
     void setupUI();
 
-     void sendBackend(const QString& pass,const QString& email);
+    void sendBackend(const QString& pass,const QString& email);
+
+public:
+    static SignIn& getInstance() {
+        static SignIn instance;
+        return instance;
+    }
 
 public slots:
     void onNetworkManagerFinished(QNetworkReply *reply);
@@ -29,10 +36,8 @@ private:
 
     QPushButton *buttonSubmit;
 
-private:
-    SignUp signup;
-    Logger logger;
     QNetworkAccessManager *manager;
+    Logger logger;
 };
 
 #endif

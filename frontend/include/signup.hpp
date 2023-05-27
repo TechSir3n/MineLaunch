@@ -16,6 +16,8 @@
 #include <QUrlQuery>
 #include <QFont>
 #include <QTextBrowser>
+#include <QDir>
+#include <QCoreApplication>
 #include <QDesktopServices>
 #include <QToolButton>
 #include <QMessageBox>
@@ -32,10 +34,14 @@ public:
 
 public:
     std::tuple<int,int> CalculateCenterMonitor();
+
+    static SignUp& getInstance() {
+      static SignUp instance;
+      return instance;
+    }
+
 private:
     void setupUI();
-
-    void readHTML(QTextBrowser *browser);
 
 public slots:
     void onNetworkManagerFinished(QNetworkReply *reply);
@@ -55,11 +61,9 @@ public:
     QLineEdit* linePassword;
 
     QPushButton* buttonSubmit;
-
     QCheckBox* rememberMe;
 
     QNetworkAccessManager *manager;
-private:
     Logger logger;
 };
 

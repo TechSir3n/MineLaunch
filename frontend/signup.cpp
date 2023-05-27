@@ -41,8 +41,11 @@ void SignUp::setupUI() {
   checkboxLayout->addStretch();
   checkboxLayout->addWidget(buttonSubmit);
 
-  QTextBrowser *textBrowser = new QTextBrowser();
-  readHTML(textBrowser);
+  QLabel *labelLink = new QLabel("<a href='/home/ruslan/Documents/MineLaunch/resources/aboutLaunch.html'>About MineLaucnh</a>");
+  labelLink->setTextFormat(Qt::RichText);
+  labelLink->setOpenExternalLinks(true);
+  labelLink->setTextInteractionFlags(Qt::TextBrowserInteraction);
+  labelLink->setStyleSheet("color: #0000ff;font-weight:bold; text-decoration: none;");
 
   QHBoxLayout *signinLayout = new QHBoxLayout;
   signinLayout->addStretch();
@@ -50,8 +53,8 @@ void SignUp::setupUI() {
   signinLayout->setAlignment(Qt::AlignRight);
 
   QHBoxLayout *browserLayout = new QHBoxLayout;
-  browserLayout->addWidget(textBrowser);
-  browserLayout->setAlignment(Qt::AlignLeft);
+  browserLayout->addWidget(labelLink);
+  browserLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
   QLabel *logo = new QLabel();
   QPixmap logoImage("/home/ruslan/Documents/MineLaunch/resources/u_ajax.png");
@@ -119,16 +122,12 @@ void SignUp::setupUI() {
   this->setFixedSize(550, 770);
   this->move(std::get<0>(result), std::get<1>(result));
 
-
   QObject::connect(labelLogin, &QLabel::linkActivated, [this]() {
-       SignIn* sign = new SignIn(this);
-      sign->show();
+      SignIn::getInstance().show();
   });
 
   QObject::connect(buttonSubmit, &QPushButton::clicked, [this]() {
-
-      CodeDialog* codeDialog = new CodeDialog(this);
-      codeDialog->show();
+      CodeDialog::getInstance().show();
   });
 }
 
@@ -166,26 +165,6 @@ void SignUp::onNetworkManagerFinished(QNetworkReply *reply) {
   }
   reply->deleteLater();
 }
-
-void SignUp::readHTML(QTextBrowser *browser) {
-  QString path = "/home/ruslan/Documents/MineLaunch/utils/aboutLaunch.html";
-  QUrl url = QUrl::fromLocalFile(path);
-  QString href = url.toEncoded();
-
-  browser->insertHtml("<a href = \"" + href + "\">About MineLaunch</a>");
-  browser->setStyleSheet(linkStyle);
-  browser->setFrameStyle(QFrame::NoFrame);
-
-  QObject::connect(browser, &QTextBrowser::anchorClicked,
-                   [=](const QUrl &link) {
-                     if (link.isLocalFile()) {
-                       QString path = link.toLocalFile();
-                       QDesktopServices::openUrl(QUrl::fromLocalFile(path));
-                       browser->setSource(QUrl());
-                     }
-  });
-}
-
 
 std::tuple<int, int> SignUp::CalculateCenterMonitor() {
   QPoint center_point =
