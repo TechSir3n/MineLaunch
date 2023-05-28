@@ -8,18 +8,25 @@ SignIn::SignIn(QWidget *parent) : QDialog(parent) {
 }
 
 SignIn::~SignIn() noexcept {
+  delete labelEmail;
+  delete labelPassword;
+  delete labelAccount;
+  delete labelTitle;
+  delete linePassword;
+  delete lineEmail;
+  delete buttonSubmit;
 }
 
 void SignIn::setupUI() {
-  labelEmail = new QLabel(tr("Email"),this);
-  labelPassword = new QLabel(tr("Password"),this);
-  labelAccount = new QLabel(tr("I haven't account yet?"),this);
-  labelTitle = new QLabel(tr("Login to MineLaucnh"),this);
+  labelEmail = new QLabel(tr("Email"));
+  labelPassword = new QLabel(tr("Password"));
+  labelAccount = new QLabel(tr("Haven't account yet?"));
+  labelTitle = new QLabel(tr("Login to MineLaucnh"));
 
-  linePassword = new QLineEdit(this);
-  lineEmail = new QLineEdit(this);
+  linePassword = new QLineEdit();
+  lineEmail = new QLineEdit();
 
-  buttonSubmit = new QPushButton(tr("Sign in"),this);
+  buttonSubmit = new QPushButton(tr("Sign in"));
 
   QToolButton *toolButton = new QToolButton();
   toolButton->setIcon(
@@ -115,6 +122,8 @@ void SignIn::onNetworkManagerFinished(QNetworkReply *reply) {
   switch (statusCode) {
   case 200:
     logger.log(LogLevel::Info, "Registration completed successfuly");
+      this->hide();
+      DashBoard::getInstance().show();
     break;
   case 400:
     logger.log(LogLevel::Error, "Registration error: ");

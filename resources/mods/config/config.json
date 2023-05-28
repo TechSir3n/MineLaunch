@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Alliance Of Minecraft Arms",
+    "description": "A.V.A adds a full-fledged weapon to the game that works like in shooters. Each weapon here will have its own 3D model, ammo, and it will be possible to reload, aim, turn on a night vision device or select a preset using hot keys. In addition, parameters such as crosshair visualization, friendly fire or weapon animation can be flexibly configured right in the game or using commands.",
+    "file": "../ava-1.19.4-2.4.5.jar"
+  },
+
+  {
+    "name": "Alliance Of Minecraft Arms",
+    "description": "Allows players to craft horses with materials",
+    "file": "../ava-1.19.3-2.3.7.jar"
+  },
+
+  {
+    "name": "DivineRPG",
+    "description": "Devine RPG is an extensive mod that will add many new dimensions, mobs, bosses, blocks, tools and weapons.",
+    "file": "../DivineRPG-1.10.0.2-1.19.3.jar"
+  },
+
+  {
+    "name": "DivineRPG",
+    "description": "Devine RPG is an extensive mod that will add many new dimensions, mobs, bosses, blocks, tools and weapons.",
+    "file": "../DivineRPG-1.10.3-1.19.4.jar"
+  },
+
+   {
+    "name": "Just Enough Items",
+    "description": "This mod is an analogue of NEI and TMI, with its help you can get game items and see recipes for items and blocks from minecraft.
+     In order to be able to take items from the interface, you need to specify a key in the minecraft settings to enable the cheat mode, and then open the mod interface and press this key.",
+    "file": "../jei-1.19.4-forge-13.1.0.2.jar"
+  }
+]

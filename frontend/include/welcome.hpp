@@ -1,25 +1,25 @@
-#ifndef  WELCOME_HPP
-#define  WELCOME_HPP
+#ifndef WELCOME_HPP
+#define WELCOME_HPP
 
-#include "signup.hpp"
 #include "signin.hpp"
+#include "signup.hpp"
 
 class WelcomePage : public QDialog {
 public:
-    WelcomePage(QWidget* parent = nullptr);
+  WelcomePage(QWidget *parent = nullptr);
 
-    ~WelcomePage();
+  ~WelcomePage();
 
 public:
-    void setupUI();
+  void setupUI();
 
 private:
-    QLabel* labelPicture;
+  QLabel *labelPicture;
 
-    QPushButton* getStarted; // for registration
-    QPushButton* logIn;
+  QPushButton *getStarted; // for registration
+  QPushButton *logIn;
 
-    Logger logger;
+  Logger logger;
 };
 
 #endif

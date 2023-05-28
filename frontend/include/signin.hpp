@@ -1,43 +1,46 @@
 #ifndef SIGNIN_HPP
 #define SIGIN_HPP
 
-
 #include "./signup.hpp"
 #include <QGridLayout>
 
-class SignIn : public QDialog{
-public:
-    SignIn(QWidget* parent = nullptr);
+class SignIn : public QDialog {
+private:
+  SignIn(QWidget *parent = nullptr);
 
-    ~SignIn() noexcept;
+  ~SignIn() noexcept;
+
+  SignIn(const SignIn&) = delete;
+
+  SignIn& operator=(const SignIn&) = delete;
 
 private:
-    void setupUI();
+  void setupUI();
 
-    void sendBackend(const QString& pass,const QString& email);
+  void sendBackend(const QString &pass, const QString &email);
 
 public:
-    static SignIn& getInstance() {
-        static SignIn instance;
-        return instance;
-    }
+  static SignIn &getInstance() {
+    static SignIn instance;
+    return instance;
+  }
 
 public slots:
-    void onNetworkManagerFinished(QNetworkReply *reply);
+  void onNetworkManagerFinished(QNetworkReply *reply);
 
 private:
-    QLabel* labelPassword;
-    QLabel* labelEmail;
-    QLabel* labelAccount;
-    QLabel* labelTitle;
+  QLabel *labelPassword;
+  QLabel *labelEmail;
+  QLabel *labelAccount;
+  QLabel *labelTitle;
 
-    QLineEdit* linePassword;
-    QLineEdit* lineEmail;
+  QLineEdit *linePassword;
+  QLineEdit *lineEmail;
 
-    QPushButton *buttonSubmit;
+  QPushButton *buttonSubmit;
 
-    QNetworkAccessManager *manager;
-    Logger logger;
+  QNetworkAccessManager *manager;
+  Logger logger;
 };
 
 #endif

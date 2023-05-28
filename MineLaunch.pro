@@ -2,6 +2,8 @@ QT       += core gui
 
 QT += network
 
+LIBS+= -lssl -lcrypto
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -27,6 +29,7 @@ HEADERS += frontend/include/welcome.hpp
 HEADERS += utils/logger.hpp
 HEADERS += utils/defines.hpp
 HEADERS += utils/validator.hpp
+HEADERS += utils/sha256.hpp
 
 SOURCES += \
     main.cpp \

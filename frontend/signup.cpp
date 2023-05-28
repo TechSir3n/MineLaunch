@@ -1,12 +1,12 @@
 #include "./include/signup.hpp"
-#include "./include/signin.hpp"
 #include "./include/code_submit.hpp"
+#include "./include/signin.hpp"
 
 SignUp::SignUp(QWidget *parent) : QDialog(parent) {
-    setupUI();
-    manager = new QNetworkAccessManager(this);
-    QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), this,
-                     SLOT(onNetworkManagerFinished(QNetworkReply *)));
+  setupUI();
+  manager = new QNetworkAccessManager(this);
+  QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), this,
+                   SLOT(onNetworkManagerFinished(QNetworkReply *)));
 }
 
 SignUp::~SignUp() noexcept {
@@ -41,11 +41,15 @@ void SignUp::setupUI() {
   checkboxLayout->addStretch();
   checkboxLayout->addWidget(buttonSubmit);
 
-  QLabel *labelLink = new QLabel("<a href='/home/ruslan/Documents/MineLaunch/resources/aboutLaunch.html'>About MineLaucnh</a>");
+  QLabel *labelLink =
+      new QLabel("<a "
+                 "href='/home/ruslan/Documents/MineLaunch/resources/"
+                 "aboutLaunch.html'>About MineLaucnh</a>");
   labelLink->setTextFormat(Qt::RichText);
   labelLink->setOpenExternalLinks(true);
   labelLink->setTextInteractionFlags(Qt::TextBrowserInteraction);
-  labelLink->setStyleSheet("color: #0000ff;font-weight:bold; text-decoration: none;");
+  labelLink->setStyleSheet(
+      "color: #0000ff;font-weight:bold; text-decoration: none;");
 
   QHBoxLayout *signinLayout = new QHBoxLayout;
   signinLayout->addStretch();
@@ -94,16 +98,17 @@ void SignUp::setupUI() {
   labelEmail->setFont(labelFont);
   labelPassword->setFont(labelFont);
 
-  QToolButton* toolButton = new QToolButton();
-  toolButton->setIcon(QIcon("/home/ruslan/Documents/MineLaunch/resources/211661_eye_icon.png"));
+  QToolButton *toolButton = new QToolButton();
+  toolButton->setIcon(
+      QIcon("/home/ruslan/Documents/MineLaunch/resources/211661_eye_icon.png"));
   toolButton->setCursor(Qt::PointingHandCursor);
 
   QObject::connect(toolButton, &QToolButton::clicked, [=]() {
-      if (linePassword->echoMode() == QLineEdit::Password) {
-          linePassword->setEchoMode(QLineEdit::Normal);
-      } else {
-          linePassword->setEchoMode(QLineEdit::Password);
-      }
+    if (linePassword->echoMode() == QLineEdit::Password) {
+      linePassword->setEchoMode(QLineEdit::Normal);
+    } else {
+      linePassword->setEchoMode(QLineEdit::Password);
+    }
   });
 
   linePassword->setEchoMode(QLineEdit::Password);
@@ -122,13 +127,11 @@ void SignUp::setupUI() {
   this->setFixedSize(550, 770);
   this->move(std::get<0>(result), std::get<1>(result));
 
-  QObject::connect(labelLogin, &QLabel::linkActivated, [this]() {
-      SignIn::getInstance().show();
-  });
+  QObject::connect(labelLogin, &QLabel::linkActivated,
+                   [this]() { SignIn::getInstance().show(); });
 
-  QObject::connect(buttonSubmit, &QPushButton::clicked, [this]() {
-      CodeDialog::getInstance().show();
-  });
+  QObject::connect(buttonSubmit, &QPushButton::clicked,
+                   [this]() { CodeDialog::getInstance().show(); });
 }
 
 void SignUp::sendBackend(const QString &usernm, const QString &pass,
@@ -149,18 +152,24 @@ void SignUp::sendBackend(const QString &usernm, const QString &pass,
 }
 
 void SignUp::onNetworkManagerFinished(QNetworkReply *reply) {
-  int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+  int statusCode =
+      reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
   switch (statusCode) {
   case 200:
     logger.log(LogLevel::Info, "Registration completed successfuly");
+    this->hide();
+    SignIn::getInstance().show();
     break;
   case 400:
-    logger.log(LogLevel::Error,"Registration error: ");
-    QMessageBox::warning(this, "Error", "Error registration,status code: " + QString::number(statusCode));
+    logger.log(LogLevel::Error, "Registration error: ");
+    QMessageBox::warning(this, "Error",
+                         "Error registration,status code: " +
+                             QString::number(statusCode));
     break;
 
   default:
-    logger.log(LogLevel::Error, "Unknown registration error,status code: " + std::to_string(statusCode));
+    logger.log(LogLevel::Error, "Unknown registration error,status code: " +
+                                    std::to_string(statusCode));
     break;
   }
   reply->deleteLater();

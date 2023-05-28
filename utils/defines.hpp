@@ -10,12 +10,12 @@ static const QString lineEditStyle =
     "border: 2px solid #0078d7; background-color: #ffffff; }";
 
 static const QString linkStyle = "a{"
-                          "color: #f2f2f2;"
-                          "text-decoration: underline;"
-                          "}"
-                          "a:hover {"
-                          "color: blue;"
-                          "text-decoration: none;"
-                          "}";
+                                 "color: #f2f2f2;"
+                                 "text-decoration: underline;"
+                                 "}"
+                                 "a:hover {"
+                                 "color: blue;"
+                                 "text-decoration: none;"
+                                 "}";
 
 #endif
