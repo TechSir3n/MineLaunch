@@ -5,7 +5,7 @@
 
 class CodeDialog : public QDialog {
 public:
-  CodeDialog(QWidget *parent = nullptr) : QDialog(parent) {
+ explicit CodeDialog(QWidget *parent = nullptr) : QDialog(parent) {
     QPushButton *buttonSubmitCode = new QPushButton(tr("Submit"));
     QLabel *labelSubmitCode = new QLabel((tr("Submit Code")));
     QLineEdit *lineSubmitCode = new QLineEdit();

@@ -29,7 +29,7 @@
 class SignUp : public QDialog {
   Q_OBJECT
 private:
-  SignUp(QWidget *parent = nullptr);
+ explicit SignUp(QWidget *parent = nullptr);
 
   ~SignUp() noexcept;
 

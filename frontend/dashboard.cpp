@@ -2,21 +2,27 @@
 
 DashBoard::DashBoard(QWidget *parent) : QDialog(parent) {
   tabWidget = new QTabWidget(this);
-  tabWidget->setFixedSize(QSize(1100, 760));
+  tabWidget->setFixedSize(QSize(780, 640));
   modsTable = new QTableWidget();
-  setupUI();
+  versionSelector = new QComboBox();
+  versionSelector->setFixedWidth(100);
+  menuBar = new QMenuBar();
+  initalizeUI();
 }
 
 DashBoard::~DashBoard() {}
 
-void DashBoard::setupUI() {
+void DashBoard::initalizeUI() {
+  addMenu();
+  loadVersionsMinecraft();
+  playGame();
+  loadMods();
 
-  addMods();
-
-  this->setFixedSize(1100, 760);
+  this->setMinimumSize(780, 640);
+  this->setWindowTitle("Minecraft Launcher");
 }
 
-void DashBoard::addMods() {
+void DashBoard::loadMods() {
   QWidget *widgetMods = new QWidget();
   QVBoxLayout *modsLayout = new QVBoxLayout(widgetMods);
   modsTable->setColumnCount(3);
@@ -42,8 +48,8 @@ void DashBoard::addMods() {
 
   tabWidget->addTab(widgetMods, "Mods");
 
-  QFile file(
-      "/home/ruslan/Documents/MineLaunch/resources/mods/config/config.json");
+  QFile file(QCoreApplication::applicationDirPath() + "/../" +
+             "/MineLaunch/resources/mods/config/config.json");
   if (!file.open(QIODevice::ReadOnly)) {
     logger.log(LogLevel::Error, "Failed to open file [addMods]");
     return;
@@ -84,7 +90,6 @@ void DashBoard::addMods() {
     modsTable->setItem(row, 1, descItem);
 
     auto *fileItem = new QTableWidgetItem(QFileInfo(mod.file).fileName());
-
     modsTable->setItem(row, 2, fileItem);
   }
 
@@ -95,65 +100,98 @@ void DashBoard::addMods() {
     for (int column = 0; column < columnCount; column++) {
       auto items = modsTable->item(row, column);
       if (items) {
-        items->setFlags(items->flags() & Qt::ItemIsEnabled);
+        items->setFlags(items->flags() & ~Qt::ItemIsEditable);
       }
     }
   }
 
-
   QObject::connect(search, &QPushButton::clicked, this,
                    &DashBoard::searchModsByName);
 
-  QObject::connect(download, &QPushButton::clicked, [&]() {
+  QObject::connect(download, &QPushButton::clicked, this, [&]() {
 
   });
 }
 
+void DashBoard::loadVersionsMinecraft() {
+  QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+  QNetworkReply *reply = manager->get(QNetworkRequest(
+      QUrl("https://launchermeta.mojang.com/mc/game/version_manifest.json")));
+
+  QObject::connect(reply, &QNetworkReply::finished, this, [=]() {
+    if (reply->error() != QNetworkReply::NoError) {
+      logger.log(LogLevel::Error, reply->errorString().toStdString());
+      return;
+    }
+
+    QByteArray jsonArray = reply->readAll();
+    QJsonDocument doc = QJsonDocument::fromJson(jsonArray);
+
+    QStringList versions;
+    QJsonArray versionsArr = doc.object()["versions"].toArray();
+    int numVersions = qMin(5, versionsArr.size());
+    for (int i = 0; i < numVersions; i++) {
+      QString versionName = versionsArr.at(i).toObject()["id"].toString();
+      versions << versionName;
+    }
+
+    versionSelector->addItems(versions);
+  });
+}
+
+void DashBoard::addMenu() {
+  QMenu *fileMenu = new QMenu(tr("File"));
+  QMenu *settingsMenu = new QMenu(tr("Settings"));
+  QMenu *helpMenu = new QMenu(tr("Help"));
+
+  menuBar->addMenu(fileMenu);
+  menuBar->addMenu(settingsMenu);
+  menuBar->addMenu(helpMenu);
+
+  QAction *fileAction = new QAction(tr("Open file"));
+  QAction *helpAction = new QAction(tr("Help use MineLaucnh"));
+  QAction *settingAction = new QAction(tr("dsd"));
+  fileMenu->addAction(fileAction);
+  settingsMenu->addAction(settingAction);
+  helpMenu->addAction(helpAction);
+}
+
 void DashBoard::playGame() {
-  //  ///* QWidget *widgetCheckUpdates = new QWidget();
-  //  //  QWidget *widgetManageServers = new QWidget();
-  //  QWidget *widgetShowAboutGame = new QWidget();
-  //  //  QWidget *widgetServerPerfomance = new QWidget();
+  QWidget *widgetShowGame = new QWidget();
 
-  //  QVBoxLayout *gameLayout = new QVBoxLayout(widgetShowAboutGame);
-  //  tabWidget->addTab(widgetShowAboutGame, "Game"); // for use game layout
+  QVBoxLayout *gameLayout = new QVBoxLayout(widgetShowGame);
+  tabWidget->addTab(widgetShowGame, "Game");
 
-  //  //  QVBoxLayout *updateLayout = new QVBoxLayout(widgetCheckUpdates);
-  //  //  tabWidget->addTab(widgetCheckUpdates, "Check Updates");
+  QLabel *image = new QLabel();
+  QPixmap pixmap(QCoreApplication::applicationDirPath() + "/../" +
+                 "/MineLaunch/resources/images.jpeg");
+  QPixmap scaledPixmap = pixmap.scaled(QSize(480, 290), Qt::KeepAspectRatio);
+  image->setPixmap(scaledPixmap);
 
-  //  //  QVBoxLayout *serversLayout = new QVBoxLayout(widgetManageServers);
-  //  //  tabWidget->addTab(widgetManageServers, "Manage Servers");
+  QVBoxLayout *pixmapLayout = new QVBoxLayout;
+  pixmapLayout->addWidget(image);
+  pixmapLayout->setAlignment(Qt::AlignCenter);
 
-  //  //  QVBoxLayout *perfomanceLayout = new
-  //  QVBoxLayout(widgetServerPerfomance);
-  //  //  tabWidget->addTab(widgetServerPerfomance, "Server Perfomance");
+  play = new QPushButton(tr("Play"));
+  cancel = new QPushButton(tr("Cancel"));
+  update = new QPushButton(tr("Update"));
+  download = new QPushButton(tr("Download"));
 
-  //  play = new QPushButton(tr("Play"));
-  //  cancel = new QPushButton(tr("Cancel"));
-  //  update = new QPushButton(tr("Update"));
+  QHBoxLayout *hbox_layout = new QHBoxLayout;
+  hbox_layout->addWidget(versionSelector);
+  hbox_layout->addStretch();
+  hbox_layout->addWidget(play);
+  hbox_layout->addWidget(cancel);
+  hbox_layout->addWidget(download);
+  hbox_layout->addWidget(update);
+  hbox_layout->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
-  //  QHBoxLayout *layout = new QHBoxLayout();
-  //  layout->addWidget(play);
-  //  layout->addWidget(cancel);
-  //  layout->addWidget(update);
-  //  layout->setAlignment(Qt::AlignRight | Qt::AlignBottom);
-  //  gameLayout->addLayout(layout);
-
-  //  QObject::connect(search, &QPushButton::clicked, this,
-  //                   &DashBoard::searchModsByName);
-
-  //  QObject::connect(download, &QPushButton::clicked, [&]() {
-
-  //  });
-
-  //  //   QMenuBar* menuBar = new QMenuBar(this);
-  //  //   QMenu* fileMenu = new QMenu(tr("File"),this);
-  //  //   QMenu* settingsMenu = new QMenu(tr("Settings"),this);
-
-  //  //   menuBar->addMenu(fileMenu);
-  //  //   menuBar->addMenu(settingsMenu);
-
-  //  //  QAction* action = new QAction(tr("Good"));
+  QHBoxLayout *layout = new QHBoxLayout();
+  layout->insertLayout(0, pixmapLayout);
+  layout->setAlignment(Qt::AlignCenter);
+  gameLayout->setMenuBar(menuBar);
+  gameLayout->addLayout(layout);
+  gameLayout->addLayout(hbox_layout);
 }
 
 void DashBoard::searchModsByName() {
@@ -162,12 +200,13 @@ void DashBoard::searchModsByName() {
   if (!nameMod.isEmpty()) {
     QList<QTableWidgetItem *> items =
         modsTable->findItems(nameMod, Qt::MatchContains);
+
     if (!items.isEmpty()) {
       item = items.first();
     }
   }
 
-  if (item) {
+  if (item != nullptr) {
     modsTable->setCurrentItem(item);
     modsTable->scrollToItem(item);
   } else {

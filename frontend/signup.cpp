@@ -41,10 +41,9 @@ void SignUp::setupUI() {
   checkboxLayout->addStretch();
   checkboxLayout->addWidget(buttonSubmit);
 
+  const QString path = QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/aboutLaunch.html";
   QLabel *labelLink =
-      new QLabel("<a "
-                 "href='/home/ruslan/Documents/MineLaunch/resources/"
-                 "aboutLaunch.html'>About MineLaucnh</a>");
+      new QLabel("<a href='path'>About MineLaucnh</a>");
   labelLink->setTextFormat(Qt::RichText);
   labelLink->setOpenExternalLinks(true);
   labelLink->setTextInteractionFlags(Qt::TextBrowserInteraction);
@@ -61,7 +60,7 @@ void SignUp::setupUI() {
   browserLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
   QLabel *logo = new QLabel();
-  QPixmap logoImage("/home/ruslan/Documents/MineLaunch/resources/u_ajax.png");
+  QPixmap logoImage(QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/u_ajax.png");
   logo->setPixmap(logoImage);
   logo->setAlignment(Qt::AlignCenter);
   logo->setFixedSize(230, 130);
@@ -99,8 +98,7 @@ void SignUp::setupUI() {
   labelPassword->setFont(labelFont);
 
   QToolButton *toolButton = new QToolButton();
-  toolButton->setIcon(
-      QIcon("/home/ruslan/Documents/MineLaunch/resources/211661_eye_icon.png"));
+  toolButton->setIcon(QIcon(QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/211661_eye_icon.png"));
   toolButton->setCursor(Qt::PointingHandCursor);
 
   QObject::connect(toolButton, &QToolButton::clicked, [=]() {
@@ -120,17 +118,17 @@ void SignUp::setupUI() {
   linePassword->setStyleSheet(lineEditStyle);
   lineUsername->setStyleSheet(lineEditStyle);
 
-  QIcon icon("/home/ruslan/Documents/MineLaunch/resources/u_ajax.png");
+  QIcon icon(QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/u_ajax.png");
   auto result = CalculateCenterMonitor();
 
   this->setWindowIcon(icon);
   this->setFixedSize(550, 770);
   this->move(std::get<0>(result), std::get<1>(result));
 
-  QObject::connect(labelLogin, &QLabel::linkActivated,
+  QObject::connect(labelLogin, &QLabel::linkActivated,this,
                    [this]() { SignIn::getInstance().show(); });
 
-  QObject::connect(buttonSubmit, &QPushButton::clicked,
+  QObject::connect(buttonSubmit, &QPushButton::clicked,this,
                    [this]() { CodeDialog::getInstance().show(); });
 }
 

@@ -28,5 +28,39 @@
     "description": "This mod is an analogue of NEI and TMI, with its help you can get game items and see recipes for items and blocks from minecraft.
      In order to be able to take items from the interface, you need to specify a key in the minecraft settings to enable the cheat mode, and then open the mod interface and press this key.",
     "file": "../jei-1.19.4-forge-13.1.0.2.jar"
+  },
+
+  {
+    "name": "OptiFine HD",
+    "description": "OptiFine HD is a mod for fine tuning graphics in minecraft. After installing it, a new interface with a large number of various elements will appear in the graphic settings of the game. With the help of Optifine for Minecraft, you can increase FPS, adjust anti-aliasing, install dynamic textures and high-resolution textures, it also adds support for shaders that significantly change the look of the game.",
+    "file": "../OptiFine_1.19.4_HD_U_I4.jar"
+  },
+
+    {
+    "name": "Industrial Craft ",
+    "description": "A large and old tech mod that gives the player a lot of electricity-powered mechanisms for various areas of game life, including mining, resource processing and agriculture management.",
+    "file": "../industrialcraft-2-2.8.222-ex112.jar"
+  },
+
+  {
+    "name": "Iron Chests",
+    "description": "With this mod, chests can be created not only from wood, but from metals and some ores, and there will also be special improvements that allow you to increase the volume of chests. In new versions of the mod, shulker boxes improved with metals appeared.",
+    "file": "../ironchest-1.19.3-14.3.2.jar"
+  },
+
+  {
+    "name": "Thaumcraft",
+    "description": "One of the most popular mods that will allow you to cast spells in minecraft, as well as add new ores, plants and enchantments.
+     There are various addons and add-ons for this mod, which you can find in the Addons for Thaumcraft section.",
+    "file": "../Thaumcraft_1.12.2_6.1.BETA26.jar"
+  },
+
+  {
+    "name": "Techguns ",
+    "description": "A technical mod, thanks to which new ore, various mechanisms and a whole arsenal of high-quality three-dimensional weapons with beautiful models will appear in minecraft, new armor and armed mobs will also appear.",
+    "file": "../techguns_1.12.2_2.0.2.0_pre3.2.jar"
   }
+
+
+
 ]

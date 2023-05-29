@@ -6,7 +6,7 @@
 
 class WelcomePage : public QDialog {
 public:
-  WelcomePage(QWidget *parent = nullptr);
+  explicit WelcomePage(QWidget *parent = nullptr);
 
   ~WelcomePage();
 

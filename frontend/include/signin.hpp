@@ -6,7 +6,7 @@
 
 class SignIn : public QDialog {
 private:
-  SignIn(QWidget *parent = nullptr);
+ explicit SignIn(QWidget *parent = nullptr);
 
   ~SignIn() noexcept;
 
@@ -25,7 +25,7 @@ public:
     return instance;
   }
 
-public slots:
+private slots:
   void onNetworkManagerFinished(QNetworkReply *reply);
 
 private:

@@ -30,7 +30,7 @@ void SignIn::setupUI() {
 
   QToolButton *toolButton = new QToolButton();
   toolButton->setIcon(
-      QIcon("/home/ruslan/Documents/MineLaunch/resources/211661_eye_icon.png"));
+      QIcon(QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/211661_eye_icon.png"));
   toolButton->setCursor(Qt::PointingHandCursor);
 
   QObject::connect(toolButton, &QToolButton::clicked, [=]() {
@@ -42,7 +42,7 @@ void SignIn::setupUI() {
   });
 
   QLabel *logo = new QLabel();
-  QPixmap logoImage("/home/ruslan/Documents/MineLaunch/resources/u_ajax.png");
+  QPixmap logoImage(QCoreApplication::applicationDirPath() + "/../" + "MineLaunch/resources/u_ajax.png");
   logo->setPixmap(logoImage);
   logo->setAlignment(Qt::AlignCenter);
   logo->setFixedSize(230, 130);
@@ -88,14 +88,14 @@ void SignIn::setupUI() {
   lineEmail->setStyleSheet(lineEditStyle);
 
   auto result = SignUp::getInstance().CalculateCenterMonitor();
-  QIcon icon("/home/ruslan/Documents/MineLaunch/resources/u_ajax.png");
+  QIcon icon(QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/u_ajax.png");
 
   this->setWindowIcon(icon);
   this->setFixedSize(550, 700);
   this->move(std::get<0>(result), std::get<1>(result));
 
 
-  QObject::connect(buttonSubmit, &QPushButton::clicked, [&]() {
+  QObject::connect(buttonSubmit, &QPushButton::clicked,this, [&]() {
       const QString password = linePassword->text();
       const QString email = lineEmail->text();
       sendBackend(password, email);
