@@ -1,5 +1,4 @@
-#ifndef CODE_SUBMIT_HPP
-#define CODE_SUBMIT_HPP
+#pragma once
 
 #include "signup.hpp"
 
@@ -38,4 +37,4 @@ public:
   }
 };
 
-#endif
+

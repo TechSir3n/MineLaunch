@@ -1,10 +1,11 @@
-#ifndef SIGNIN_HPP
-#define SIGIN_HPP
+#pragma once
 
 #include "./signup.hpp"
 #include <QGridLayout>
+#include <QtCore>
 
 class SignIn : public QDialog {
+    Q_OBJECT
 private:
  explicit SignIn(QWidget *parent = nullptr);
 
@@ -43,4 +44,4 @@ private:
   Logger logger;
 };
 
-#endif
+

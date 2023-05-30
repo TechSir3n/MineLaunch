@@ -1,12 +1,14 @@
-#ifndef DASHBOARD_HPP
-#define DASHBOARD_HPP
+#pragma once
 
 #include "signup.hpp"
 #include <QAction>
+#include <QButtonGroup>
+#include <QCheckBox>
 #include <QComboBox>
 #include <QDebug>
 #include <QDialog>
 #include <QFileInfo>
+#include <QGroupBox>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -14,11 +16,17 @@
 #include <QMap>
 #include <QMenu>
 #include <QMenuBar>
+#include <QFrame>
+#include <QPalette>
 #include <QPushButton>
+#include <QRadioButton>
 #include <QRegularExpression>
+#include <QSlider>
 #include <QStringList>
 #include <QTabWidget>
 #include <QTableWidget>
+#include <QVBoxLayout>
+#include <QtCore>
 
 struct Mod {
   QString name;
@@ -27,6 +35,7 @@ struct Mod {
 };
 
 class DashBoard : public QDialog {
+  Q_OBJECT
 public:
   explicit DashBoard(QWidget *parent = nullptr);
 
@@ -41,20 +50,25 @@ public:
 private slots:
   void searchModsByName();
 
+  void onSliderValueChanged(int value);
+
 private:
-  void initalizeUI();
+  void initalizeUI() noexcept;
 
-  void loadMods();
+  void loadMods() noexcept;
 
-  void loadVersionsMinecraft();
+  void loadVersionsMinecraft() noexcept;
 
-  void playGame();
+  void addGameTab() noexcept;
 
-  void addMenu();
+  void addMenuTab() noexcept;
+
+  void addSettings() noexcept;
+
+  void addListServers() noexcept;
 
 private:
   QPushButton *play;
-  QPushButton *settings;
   QPushButton *update;
   QPushButton *save;
   QPushButton *reset;
@@ -69,10 +83,22 @@ private:
   QVector<Mod> loadedMods;
 
   QComboBox *versionSelector;
+  QComboBox *screenExtension;
+  QComboBox *qualityGraphic;
+  QComboBox* choiceLanguage;
+
+  QSlider *soundSlider;
+  QSlider *brightnessSlider;
+  QSlider *choiceColor;
+
   QMenuBar *menuBar;
+  QRadioButton *fullScreen;
+  QRadioButton *windowMode;
+  QButtonGroup *buttonGroup;
+
+  QGroupBox *groupBoxGame;
+  QGroupBox *groupBoxLauncher;
 
 private:
   Logger logger;
 };
-
-#endif

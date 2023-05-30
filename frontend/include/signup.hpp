@@ -1,5 +1,4 @@
-#ifndef SIGNUP_HPP
-#define SIGNUP_HPP
+#pragma once
 
 #include "./utils/defines.hpp"
 #include "./utils/logger.hpp"
@@ -20,6 +19,7 @@
 #include <QNetworkRequest>
 #include <QPushButton>
 #include <QScreen>
+#include <QtCore>
 #include <QTextBrowser>
 #include <QToolButton>
 #include <QUrl>
@@ -72,5 +72,3 @@ public:
   QNetworkAccessManager *manager;
   Logger logger;
 };
-
-#endif

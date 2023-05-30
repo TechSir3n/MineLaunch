@@ -12,17 +12,19 @@ DashBoard::DashBoard(QWidget *parent) : QDialog(parent) {
 
 DashBoard::~DashBoard() {}
 
-void DashBoard::initalizeUI() {
-  addMenu();
+void DashBoard::initalizeUI() noexcept {
   loadVersionsMinecraft();
-  playGame();
+  addGameTab();
   loadMods();
+  addMenuTab();
+  addListServers();
+  addSettings();
 
   this->setMinimumSize(780, 640);
   this->setWindowTitle("Minecraft Launcher");
 }
 
-void DashBoard::loadMods() {
+void DashBoard::loadMods() noexcept {
   QWidget *widgetMods = new QWidget();
   QVBoxLayout *modsLayout = new QVBoxLayout(widgetMods);
   modsTable->setColumnCount(3);
@@ -113,7 +115,12 @@ void DashBoard::loadMods() {
   });
 }
 
-void DashBoard::loadVersionsMinecraft() {
+void DashBoard::loadServers() noexcept
+{
+
+}
+
+void DashBoard::loadVersionsMinecraft() noexcept {
   QNetworkAccessManager *manager = new QNetworkAccessManager(this);
   QNetworkReply *reply = manager->get(QNetworkRequest(
       QUrl("https://launchermeta.mojang.com/mc/game/version_manifest.json")));
@@ -139,7 +146,7 @@ void DashBoard::loadVersionsMinecraft() {
   });
 }
 
-void DashBoard::addMenu() {
+void DashBoard::addMenuTab() noexcept {
   QMenu *fileMenu = new QMenu(tr("File"));
   QMenu *settingsMenu = new QMenu(tr("Settings"));
   QMenu *helpMenu = new QMenu(tr("Help"));
@@ -148,16 +155,138 @@ void DashBoard::addMenu() {
   menuBar->addMenu(settingsMenu);
   menuBar->addMenu(helpMenu);
 
-  QAction *fileAction = new QAction(tr("Open file"));
-  QAction *helpAction = new QAction(tr("Help use MineLaucnh"));
-  QAction *settingAction = new QAction(tr("dsd"));
-  fileMenu->addAction(fileAction);
-  settingsMenu->addAction(settingAction);
+  QAction *openAction = new QAction(tr("Open"));
+  openAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
+  QAction *helpAction = new QAction(tr("Help"));
+  QAction *aboutAction = new QAction(tr("About"));
+  QAction *exitAction = new QAction(tr("Exit"));
+  QAction *settingsAction = new QAction(tr("Settings Game"));
+  exitAction->setShortcut(Qt::CTRL | Qt::Key_Q);
+
+  fileMenu->addAction(openAction);
+  fileMenu->addAction(exitAction);
+  settingsMenu->addAction(settingsAction);
   helpMenu->addAction(helpAction);
+  helpMenu->addAction(aboutAction);
 }
 
-void DashBoard::playGame() {
-  QWidget *widgetShowGame = new QWidget();
+void DashBoard::addSettings() noexcept {
+  QWidget *widgetSettings = new QWidget(this);
+  tabWidget->addTab(widgetSettings, "Settings");
+
+  save = new QPushButton(tr("Save"));
+  reset = new QPushButton(tr("Reset"));
+
+  brightnessSlider = new QSlider(Qt::Horizontal);
+  brightnessSlider->setMinimum(0);
+  brightnessSlider->setMaximum(100);
+  brightnessSlider->setValue(50);
+
+  soundSlider = new QSlider(Qt::Horizontal);
+  soundSlider->setMinimum(0);
+  soundSlider->setMaximum(100);
+  soundSlider->setValue(100);
+
+  screenExtension = new QComboBox();
+  screenExtension->addItem(tr("1920x1080"));
+  screenExtension->addItem(tr("1280x760"));
+  screenExtension->addItem(tr("1024x768"));
+
+  QLabel *colorLabel = new QLabel(tr("Color Launcher"));
+  choiceColor = new QSlider(Qt::Horizontal);
+  choiceColor->setMinimum(0);
+  choiceColor->setMaximum(100);
+  choiceColor->setValue(25);
+
+  QLabel *languageLabel = new QLabel(tr("Language"));
+  choiceLanguage = new QComboBox();
+  choiceLanguage->addItem(tr("English"));
+  choiceLanguage->addItem(tr("Russian"));
+
+  qualityGraphic = new QComboBox();
+  qualityGraphic->addItem(tr("Low"));
+  qualityGraphic->addItem(tr("Medium"));
+  qualityGraphic->addItem(tr("High"));
+  qualityGraphic->addItem(tr("Ultra"));
+
+  groupBoxGame = new QGroupBox(tr("Settings Game"));
+  groupBoxLauncher = new QGroupBox(tr("Setting Launcher"));
+
+  groupBoxGame->setFont(QFont("Arial", 12, QFont::Bold));
+  groupBoxLauncher->setFont(QFont("Arial", 12, QFont::Bold));
+
+  fullScreen = new QRadioButton(tr("Full Screen"));
+  windowMode = new QRadioButton(tr("Window Mode"));
+  buttonGroup = new QButtonGroup();
+  buttonGroup->addButton(fullScreen);
+  buttonGroup->addButton(windowMode);
+  fullScreen->setChecked(true);
+
+  QLabel *screenLabel = new QLabel(tr("Screen Mode"));
+  QLabel *brightLabel = new QLabel(tr("Brightness"));
+  QLabel *soundLabel = new QLabel(tr("Sound"));
+  QLabel *extenstionLabel = new QLabel(tr("Screen Extension"));
+  QLabel *qualityLabel = new QLabel(tr("Quality Graphic"));
+
+  QFont font("Arial", 11, QFont::Bold);
+
+  screenLabel->setFont(font);
+  soundLabel->setFont(font);
+  extenstionLabel->setFont(font);
+  qualityLabel->setFont(font);
+  brightLabel->setFont(font);
+  colorLabel->setFont(font);
+
+  QHBoxLayout *buttonLayout = new QHBoxLayout;
+  buttonLayout->addWidget(save);
+  buttonLayout->addWidget(reset);
+  buttonLayout->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+
+  QVBoxLayout *settingLayoutGame = new QVBoxLayout;
+  settingLayoutGame->addWidget(screenLabel);
+  settingLayoutGame->addWidget(fullScreen);
+  settingLayoutGame->addWidget(windowMode);
+  settingLayoutGame->addWidget(soundLabel);
+  settingLayoutGame->addWidget(soundSlider);
+  settingLayoutGame->addWidget(brightLabel);
+  settingLayoutGame->addWidget(brightnessSlider);
+  settingLayoutGame->addWidget(extenstionLabel);
+  settingLayoutGame->addWidget(screenExtension);
+  settingLayoutGame->addWidget(qualityLabel);
+  settingLayoutGame->addWidget(qualityGraphic);
+
+  groupBoxGame->setLayout(settingLayoutGame);
+
+  QFrame *separator = new QFrame();
+  separator->setFrameShape(QFrame::HLine);
+  separator->setFrameShadow(QFrame::Sunken);
+  separator->setFixedHeight(3);
+
+  QVBoxLayout *settingLauncherLayout = new QVBoxLayout;
+  settingLauncherLayout->addWidget(colorLabel);
+  settingLauncherLayout->addWidget(choiceColor);
+  settingLauncherLayout->addWidget(separator);
+  settingLauncherLayout->addWidget(languageLabel);
+  settingLauncherLayout->addWidget(choiceLanguage);
+
+  groupBoxLauncher->setLayout(settingLauncherLayout);
+
+  QVBoxLayout *l_layout = new QVBoxLayout(widgetSettings);
+  l_layout->addWidget(groupBoxGame);
+  l_layout->addWidget(groupBoxLauncher);
+  l_layout->addLayout(buttonLayout);
+
+  connect(choiceColor, &QSlider::valueChanged, this,
+          &DashBoard::onSliderValueChanged);
+}
+
+void DashBoard::addListServers() noexcept {
+  QWidget *widgetListServers = new QWidget(this);
+  tabWidget->addTab(widgetListServers, "Servers");
+}
+
+void DashBoard::addGameTab() noexcept {
+  QWidget *widgetShowGame = new QWidget(this);
 
   QVBoxLayout *gameLayout = new QVBoxLayout(widgetShowGame);
   tabWidget->addTab(widgetShowGame, "Game");
@@ -211,5 +340,32 @@ void DashBoard::searchModsByName() {
     modsTable->scrollToItem(item);
   } else {
     QMessageBox::warning(this, "Not Found", "The item was not found");
+  }
+}
+
+void DashBoard::onSliderValueChanged(int value) {
+
+  const QString tabStyle =
+      "QTabWidget::pane { border-color: gray; background-color: ";
+  if (value <= 10) {
+    tabWidget->setStyleSheet(tabStyle + "cyan; }");
+  } else if (value <= 20) {
+    tabWidget->setStyleSheet(tabStyle + "grey; }");
+  } else if (value <= 30) {
+    tabWidget->setStyleSheet(tabStyle + "green; }");
+  } else if (value <= 40) {
+    tabWidget->setStyleSheet(tabStyle + "brown; }");
+  } else if (value <= 50) {
+    tabWidget->setStyleSheet(tabStyle + "peach; }");
+  } else if (value <= 60) {
+    tabWidget->setStyleSheet(tabStyle + "white; } ");
+  } else if (value <= 70) {
+    tabWidget->setStyleSheet(tabStyle + "blue; }");
+  } else if (value <= 85) {
+    tabWidget->setStyleSheet(tabStyle + "grey; }");
+  } else if (value <= 95) {
+    tabWidget->setStyleSheet(tabStyle + "magenta; }");
+  } else if (value <= 100) {
+    tabWidget->setStyleSheet(tabStyle + "black; }");
   }
 }

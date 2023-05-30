@@ -1,6 +1,4 @@
-#ifndef VALIDATOR_HPP
-#define VALIDATOR_HPP
-
+#pragma once
 #include <boost/regex.hpp>
 
 
@@ -32,4 +30,3 @@ public:
 };
 
 
-#endif

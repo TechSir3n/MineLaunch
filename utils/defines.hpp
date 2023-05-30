@@ -1,5 +1,4 @@
-#ifndef DEFINES_HPP
-#define DEFINES_HPP
+#pragma once
 
 #include <QString>
 
@@ -18,4 +17,3 @@ static const QString linkStyle = "a{"
                                  "text-decoration: none;"
                                  "}";
 
-#endif

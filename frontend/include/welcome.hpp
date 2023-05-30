@@ -1,10 +1,11 @@
-#ifndef WELCOME_HPP
-#define WELCOME_HPP
+#pragma once
 
 #include "signin.hpp"
 #include "signup.hpp"
+#include <QtCore>
 
 class WelcomePage : public QDialog {
+    Q_OBJECT
 public:
   explicit WelcomePage(QWidget *parent = nullptr);
 
@@ -22,4 +23,3 @@ private:
   Logger logger;
 };
 
-#endif

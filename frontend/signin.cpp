@@ -3,8 +3,8 @@
 SignIn::SignIn(QWidget *parent) : QDialog(parent) {
   setupUI();
   manager = new QNetworkAccessManager(this);
-  QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), this,
-                   SLOT(onNetworkManagerFinished(QNetworkReply *)));
+  QObject::connect(manager, SIGNAL(finished(QNetworkReply*)), this,
+                   SLOT(onNetworkManagerFinished(QNetworkReply*)));
 }
 
 SignIn::~SignIn() noexcept {

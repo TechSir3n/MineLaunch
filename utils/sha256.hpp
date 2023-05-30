@@ -1,5 +1,4 @@
-#ifndef SHA256_HPP
-#define SHA256_HPP
+#pragma once
 
 #include <cstring>
 #include <iostream>
@@ -24,4 +23,4 @@ std::string sha256(const std::string_view &password) {
   return result;
 }
 
-#endif
+
