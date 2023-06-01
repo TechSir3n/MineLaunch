@@ -2,6 +2,12 @@ QT       += core gui
 
 QT += network
 
+QT += xml
+
+QT +=sql
+
+QT += webenginewidgets
+
 LIBS+= -lssl -lcrypto
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -31,6 +37,13 @@ HEADERS += utils/logger.hpp
 HEADERS += utils/defines.hpp
 HEADERS += utils/validator.hpp
 HEADERS += utils/sha256.hpp
+
+SOURCES += backend/server.cpp
+SOURCES  += backend/database/sqlite.cpp
+
+HEADERS += backend/include/server.hpp
+HEADERS += backend/database/include/sqlite.hpp
+
 
 SOURCES += \
     main.cpp \

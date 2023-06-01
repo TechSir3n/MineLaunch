@@ -9,6 +9,7 @@
 #include <sstream>
 #include <string>
 #include <boost/filesystem.hpp>
+#include "defines.hpp"
 
 namespace fs = boost::filesystem;
 
@@ -45,7 +46,7 @@ public:
     print(os, std::forward<Args>(args)...);
   }
 
-  template <typename... Args> void log(LogLevel level, Args... args) {
+  template <typename... Args> void log(LogLevel level = LogLevel::Info, Args... args) {
     std::ostringstream os;
     std::lock_guard<std::mutex> lock(m_mutex);
     print(os, std::forward<Args>(args)...);
@@ -81,10 +82,11 @@ private:
 
     case LogLevel::Critical:
       str_level = "Critical";
-      break;
+      exit(static_cast<unsigned int>(Error::InvalidInput));
 
     default:
       throw std::runtime_error("Unknow error got in switch logger");
+      exit(static_cast<unsigned int>(Error::Unknown));
     }
 
     ofs << " [LEVEL] -> " << str_level << " : " << message;

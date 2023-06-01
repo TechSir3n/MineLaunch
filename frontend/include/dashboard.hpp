@@ -19,6 +19,10 @@
 #include <QFrame>
 #include <QPalette>
 #include <QPushButton>
+#include <QUrl>
+#include <QStackedWidget>
+#include <QtNetwork>
+#include <QtWebEngineWidgets>
 #include <QRadioButton>
 #include <QRegularExpression>
 #include <QSlider>
@@ -27,11 +31,20 @@
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QtCore>
+#include <QEventLoop>
 
 struct Mod {
   QString name;
   QString description;
   QString file;
+};
+
+struct Server {
+  QString hostname;
+  QString address;
+  int port;
+  int numPlayers;
+  int maxPlayers;
 };
 
 class DashBoard : public QDialog {
@@ -57,6 +70,8 @@ private:
 
   void loadMods() noexcept;
 
+  void loadServers() noexcept;
+
   void loadVersionsMinecraft() noexcept;
 
   void addGameTab() noexcept;
@@ -65,7 +80,6 @@ private:
 
   void addSettings() noexcept;
 
-  void addListServers() noexcept;
 
 private:
   QPushButton *play;
@@ -75,12 +89,19 @@ private:
   QPushButton *cancel;
   QPushButton *search;
   QPushButton *download;
+  QPushButton* connect;
+  QPushButton *updateList;
+  QPushButton *next;
 
+  QStackedWidget *stackWidget;
   QTableWidget *modsTable;
   QTabWidget *tabWidget;
 
   QLineEdit *editSearch;
+  QLineEdit* editIPServer;
+
   QVector<Mod> loadedMods;
+  QVector<Server> loadedServers;
 
   QComboBox *versionSelector;
   QComboBox *screenExtension;

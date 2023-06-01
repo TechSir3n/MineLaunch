@@ -17,3 +17,12 @@ static const QString linkStyle = "a{"
                                  "text-decoration: none;"
                                  "}";
 
+
+
+enum class Error : unsigned int{
+   Unknown = 1,
+   InvalidInput,
+   DiskFull,
+   NotFound,
+   Closed,
+};
