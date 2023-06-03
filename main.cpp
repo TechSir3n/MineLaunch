@@ -1,16 +1,26 @@
 #include "mainwindow.h"
 
-#include "./frontend/include/dashboard.hpp"
-#include "./backend/database/include/sqlite.hpp"
+#include "./frontend/include/signup.hpp"
+#include "./backend/include/server.hpp"
+#include "./backend/include/dataHandler.hpp"
 #include <QApplication>
 #include <QInputDialog>
 #include <QStringList>
+#include <QObject>
 #include <QTranslator>
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
 
-    Database db;
+  qRegisterMetaType<DataHandler*>("DataHandler*"); // регистрируем новый тип
+
+  Server server;
+  SignUp sign;
+  DataHandler handler;
+
+  QObject::connect(&server,&Server::dataReceived,&handler,&DataHandler::dataHandler);
+
+  sign.show();
 
 
   // MainWindow w;

@@ -2,12 +2,7 @@
 #include "./include/code_submit.hpp"
 #include "./include/signin.hpp"
 
-SignUp::SignUp(QWidget *parent) : QDialog(parent) {
-  setupUI();
-  manager = new QNetworkAccessManager(this);
-  QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), this,
-                   SLOT(onNetworkManagerFinished(QNetworkReply *)));
-}
+SignUp::SignUp(QWidget *parent) : QDialog(parent) { setupUI(); }
 
 SignUp::~SignUp() noexcept {
   delete labelUsername;
@@ -41,9 +36,9 @@ void SignUp::setupUI() {
   checkboxLayout->addStretch();
   checkboxLayout->addWidget(buttonSubmit);
 
-  const QString path = QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/aboutLaunch.html";
-  QLabel *labelLink =
-      new QLabel("<a href='path'>About MineLaucnh</a>");
+  // const QString path = QCoreApplication::applicationDirPath() + "/../" +
+  // "/MineLaunch/resources/aboutLaunch.html";
+  QLabel *labelLink = new QLabel("<a href='path'>About MineLaucnh</a>");
   labelLink->setTextFormat(Qt::RichText);
   labelLink->setOpenExternalLinks(true);
   labelLink->setTextInteractionFlags(Qt::TextBrowserInteraction);
@@ -60,7 +55,8 @@ void SignUp::setupUI() {
   browserLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
   QLabel *logo = new QLabel();
-  QPixmap logoImage(QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/u_ajax.png");
+  QPixmap logoImage(QCoreApplication::applicationDirPath() + "/../" +
+                    "/MineLaunch/resources/u_ajax.png");
   logo->setPixmap(logoImage);
   logo->setAlignment(Qt::AlignCenter);
   logo->setFixedSize(230, 130);
@@ -98,7 +94,8 @@ void SignUp::setupUI() {
   labelPassword->setFont(labelFont);
 
   QToolButton *toolButton = new QToolButton();
-  toolButton->setIcon(QIcon(QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/211661_eye_icon.png"));
+  toolButton->setIcon(QIcon(QCoreApplication::applicationDirPath() + "/../" +
+                            "/MineLaunch/resources/211661_eye_icon.png"));
   toolButton->setCursor(Qt::PointingHandCursor);
 
   QObject::connect(toolButton, &QToolButton::clicked, [=]() {
@@ -118,59 +115,26 @@ void SignUp::setupUI() {
   linePassword->setStyleSheet(lineEditStyle);
   lineUsername->setStyleSheet(lineEditStyle);
 
-  QIcon icon(QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/u_ajax.png");
+  QIcon icon(QCoreApplication::applicationDirPath() + "/../" +
+             "/MineLaunch/resources/u_ajax.png");
   auto result = CalculateCenterMonitor();
 
   this->setWindowIcon(icon);
   this->setFixedSize(550, 770);
   this->move(std::get<0>(result), std::get<1>(result));
 
-  QObject::connect(labelLogin, &QLabel::linkActivated,this,
+  QObject::connect(labelLogin, &QLabel::linkActivated, this,
                    [this]() { SignIn::getInstance().show(); });
 
-  QObject::connect(buttonSubmit, &QPushButton::clicked,this,
-                   [this]() { CodeDialog::getInstance().show(); });
-}
+  CodeDialog* dialog = new CodeDialog();
+  QObject::connect(buttonSubmit, &QPushButton::clicked, this, [dialog,this]() {
+    const QString password = linePassword->text();
+    const QString email = lineEmail->text();
+    const QString username = lineUsername->text();
+    dialog->sendData(username, email, password);
+    dialog->show();
 
-void SignUp::sendBackend(const QString &usernm, const QString &pass,
-                         const QString &email) {
-
-  QUrl url("http://localhost:8080/signup");
-
-  QNetworkRequest request(url);
-  request.setHeader(QNetworkRequest::ContentTypeHeader,
-                    "application/x-www-form-urlencoded");
-
-  QUrlQuery postData;
-  postData.addQueryItem("username", usernm);
-  postData.addQueryItem("password", pass);
-  postData.addQueryItem("email", email);
-
-  manager->post(request, postData.toString(QUrl::FullyEncoded).toUtf8());
-}
-
-void SignUp::onNetworkManagerFinished(QNetworkReply *reply) {
-  int statusCode =
-      reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-  switch (statusCode) {
-  case 200:
-    logger.log(LogLevel::Info, "Registration completed successfuly");
-    this->hide();
-    SignIn::getInstance().show();
-    break;
-  case 400:
-    logger.log(LogLevel::Error, "Registration error: ");
-    QMessageBox::warning(this, "Error",
-                         "Error registration,status code: " +
-                             QString::number(statusCode));
-    break;
-
-  default:
-    logger.log(LogLevel::Error, "Unknown registration error,status code: " +
-                                    std::to_string(statusCode));
-    break;
-  }
-  reply->deleteLater();
+  });
 }
 
 std::tuple<int, int> SignUp::CalculateCenterMonitor() {

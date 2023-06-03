@@ -64,10 +64,10 @@ void WelcomePage::setupUI()
     this->setWindowIcon(icon);
 
     QObject::connect(getStarted,&QPushButton::clicked,[&](){
-        SignUp::getInstance().show();
+        signup.show();
     });
 
     QObject::connect(logIn,&QPushButton::clicked,[&](){
-        SignIn::getInstance().show();
+       signup.show();
     });
 }

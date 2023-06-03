@@ -15,8 +15,11 @@ public:
 private:
    bool initDatabase();
 
-   bool insertUserData();
+   bool insertUserData(const QString &username,const QString&email,const QString&password);
 
+   bool updateUserData();
+
+   bool searchUserByEmail(const QString &email);
 
 private:
    Logger logger;

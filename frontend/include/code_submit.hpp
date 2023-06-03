@@ -1,10 +1,17 @@
 #pragma once
 
-#include "signup.hpp"
+#include "client.hpp"
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 class CodeDialog : public QDialog {
 public:
- explicit CodeDialog(QWidget *parent = nullptr) : QDialog(parent) {
+  explicit CodeDialog(QWidget *parent = nullptr) : QDialog(parent) {
+    client = new Client(this);
+
     QPushButton *buttonSubmitCode = new QPushButton(tr("Submit"));
     QLabel *labelSubmitCode = new QLabel((tr("Submit Code")));
     QLineEdit *lineSubmitCode = new QLineEdit();
@@ -19,22 +26,21 @@ public:
     layout->addLayout(hbox_layout);
     layout->setSpacing(20);
 
-    QObject::connect(buttonSubmitCode, &QPushButton::clicked, [&, this]() {
-      const QString username = SignUp::getInstance().lineUsername->text();
-      const QString password = SignUp::getInstance().linePassword->text();
-      const QString email = SignUp::getInstance().lineEmail->text();
-      SignUp::getInstance().sendBackend(username, password, email);
-      this->close();
-    });
+    QObject::connect(buttonSubmitCode, &QPushButton::clicked, this,
+                     [=]() {
+                       int code = lineSubmitCode->text().toInt();
+        qDebug() <<"CodeDialog:"  << code;
+                       client->sendSubmitCode(code);
+                     });
+  }
+
+  void sendData(const QString &username, const QString &email,
+                const QString &password) {
+    client->sendData(username, email, password);
   }
 
   ~CodeDialog() = default;
 
-public:
-  static CodeDialog &getInstance() {
-    static CodeDialog instance;
-    return instance;
-  }
+private:
+  Client *client;
 };
-
-

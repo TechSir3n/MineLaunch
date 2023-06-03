@@ -18,16 +18,12 @@ private:
 private:
   void setupUI();
 
-  void sendBackend(const QString &pass, const QString &email);
-
 public:
   static SignIn &getInstance() {
     static SignIn instance;
     return instance;
   }
 
-private slots:
-  void onNetworkManagerFinished(QNetworkReply *reply);
 
 private:
   QLabel *labelPassword;
@@ -40,8 +36,8 @@ private:
 
   QPushButton *buttonSubmit;
 
-  QNetworkAccessManager *manager;
   Logger logger;
+  SignUp signup;
 };
 
 

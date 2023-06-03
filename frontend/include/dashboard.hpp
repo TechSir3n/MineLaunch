@@ -39,13 +39,7 @@ struct Mod {
   QString file;
 };
 
-struct Server {
-  QString hostname;
-  QString address;
-  int port;
-  int numPlayers;
-  int maxPlayers;
-};
+
 
 class DashBoard : public QDialog {
   Q_OBJECT
@@ -101,7 +95,6 @@ private:
   QLineEdit* editIPServer;
 
   QVector<Mod> loadedMods;
-  QVector<Server> loadedServers;
 
   QComboBox *versionSelector;
   QComboBox *screenExtension;

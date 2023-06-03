@@ -21,5 +21,6 @@ private:
   QPushButton *logIn;
 
   Logger logger;
+  SignUp signup;
 };
 

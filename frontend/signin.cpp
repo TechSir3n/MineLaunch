@@ -2,9 +2,6 @@
 
 SignIn::SignIn(QWidget *parent) : QDialog(parent) {
   setupUI();
-  manager = new QNetworkAccessManager(this);
-  QObject::connect(manager, SIGNAL(finished(QNetworkReply*)), this,
-                   SLOT(onNetworkManagerFinished(QNetworkReply*)));
 }
 
 SignIn::~SignIn() noexcept {
@@ -87,7 +84,7 @@ void SignIn::setupUI() {
   linePassword->setStyleSheet(lineEditStyle);
   lineEmail->setStyleSheet(lineEditStyle);
 
-  auto result = SignUp::getInstance().CalculateCenterMonitor();
+  auto result = signup.CalculateCenterMonitor();
   QIcon icon(QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/u_ajax.png");
 
   this->setWindowIcon(icon);
@@ -98,44 +95,6 @@ void SignIn::setupUI() {
   QObject::connect(buttonSubmit, &QPushButton::clicked,this, [&]() {
       const QString password = linePassword->text();
       const QString email = lineEmail->text();
-      sendBackend(password, email);
+
   });
-}
-
-void SignIn::sendBackend(const QString &pass, const QString &email) {
-  QUrl url("http://localhost:8080/signin");
-
-  QNetworkRequest request(url);
-  request.setHeader(QNetworkRequest::ContentTypeHeader,
-                    "application/x-www-form-urlencoded");
-
-  QUrlQuery postData;
-  postData.addQueryItem("password", pass);
-  postData.addQueryItem("email", email);
-
-  manager->post(request, postData.toString(QUrl::FullyEncoded).toUtf8());
-}
-
-void SignIn::onNetworkManagerFinished(QNetworkReply *reply) {
-  int statusCode =
-      reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-  switch (statusCode) {
-  case 200:
-    logger.log(LogLevel::Info, "Registration completed successfuly");
-      this->hide();
-      DashBoard::getInstance().show();
-    break;
-  case 400:
-    logger.log(LogLevel::Error, "Registration error: ");
-    QMessageBox::warning(this, "Error",
-                         "Error registration,status code: " +
-                             QString::number(statusCode));
-    break;
-
-  default:
-    logger.log(LogLevel::Error, "Unknown registration error,status code: " +
-                                    std::to_string(statusCode));
-    break;
-  }
-  reply->deleteLater();
 }
