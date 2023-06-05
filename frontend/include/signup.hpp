@@ -38,7 +38,16 @@ public:
   SignUp &operator=(const SignUp &) = delete;
 
 public:
+  static SignUp & getInstance() {
+      static SignUp instance;
+      return instance;
+  }
+
+public:
   std::tuple<int, int> CalculateCenterMonitor();
+
+private slots:
+  void onLabelLinkActivated(const QString& link);
 
 private:
   void setupUI();
@@ -56,7 +65,6 @@ private:
 
   Logger logger;
 
-public:
   QLineEdit *lineUsername;
   QLineEdit *lineEmail;
   QLineEdit *linePassword;

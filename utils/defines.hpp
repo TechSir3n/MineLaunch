@@ -17,8 +17,6 @@ static const QString linkStyle = "a{"
                                  "text-decoration: none;"
                                  "}";
 
-constexpr int COUNT = 5;
-
 enum class Error : unsigned int{
    Unknown = 1,
    InvalidInput,

@@ -40,13 +40,16 @@ struct Mod {
 };
 
 
-
 class DashBoard : public QDialog {
   Q_OBJECT
-public:
+private:
   explicit DashBoard(QWidget *parent = nullptr);
 
   ~DashBoard();
+
+  DashBoard(const DashBoard&) = delete;
+
+  DashBoard & operator=(const DashBoard&) = delete;
 
 public:
   static DashBoard &getInstance() {
@@ -73,7 +76,6 @@ private:
   void addMenuTab() noexcept;
 
   void addSettings() noexcept;
-
 
 private:
   QPushButton *play;

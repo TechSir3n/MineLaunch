@@ -8,26 +8,32 @@
 #include <QtNetwork>
 #include <QJsonObject>
 #include <QByteArray>
-
+#include <QJsonParseError>
 
 class Server : public QObject{
     Q_OBJECT
-public:
+private:
     explicit Server(QObject *parent = nullptr);
 
-    ~Server();
+    ~Server() = default;
+public:
+    static Server & getInstance() {
+        static Server server;
+        return server;
+    }
+
 signals:
     void dataReceived(const QJsonObject &data);
-
-    void codeReceived(const QJsonObject &data);
 
 public slots:
     void newConnection();
 
     void receivedData();
 
+    void getString(const QString &str);
 private:
     QTcpServer *m_server;
-    QList<QTcpSocket*>m_clients;
+    QTcpSocket *m_client;
+    QVector<QTcpSocket*>m_clients;
     Logger logger;
 };

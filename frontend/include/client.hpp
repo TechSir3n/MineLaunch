@@ -1,31 +1,36 @@
 #pragma once
 
+#include "dashboard.hpp"
+//#include "signin.hpp"
 #include "utils/logger.hpp"
-#include <QTcpSocket>
-#include <QObject>
-#include <QString>
-#include <QJsonObject>
 #include <QByteArray>
 #include <QJsonDocument>
+#include <QJsonObject>
+#include <QObject>
+#include <QString>
+#include <QTcpSocket>
 
-class Client : public QObject{
-    Q_OBJECT
+class Client : public QObject {
+  Q_OBJECT
 public:
-    explicit Client(QObject * parent = nullptr);
+  explicit Client(QObject *parent = nullptr);
 
-    ~Client();
+  ~Client();
 
 signals:
-    void dataSent(const QJsonObject &data);
+  void dataSent(const QJsonObject &data);
 
 public slots:
-    void sendData(const QString &username,const QString &email,const QString &password);
+  void sendData(const QString &username, const QString &email,
+                const QString &password);
 
-    void sendSubmitCode(int code);
+  void sendSubmitCode(int code);
 
-    void readyRead();
+  void sendUserLoginData(const QString &email, const QString &password);
+
+  void readyRead();
 
 private:
-    QTcpSocket *m_socket;
-    Logger logger;
+  QTcpSocket *m_socket;
+  Logger logger;
 };

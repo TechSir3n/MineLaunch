@@ -36,19 +36,24 @@ void SignUp::setupUI() {
   checkboxLayout->addStretch();
   checkboxLayout->addWidget(buttonSubmit);
 
-  // const QString path = QCoreApplication::applicationDirPath() + "/../" +
-  // "/MineLaunch/resources/aboutLaunch.html";
-  QLabel *labelLink = new QLabel("<a href='path'>About MineLaucnh</a>");
+  const QString path = QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/aboutLaunch.html";
+  QLabel *labelLink = new QLabel("<a href=\"" + path + "\">About MineLaucnh</a>");
   labelLink->setTextFormat(Qt::RichText);
   labelLink->setOpenExternalLinks(true);
   labelLink->setTextInteractionFlags(Qt::TextBrowserInteraction);
   labelLink->setStyleSheet(
       "color: #0000ff;font-weight:bold; text-decoration: none;");
 
+  labelLogin->setCursor(Qt::PointingHandCursor);
+  labelLogin->setWordWrap(false);
+  labelLogin->setProperty("openExternalLinks",true);
+  labelLogin->setToolTip("Click here to sign in");
+  labelTitle->setAlignment(Qt::AlignCenter);
+
   QHBoxLayout *signinLayout = new QHBoxLayout;
   signinLayout->addStretch();
   signinLayout->addWidget(labelLogin);
-  signinLayout->setAlignment(Qt::AlignRight);
+  signinLayout->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
   QHBoxLayout *browserLayout = new QHBoxLayout;
   browserLayout->addWidget(labelLink);
@@ -80,11 +85,6 @@ void SignUp::setupUI() {
   layout->setContentsMargins(QMargins(10, 10, 10, 10));
   layout->setSpacing(20);
 
-  labelLogin->setCursor(Qt::PointingHandCursor);
-  labelLogin->setStyleSheet(
-      "color: blue; font-size: 14px; font-family: Arial;");
-  labelTitle->setAlignment(Qt::AlignCenter);
-
   QFont titleFont("Roboto", 24, QFont::Bold);
   QFont labelFont("Open Sans", 12);
 
@@ -107,9 +107,9 @@ void SignUp::setupUI() {
   });
 
   linePassword->setEchoMode(QLineEdit::Password);
-  linePassword->setPlaceholderText("Enter password");
-  lineEmail->setPlaceholderText("Enter email");
-  lineUsername->setPlaceholderText("Enter username");
+  linePassword->setPlaceholderText(tr("Enter password"));
+  lineEmail->setPlaceholderText(tr("Enter email"));
+  lineUsername->setPlaceholderText(tr("Enter username"));
 
   lineEmail->setStyleSheet(lineEditStyle);
   linePassword->setStyleSheet(lineEditStyle);
@@ -123,8 +123,7 @@ void SignUp::setupUI() {
   this->setFixedSize(550, 770);
   this->move(std::get<0>(result), std::get<1>(result));
 
-  QObject::connect(labelLogin, &QLabel::linkActivated, this,
-                   [this]() { SignIn::getInstance().show(); });
+  QObject::connect(labelLogin, &QLabel::linkActivated, this,&SignUp::onLabelLinkActivated);
 
   CodeDialog* dialog = new CodeDialog();
   QObject::connect(buttonSubmit, &QPushButton::clicked, this, [dialog,this]() {
@@ -133,7 +132,6 @@ void SignUp::setupUI() {
     const QString username = lineUsername->text();
     dialog->sendData(username, email, password);
     dialog->show();
-
   });
 }
 
@@ -143,4 +141,11 @@ std::tuple<int, int> SignUp::CalculateCenterMonitor() {
   int x = center_point.x() - this->width() / 2;
   int y = center_point.y() - this->height() / 2;
   return std::make_tuple(x, y);
+}
+
+void SignUp::onLabelLinkActivated(const QString &link)
+{
+  qDebug() <<"Link: "<<link;
+  SignIn::getInstance().show();
+  close();
 }

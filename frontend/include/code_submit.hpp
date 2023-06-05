@@ -10,7 +10,7 @@
 class CodeDialog : public QDialog {
 public:
   explicit CodeDialog(QWidget *parent = nullptr) : QDialog(parent) {
-    client = new Client(this);
+    client = new Client();
 
     QPushButton *buttonSubmitCode = new QPushButton(tr("Submit"));
     QLabel *labelSubmitCode = new QLabel((tr("Submit Code")));
@@ -27,16 +27,20 @@ public:
     layout->setSpacing(20);
 
     QObject::connect(buttonSubmitCode, &QPushButton::clicked, this,
-                     [=]() {
+                     [=,this]() {
                        int code = lineSubmitCode->text().toInt();
-        qDebug() <<"CodeDialog:"  << code;
                        client->sendSubmitCode(code);
+
                      });
   }
 
   void sendData(const QString &username, const QString &email,
                 const QString &password) {
     client->sendData(username, email, password);
+  }
+
+  void sendLoginData(const QString &email,const QString&password) {
+    client->sendUserLoginData(email,password);
   }
 
   ~CodeDialog() = default;

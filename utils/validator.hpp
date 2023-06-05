@@ -1,32 +1,22 @@
 #pragma once
+
 #include <boost/regex.hpp>
 
-
-class Validator  {
+class Validator {
 public:
-    bool isValidEmail(const std::string& email) const {
-        static const boost::regex pattern("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$");
+    bool isValidEmail(const std::string &email) const {
+        static const boost::regex pattern(
+            "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
         return boost::regex_match(email, pattern);
     }
 
-    bool isValidPassword(const std::string& password) const {
-        static const boost::regex pattern("^([a-zA-Z0-9]+)$");
-
-        if(password.size() < 8) {
-            return false;
-        }
-
-        if(!boost::regex_match(password, pattern)){
-            return false;
-        }
-
-        return  true;
+    bool isValidPassword(const std::string &password) const {
+        static const boost::regex pattern("^[a-zA-Z0-9]{8,}$");
+        return boost::regex_match(password, pattern);
     }
 
-    bool isValidUsername(const std::string& username) {
-        static const boost::regex pattern("^[a-zA-Z][a-zA-Z0-9]{2,19}$");
+    bool isValidUsername(const std::string &username) const{
+        static const boost::regex pattern("^[a-zA-Z0-9]{1,15}$");
         return boost::regex_match(username, pattern);
     }
 };
-
-

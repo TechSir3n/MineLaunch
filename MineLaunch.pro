@@ -13,10 +13,8 @@ LIBS+= -lssl -lcrypto
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
-# LIBS += -lqtpop3 -lqtsmtp
 INCLUDEPATH += /usr/include/boost
 LIBS += -lboost_system -lboost_filesystem -lboost_regex
-
 
 # You can make your code fail to compile if it uses deprecated APIs.
 
@@ -41,18 +39,55 @@ HEADERS += frontend/include/client.hpp
 HEADERS += utils/logger.hpp
 HEADERS += utils/defines.hpp
 HEADERS += utils/validator.hpp
-HEADERS += utils/sha256.hpp
-HEADERS += utils/helpers.hpp
+HEADERS += utils/hashing.hpp
 
 SOURCES += backend/server.cpp
 SOURCES += backend/dataHandler.cpp
-SOURCES += backend/smtp.cpp
 SOURCES += backend/database/sqlite.cpp
+
 
 HEADERS += backend/include/dataHandler.hpp
 HEADERS += backend/include/server.hpp
 HEADERS += backend/include/smtp.hpp
 HEADERS += backend/database/include/sqlite.hpp
+
+SOURCES += vendor/SmtpClient/src/smtpmime_global.h
+HEADERS += vendor/SmtpClient/src/smtpclient.h
+SOURCES += vendor/SmtpClient/src/smtpclient.cpp
+HEADERS += vendor/SmtpClient/src/quotedprintable.h
+SOURCES += vendor/SmtpClient/src/quotedprintable.cpp
+HEADERS += vendor/SmtpClient/src/mimetext.h
+SOURCES += vendor/SmtpClient/src/mimetext.cpp
+HEADERS+= vendor/SmtpClient/src/mimeqpformatter.h
+SOURCES += vendor/SmtpClient/src/mimeqpformatter.cpp
+HEADERS += vendor/SmtpClient/src/mimeqpencoder.h
+SOURCES += vendor/SmtpClient/src/mimeqpencoder.cpp
+HEADERS += vendor/SmtpClient/src/mimepart.h
+SOURCES += vendor/SmtpClient/src/mimepart.cpp
+HEADERS += vendor/SmtpClient/src/mimemultipart.h
+SOURCES += vendor/SmtpClient/src/mimemultipart.cpp
+HEADERS += vendor/SmtpClient/src/mimemessage.h
+SOURCES += vendor/SmtpClient/src/mimemessage.cpp
+HEADERS += vendor/SmtpClient/src/mimeinlinefile.h
+SOURCES += vendor/SmtpClient/src/mimeinlinefile.cpp
+HEADERS += vendor/SmtpClient/src/mimehtml.h
+SOURCES += vendor/SmtpClient/src/mimehtml.cpp
+HEADERS += vendor/SmtpClient/src/mimefile.h
+SOURCES += vendor/SmtpClient/src/mimefile.cpp
+HEADERS += vendor/SmtpClient/src/mimecontentformatter.h
+SOURCES += vendor/SmtpClient/src/mimecontentformatter.cpp
+HEADERS += vendor/SmtpClient/src/mimecontentencoder.h
+SOURCES += vendor/SmtpClient/src/mimecontentencoder.cpp
+HEADERS += vendor/SmtpClient/src/mimebytearrayattachment.h
+SOURCES += vendor/SmtpClient/src/mimebytearrayattachment.cpp
+HEADERS += vendor/SmtpClient/src/mimebase64formatter.h
+SOURCES += vendor/SmtpClient/src/mimebase64formatter.cpp
+HEADERS += vendor/SmtpClient/src/mimebase64encoder.h
+SOURCES += vendor/SmtpClient/src/mimebase64encoder.cpp
+HEADERS += vendor/SmtpClient/src/mimeattachment.h
+SOURCES += vendor/SmtpClient/src/mimeattachment.cpp
+HEADERS += vendor/SmtpClient/src/emailaddress.h
+SOURCES += vendor/SmtpClient/src/emailaddress.cpp
 
 
 SOURCES += \
@@ -70,5 +105,3 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-INCLUDEPATH += ./libraries/simple-mail/src/

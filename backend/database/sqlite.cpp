@@ -16,11 +16,11 @@ Database::~Database() {
 
 bool Database::initDatabase() {
   db = QSqlDatabase::addDatabase("QSQLITE", "SQLITE");
-  db.setDatabaseName(QCoreApplication::applicationDirPath() + "/../" +
-                     "/MineLaunch/backend/database/MinecraftLauncher.sqlite");
+  db.setDatabaseName("MinecraftLauncher.sqlite");
 
   if (!db.open()) {
-    logger.log(LogLevel::Error, "Failed to create table UserData",db.lastError().text().toStdString());
+    logger.log(LogLevel::Error, "Failed to create table UserData",
+               db.lastError().text().toStdString());
     return false;
   }
 
@@ -31,40 +31,65 @@ bool Database::initDatabase() {
              "TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
 
   if (query.lastError().type() != QSqlError::NoError) {
-    logger.log(LogLevel::Error, "Failed to create table UserData",query.lastError().text().toStdString());
+    logger.log(LogLevel::Error, "Failed to create table UserData",
+               query.lastError().text().toStdString());
     return false;
   }
 
   return true;
 }
 
-bool Database::insertUserData(const QString &username,const QString&email,const QString&password) {
+bool Database::insertUserData(const QString &username, const QString &email,
+                              const QString &password) {
   QSqlQuery query(db);
   query.prepare("INSERT INTO UserData(username,email,password) "
-             "VALUE(?,?,?)");
+                "VALUES(?,?,?)");
 
-  query.bindValue(0,username);
-  query.bindValue(1,email);
-  query.bindValue(2,password);
+  query.bindValue(0, username);
+  query.bindValue(1, email);
+  query.bindValue(2, password);
 
-  if(!query.exec()) {
-    logger.log(LogLevel::Error,"Failed to insert data to database",query.lastError().text().toStdString());
+  if (!query.exec()) {
+    logger.log(LogLevel::Error, "Failed to insert data to database",
+               query.lastError().text().toStdString());
     return false;
   }
 
+  db.commit();
+
   return true;
 }
 
-bool Database::updateUserData()
-{
+bool Database::updateUserData() {}
 
+QString Database::searchUserByEmail(const QString &email) {
+  QSqlQuery query(db);
+  query.prepare("SELECT password FROM UserData WHERE email=:email");
+  query.bindValue(":email", email);
+
+  QString password;
+  if (query.exec() && query.next()) {
+    password = query.value(0).toString();
+  } else {
+    logger.log(LogLevel::Error,"Failed to get password user");
+    return "";
+  }
+
+  return password;
 }
 
-bool Database::searchUserByEmail(const QString &email)
+void Database::showData() const noexcept
 {
   QSqlQuery query(db);
+  query.exec("SELECT * FROM UserData"); // выбираем все поля из таблицы UserData
 
-
-
-  return true;
+  while (query.next()) {
+    // выводим значения полей в консоль или куда-то еще
+    int id = query.value(0).toInt();
+    QString username = query.value(1).toString();
+    QString email = query.value(2).toString();
+    QString password = query.value(3).toString();
+    QString created_at = query.value(4).toString();
+    qDebug() << "id:" << id << "username:" << username << "email:" << email << "password:" << password << "created_at:" << created_at;
+  }
 }

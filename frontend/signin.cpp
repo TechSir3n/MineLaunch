@@ -30,7 +30,7 @@ void SignIn::setupUI() {
       QIcon(QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/211661_eye_icon.png"));
   toolButton->setCursor(Qt::PointingHandCursor);
 
-  QObject::connect(toolButton, &QToolButton::clicked, [=]() {
+  QObject::connect(toolButton, &QToolButton::clicked, this,[=]() {
     if (linePassword->echoMode() == QLineEdit::Password) {
       linePassword->setEchoMode(QLineEdit::Normal);
     } else {
@@ -91,10 +91,11 @@ void SignIn::setupUI() {
   this->setFixedSize(550, 700);
   this->move(std::get<0>(result), std::get<1>(result));
 
-
-  QObject::connect(buttonSubmit, &QPushButton::clicked,this, [&]() {
+  CodeDialog *dialog = new CodeDialog();
+  QObject::connect(buttonSubmit, &QPushButton::clicked,this, [=]() {
       const QString password = linePassword->text();
       const QString email = lineEmail->text();
-
+      qDebug() << "Password: " << password;
+      dialog->sendLoginData(email,password);
   });
 }

@@ -7,19 +7,30 @@
 #include <QSqlError>
 
 class Database : public QObject  {
-public:
+private:
     Database(QObject *parent = nullptr);
 
    ~Database();
 
-private:
+    Database(const Database&) = delete;
+
+   Database & operator=(const Database&) = delete;
+
+public:
+   static Database & getInstance() {
+       static Database instance;
+       return instance;
+   }
+public:
    bool initDatabase();
 
    bool insertUserData(const QString &username,const QString&email,const QString&password);
 
    bool updateUserData();
 
-   bool searchUserByEmail(const QString &email);
+   QString searchUserByEmail(const QString &email);
+
+   void showData()const noexcept;
 
 private:
    Logger logger;

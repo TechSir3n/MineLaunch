@@ -1,7 +1,9 @@
 #include "mainwindow.h"
-
+#include "./frontend/include/signin.hpp"
 #include "./frontend/include/signup.hpp"
 #include "./backend/include/server.hpp"
+#include "./backend/include/smtp.hpp"
+#include "./backend/database/include/sqlite.hpp"
 #include "./backend/include/dataHandler.hpp"
 #include <QApplication>
 #include <QInputDialog>
@@ -14,13 +16,17 @@ int main(int argc, char *argv[]) {
 
   qRegisterMetaType<DataHandler*>("DataHandler*"); // регистрируем новый тип
 
-  Server server;
-  SignUp sign;
+
+  Server::getInstance();
+  SignIn::getInstance().show();
+
   DataHandler handler;
 
-  QObject::connect(&server,&Server::dataReceived,&handler,&DataHandler::dataHandler);
+  QObject::connect(&Server::getInstance(),&Server::dataReceived,&handler,&DataHandler::dataHandler);
+  QObject::connect(&handler,&DataHandler::sendString,&Server::getInstance(),&Server::getString);
 
-  sign.show();
+  Database::getInstance().showData();
+
 
 
   // MainWindow w;

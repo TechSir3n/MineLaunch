@@ -1,6 +1,7 @@
 #pragma once
 
 #include "./signup.hpp"
+#include "code_submit.hpp"
 #include <QGridLayout>
 #include <QtCore>
 
@@ -23,7 +24,6 @@ public:
     static SignIn instance;
     return instance;
   }
-
 
 private:
   QLabel *labelPassword;
