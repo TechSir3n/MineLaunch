@@ -1,6 +1,7 @@
 #pragma once
 
 #include "signup.hpp"
+#include "user_settings.hpp"
 #include <QAction>
 #include <QButtonGroup>
 #include <QCheckBox>
@@ -38,7 +39,6 @@ struct Mod {
   QString description;
   QString file;
 };
-
 
 class DashBoard : public QDialog {
   Q_OBJECT

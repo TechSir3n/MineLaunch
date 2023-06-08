@@ -1,7 +1,9 @@
 #include "./include/signin.hpp"
 
 SignIn::SignIn(QWidget *parent) : QDialog(parent) {
-  setupUI();
+  //if (!automaticLogin()) {
+      setupUI();
+  //}
 }
 
 SignIn::~SignIn() noexcept {
@@ -26,11 +28,11 @@ void SignIn::setupUI() {
   buttonSubmit = new QPushButton(tr("Sign in"));
 
   QToolButton *toolButton = new QToolButton();
-  toolButton->setIcon(
-      QIcon(QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/211661_eye_icon.png"));
+  toolButton->setIcon(QIcon(QCoreApplication::applicationDirPath() + "/../" +
+                            "/MineLaunch/resources/211661_eye_icon.png"));
   toolButton->setCursor(Qt::PointingHandCursor);
 
-  QObject::connect(toolButton, &QToolButton::clicked, this,[=]() {
+  QObject::connect(toolButton, &QToolButton::clicked, this, [=]() {
     if (linePassword->echoMode() == QLineEdit::Password) {
       linePassword->setEchoMode(QLineEdit::Normal);
     } else {
@@ -39,10 +41,16 @@ void SignIn::setupUI() {
   });
 
   QLabel *logo = new QLabel();
-  QPixmap logoImage(QCoreApplication::applicationDirPath() + "/../" + "MineLaunch/resources/u_ajax.png");
+  QPixmap logoImage(QCoreApplication::applicationDirPath() + "/../" +
+                    "MineLaunch/resources/u_ajax.png");
   logo->setPixmap(logoImage);
   logo->setAlignment(Qt::AlignCenter);
   logo->setFixedSize(230, 130);
+
+  rememberMe = new QCheckBox(tr("Remember Me"));
+  QHBoxLayout *checkBoxLayout = new QHBoxLayout;
+  checkBoxLayout->addWidget(rememberMe);
+  checkBoxLayout->setAlignment(Qt::AlignLeft);
 
   QHBoxLayout *hbox_layout = new QHBoxLayout;
   hbox_layout->addWidget(buttonSubmit);
@@ -66,6 +74,7 @@ void SignIn::setupUI() {
   layout->addSpacing(10);
   layout->addLayout(tool_layout);
   layout->addLayout(hbox_layout);
+  layout->addLayout(checkBoxLayout);
   layout->setContentsMargins(50, 20, 50, 20);
   layout->setSpacing(5);
 
@@ -85,17 +94,54 @@ void SignIn::setupUI() {
   lineEmail->setStyleSheet(lineEditStyle);
 
   auto result = signup.CalculateCenterMonitor();
-  QIcon icon(QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/u_ajax.png");
+  QIcon icon(QCoreApplication::applicationDirPath() + "/../" +
+             "/MineLaunch/resources/u_ajax.png");
 
   this->setWindowIcon(icon);
   this->setFixedSize(550, 700);
   this->move(std::get<0>(result), std::get<1>(result));
 
   CodeDialog *dialog = new CodeDialog();
-  QObject::connect(buttonSubmit, &QPushButton::clicked,this, [=]() {
-      const QString password = linePassword->text();
-      const QString email = lineEmail->text();
-      qDebug() << "Password: " << password;
-      dialog->sendLoginData(email,password);
+  QObject::connect(buttonSubmit, &QPushButton::clicked, this, [=]() {
+    const QString password = linePassword->text();
+    const QString email = lineEmail->text();
+    dialog->sendLoginData(email, password);
   });
+
+  QObject::connect(rememberMe, &QCheckBox::stateChanged, this,
+                   &SignIn::rememberMeStateChanged);
+}
+
+bool SignIn::automaticLogin() const noexcept {
+  QString email = settings.value("email").toString();
+  QString password = settings.value("password").toString();
+
+  CodeDialog *dialog = new CodeDialog();
+  if (!email.isEmpty() && !password.isEmpty()) {
+    lineEmail->setText(email);
+    linePassword->setText(password);
+    rememberMe->setChecked(true);
+    dialog->sendLoginData(email, password);
+    return true;
+  }
+
+  return false;
+}
+
+void SignIn::showEvent(QShowEvent *event)
+{
+  QDialog::showEvent(event);
+  if (!automaticLogin()) {
+    setupUI();
+  }
+}
+
+void SignIn::rememberMeStateChanged(int state) {
+  if (state == Qt::Checked) {
+    settings.setValue("email", lineEmail->text());
+    settings.setValue("password", linePassword->text());
+  } else {
+    settings.remove("email");
+    settings.remove("password");
+  }
 }

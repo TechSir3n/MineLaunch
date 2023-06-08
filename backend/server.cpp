@@ -21,6 +21,7 @@ void Server::receivedData() {
   for (QTcpSocket *client : m_clients) {
     m_client = client;
     auto jsonData = client->readAll();
+    qDebug() << jsonData;
     if (jsonData.isEmpty()) {
       logger.log(LogLevel::Error, "Data from client didn't get");
       continue;

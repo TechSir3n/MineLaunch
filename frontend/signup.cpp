@@ -2,7 +2,9 @@
 #include "./include/code_submit.hpp"
 #include "./include/signin.hpp"
 
-SignUp::SignUp(QWidget *parent) : QDialog(parent) { setupUI(); }
+SignUp::SignUp(QWidget *parent) : QDialog(parent) {
+    setupUI();
+}
 
 SignUp::~SignUp() noexcept {
   delete labelUsername;

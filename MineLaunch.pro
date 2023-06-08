@@ -28,8 +28,10 @@ SOURCES += frontend/signup.cpp
 SOURCES += frontend/dashboard.cpp
 SOURCES += frontend/welcome.cpp
 SOURCES += frontend/client.cpp
+SOURCES += frontend/user_settings.cpp
 
 HEADERS += frontend/include/signin.hpp
+HEADERS += frontend/include/user_settings.hpp
 HEADERS += frontend/include/code_submit.hpp
 HEADERS += frontend/include/signup.hpp
 HEADERS += frontend/include/dashboard.hpp
@@ -43,9 +45,11 @@ HEADERS += utils/hashing.hpp
 
 SOURCES += backend/server.cpp
 SOURCES += backend/dataHandler.cpp
+SOURCES += backend/updater_data.cpp
 SOURCES += backend/database/sqlite.cpp
 
 
+HEADERS += backend/include/updater_data.hpp
 HEADERS += backend/include/dataHandler.hpp
 HEADERS += backend/include/server.hpp
 HEADERS += backend/include/smtp.hpp

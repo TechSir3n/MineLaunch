@@ -5,6 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QToolTip>
 
 class Database : public QObject  {
 private:
@@ -26,9 +27,11 @@ public:
 
    bool insertUserData(const QString &username,const QString&email,const QString&password);
 
-   bool updateUserData();
+   bool updateNameUser(const QString &newName,const QString &email);
 
-   QString searchUserByEmail(const QString &email);
+   bool updatePasswordUser(const QString &newPassword,const QString& email);
+
+   std::tuple<QString,QString,QString> searchUserByEmail(const QString &email);
 
    void showData()const noexcept;
 

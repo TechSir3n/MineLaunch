@@ -18,6 +18,7 @@ void DashBoard::initalizeUI() noexcept {
   loadMods();
   addMenuTab();
   loadServers();
+  UserSettings::getInstance().initalizeGuiSettings(tabWidget);
   addSettings();
 
   this->setMinimumSize(1050, 710);
@@ -234,7 +235,7 @@ void DashBoard::addSettings() noexcept {
   qualityGraphic->addItem(tr("Ultra"));
 
   groupBoxGame = new QGroupBox(tr("Settings Game"));
-  groupBoxLauncher = new QGroupBox(tr("Setting Launcher"));
+  groupBoxLauncher = new QGroupBox(tr("Settings Launcher"));
 
   groupBoxGame->setFont(QFont("Arial", 12, QFont::Bold));
   groupBoxLauncher->setFont(QFont("Arial", 12, QFont::Bold));

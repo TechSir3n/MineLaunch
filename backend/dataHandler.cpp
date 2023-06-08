@@ -1,7 +1,12 @@
 #include "./include/dataHandler.hpp"
+#include "./frontend/include/user_settings.hpp"
 
+DataHandler::DataHandler(QObject *parent) : QObject(parent) {
 
-DataHandler::DataHandler(QObject *parent) : QObject(parent) {}
+    UserSettings* userSettings = &UserSettings::getInstance();
+    QObject::connect(this, &DataHandler::sendUsername,
+                     userSettings, &UserSettings::getProfileData);
+}
 
 DataHandler::~DataHandler() {}
 
@@ -14,7 +19,6 @@ void DataHandler::dataHandler(const QJsonObject &object) {
 
   QString l_email = object["login_email"].toString();
   QString l_password = object["login_password"].toString();
-  qDebug() << "l_password" << l_password;
 
   static int saveCode = -1;
   int get_code = smtp.sendCodeToEmail(email, username);
@@ -26,33 +30,23 @@ void DataHandler::dataHandler(const QJsonObject &object) {
 
   if (message == "code") {
     int code = object["submit_code"].toInt();
-    qDebug() << "Submit_code: " << code;
-    qDebug() << "Save: " << saveCode << '\n';
     if (saveCode == code) {
       QString hashPassword = hash.toHash(password);
-
-      Database::getInstance().insertUserData(
-          username, email, hashPassword);
-
+      Database::getInstance().insertUserData(username, email, hashPassword);
       emit sendString("success_registration");
-
     } else {
-      QMessageBox msgBox(QMessageBox::Critical, "Error code",
-                         "Entered wrong submit code");
-      msgBox.exec();
+      QToolTip::showText(QPoint(), "Failed to registration,something wrong");
       emit sendString("badRequest");
     }
   } else if (message == "login") {
-    auto dbPassword = Database::getInstance().searchUserByEmail(l_email);
-    qDebug()  << "We here" << l_password << l_email; // just empty
-    qDebug() << "Db_Password: " << dbPassword;
-
-   if (hash.comparePassword(l_password,dbPassword)) {
+    auto result = Database::getInstance().searchUserByEmail(l_email);
+    if (hash.comparePassword(l_password, std::get<0>(result))) {
       emit sendString("success_login");
+      emit sendUsername(std::get<1>(result), std::get<2>(result),
+                        std::get<0>(result));
     } else {
-      QMessageBox msgBox(QMessageBox::Critical, "Failed to login",
-                         "Incorrect password or wrong entered email");
-      msgBox.exec();
+      QToolTip::showText(QPoint(),
+                         "Failed to login,enter incorrect password or login");
       emit sendString("badRequest");
     }
   }

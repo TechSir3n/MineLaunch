@@ -60,26 +60,57 @@ bool Database::insertUserData(const QString &username, const QString &email,
   return true;
 }
 
-bool Database::updateUserData() {}
-
-QString Database::searchUserByEmail(const QString &email) {
+bool Database::updateNameUser(const QString &newName,const QString &email)
+{
   QSqlQuery query(db);
-  query.prepare("SELECT password FROM UserData WHERE email=:email");
-  query.bindValue(":email", email);
+  query.prepare("UPDATE UserData SET username=:newName WHERE email=:email");
+  query.bindValue(":newName",newName);
+  query.bindValue(":email",email);
 
-  QString password;
-  if (query.exec() && query.next()) {
-    password = query.value(0).toString();
-  } else {
-    logger.log(LogLevel::Error,"Failed to get password user");
-    return "";
+  if(!query.exec()) {
+    QToolTip::showText(QPoint(),"Incorrect password,or email doesn't exists");
+    logger.log(LogLevel::Error,"Failed to update user name");
+    return false;
   }
 
-  return password;
+  QToolTip::showText(QPoint(),"Success updated user name");
+  return true;
 }
 
-void Database::showData() const noexcept
+bool Database::updatePasswordUser(const QString &newPassword,const QString& email)
 {
+  QSqlQuery query(db);
+
+
+  if(!query.exec()) {
+
+
+    return false;
+  }
+
+  return true;
+}
+
+std::tuple<QString, QString, QString>
+Database::searchUserByEmail(const QString &email) {
+  QSqlQuery query(db);
+  query.prepare("SELECT username,password FROM UserData WHERE email=:email");
+  query.bindValue(":email", email);
+
+  QString password, username;
+  if (query.exec() && query.next()) {
+    username = query.value(0).toString();
+    password = query.value(1).toString();
+  } else {
+    logger.log(LogLevel::Error, "Failed to get data user: " +
+                                    query.lastError().text().toStdString());
+    return std::make_tuple(QString(), QString(), QString());
+  }
+
+  return std::make_tuple(password, username, email);
+}
+
+void Database::showData() const noexcept {
   QSqlQuery query(db);
   query.exec("SELECT * FROM UserData"); // выбираем все поля из таблицы UserData
 
@@ -90,6 +121,7 @@ void Database::showData() const noexcept
     QString email = query.value(2).toString();
     QString password = query.value(3).toString();
     QString created_at = query.value(4).toString();
-    qDebug() << "id:" << id << "username:" << username << "email:" << email << "password:" << password << "created_at:" << created_at;
+    qDebug() << "id:" << id << "username:" << username << "email:" << email
+             << "password:" << password << "created_at:" << created_at;
   }
 }

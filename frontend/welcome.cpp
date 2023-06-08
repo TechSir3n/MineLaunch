@@ -63,11 +63,11 @@ void WelcomePage::setupUI()
     this->setFixedSize(550,380);
     this->setWindowIcon(icon);
 
-    QObject::connect(getStarted,&QPushButton::clicked,[&](){
+    QObject::connect(getStarted,&QPushButton::clicked,this,[&](){
         signup.show();
     });
 
-    QObject::connect(logIn,&QPushButton::clicked,[&](){
+    QObject::connect(logIn,&QPushButton::clicked,this,[&](){
        signup.show();
     });
 }
