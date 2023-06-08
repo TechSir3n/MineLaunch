@@ -3,9 +3,9 @@
 
 DataHandler::DataHandler(QObject *parent) : QObject(parent) {
 
-    UserSettings* userSettings = &UserSettings::getInstance();
-    QObject::connect(this, &DataHandler::sendUsername,
-                     userSettings, &UserSettings::getProfileData);
+  UserSettings *userSettings = &UserSettings::getInstance();
+  QObject::connect(this, &DataHandler::sendUsername, userSettings,
+                   &UserSettings::getProfileData);
 }
 
 DataHandler::~DataHandler() {}
@@ -26,8 +26,6 @@ void DataHandler::dataHandler(const QJsonObject &object) {
     saveCode = get_code;
   }
 
-  qDebug() << "Save Code2:  " << saveCode;
-
   if (message == "code") {
     int code = object["submit_code"].toInt();
     if (saveCode == code) {
@@ -35,18 +33,18 @@ void DataHandler::dataHandler(const QJsonObject &object) {
       Database::getInstance().insertUserData(username, email, hashPassword);
       emit sendString("success_registration");
     } else {
-      QToolTip::showText(QPoint(), "Failed to registration,something wrong");
+      QMessageBox::critical(nullptr, "Error",
+                            "Failed to registration,something wrong");
       emit sendString("badRequest");
     }
   } else if (message == "login") {
-    auto result = Database::getInstance().searchUserByEmail(l_email);
-    if (hash.comparePassword(l_password, std::get<0>(result))) {
+    auto [hashed_password,name,email] = Database::getInstance().searchUserByEmail(l_email);
+    if (hash.comparePassword(l_password,hashed_password)) {
       emit sendString("success_login");
-      emit sendUsername(std::get<1>(result), std::get<2>(result),
-                        std::get<0>(result));
+      emit sendUsername(name,email,hashed_password);
     } else {
-      QToolTip::showText(QPoint(),
-                         "Failed to login,enter incorrect password or login");
+      QMessageBox::critical(
+          nullptr, "Error", "Failed to login,enter incorrect password or login");
       emit sendString("badRequest");
     }
   }

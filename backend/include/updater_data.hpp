@@ -6,7 +6,14 @@
 
 class Updater : public QObject {
     Q_OBJECT
-private slots:
+public:
+    explicit Updater(QWidget * parent = nullptr);
+
+    ~Updater() = default;
+
+public slots:
     void getNewUsername(const QString &newName,const QString &email);
+
+    void getNewPassword(const QString &newPassword,const QString &email);
 
 };

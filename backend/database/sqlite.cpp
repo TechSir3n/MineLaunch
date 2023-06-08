@@ -60,34 +60,37 @@ bool Database::insertUserData(const QString &username, const QString &email,
   return true;
 }
 
-bool Database::updateNameUser(const QString &newName,const QString &email)
-{
+bool Database::updateNameUser(const QString &newName, const QString &email) {
   QSqlQuery query(db);
   query.prepare("UPDATE UserData SET username=:newName WHERE email=:email");
-  query.bindValue(":newName",newName);
-  query.bindValue(":email",email);
+  query.bindValue(":newName", newName);
+  query.bindValue(":email", email);
 
-  if(!query.exec()) {
-    QToolTip::showText(QPoint(),"Incorrect password,or email doesn't exists");
-    logger.log(LogLevel::Error,"Failed to update user name");
+  if (!query.exec()) {
+    QToolTip::showText(QPoint(),
+                       "Incorrect new username,or email doesn't exists");
+    logger.log(LogLevel::Error, "Failed to update user name");
     return false;
   }
 
-  QToolTip::showText(QPoint(),"Success updated user name");
+  QToolTip::showText(QPoint(), "Success updated username");
   return true;
 }
 
-bool Database::updatePasswordUser(const QString &newPassword,const QString& email)
-{
+bool Database::updatePasswordUser(const QString &newPassword,
+                                  const QString &email) {
   QSqlQuery query(db);
+  query.prepare("UPDATE UserData SET password=:newPassword WHERE email=:email");
+  query.bindValue(":newPassword", newPassword);
+  query.bindValue(":email", email);
 
-
-  if(!query.exec()) {
-
-
+  if (!query.exec()) {
+    QToolTip::showText(QPoint(), "Incorrect password,or email doesn't exists");
+    logger.log(LogLevel::Error, "Failed to update password");
     return false;
   }
 
+  QToolTip::showText(QPoint(), "Success updated password");
   return true;
 }
 
@@ -112,10 +115,9 @@ Database::searchUserByEmail(const QString &email) {
 
 void Database::showData() const noexcept {
   QSqlQuery query(db);
-  query.exec("SELECT * FROM UserData"); // выбираем все поля из таблицы UserData
+  query.exec("SELECT * FROM UserData");
 
   while (query.next()) {
-    // выводим значения полей в консоль или куда-то еще
     int id = query.value(0).toInt();
     QString username = query.value(1).toString();
     QString email = query.value(2).toString();

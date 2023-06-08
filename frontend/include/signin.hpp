@@ -44,6 +44,7 @@ private:
   QSettings settings;
   Logger logger;
   SignUp signup;
+  CodeDialog *dialog;
 
 public:
   QLineEdit *linePassword;

@@ -1,12 +1,11 @@
 #include "./include/dashboard.hpp"
 
-DashBoard::DashBoard(QWidget *parent) : QDialog(parent) {
-  tabWidget = new QTabWidget(this);
+DashBoard::DashBoard(QWidget *parent)
+    : QDialog(parent), tabWidget(new QTabWidget(this)),
+      modsTable(new QTableWidget()), versionSelector(new QComboBox()),
+      menuBar(new QMenuBar()) {
   tabWidget->setFixedSize(QSize(1050, 710));
-  modsTable = new QTableWidget();
-  versionSelector = new QComboBox();
   versionSelector->setFixedWidth(100);
-  menuBar = new QMenuBar();
   initalizeUI();
 }
 
@@ -118,10 +117,10 @@ void DashBoard::loadMods() noexcept {
 
 void DashBoard::loadServers() noexcept {
 
-  QWebEngineView *webView  = new QWebEngineView(this);
+  QWebEngineView *webView = new QWebEngineView(this);
 
   webView->load(QUrl("https://minecraft-server-list.com/"));
-  webView->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+  webView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
   connect = new QPushButton(tr("Connect"));
   editIPServer = new QLineEdit();
@@ -133,14 +132,14 @@ void DashBoard::loadServers() noexcept {
   buttonLayout->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
   QWidget *container = new QWidget();
-  QVBoxLayout* layout = new QVBoxLayout();
+  QVBoxLayout *layout = new QVBoxLayout();
   layout->addWidget(webView);
   layout->addLayout(buttonLayout);
   container->setLayout(layout);
 
   tabWidget->addTab(container, "Servers");
 
-  QObject::connect(connect,&QPushButton::clicked,this,[]() {
+  QObject::connect(connect, &QPushButton::clicked, this, []() {
 
   });
 }
@@ -304,11 +303,11 @@ void DashBoard::addSettings() noexcept {
   QObject::connect(choiceColor, &QSlider::valueChanged, this,
                    &DashBoard::onSliderValueChanged);
 
-  QObject::connect(save,&QPushButton::clicked,this,[]() {
+  QObject::connect(save, &QPushButton::clicked, this, []() {
 
   });
 
-  QObject::connect(reset,&QPushButton::clicked,this,[]() {
+  QObject::connect(reset, &QPushButton::clicked, this, []() {
 
   });
 }
@@ -350,22 +349,21 @@ void DashBoard::addGameTab() noexcept {
   gameLayout->addLayout(layout);
   gameLayout->addLayout(hbox_layout);
 
-  QObject::connect(play,&QPushButton::clicked,this,[]() {
+  QObject::connect(play, &QPushButton::clicked, this, []() {
 
   });
 
-  QObject::connect(cancel,&QPushButton::clicked,this,[]() {
+  QObject::connect(cancel, &QPushButton::clicked, this, []() {
 
   });
 
-  QObject::connect(download,&QPushButton::clicked,this,[]() {
+  QObject::connect(download, &QPushButton::clicked, this, []() {
 
   });
 
-  QObject::connect(update,&QPushButton::clicked,this,[]() {
+  QObject::connect(update, &QPushButton::clicked, this, []() {
 
   });
-
 }
 
 void DashBoard::searchModsByName() {

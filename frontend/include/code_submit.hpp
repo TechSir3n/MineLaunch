@@ -1,17 +1,18 @@
 #pragma once
 
 #include "client.hpp"
+#include <QMessageBox>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QDialog>
 
 class CodeDialog : public QDialog {
 public:
-  explicit CodeDialog(QWidget *parent = nullptr) : QDialog(parent) {
-    client = new Client();
-
+  explicit CodeDialog(QWidget *parent = nullptr)
+      : QDialog(parent), client(new Client()) {
     QPushButton *buttonSubmitCode = new QPushButton(tr("Submit"));
     QLabel *labelSubmitCode = new QLabel((tr("Submit Code")));
     QLineEdit *lineSubmitCode = new QLineEdit();
@@ -26,24 +27,33 @@ public:
     layout->addLayout(hbox_layout);
     layout->setSpacing(20);
 
-    QObject::connect(buttonSubmitCode, &QPushButton::clicked, this,
-                     [=,this]() {
-                       int code = lineSubmitCode->text().toInt();
-                       client->sendSubmitCode(code);
+    setWindowTitle(tr("Code Dialog"));
 
+    QObject::connect(buttonSubmitCode, &QPushButton::clicked, this,
+                     [this, lineSubmitCode]() {
+                       bool ok;
+                       int code = lineSubmitCode->text().toInt(&ok);
+                       if (ok) {
+                         client->sendSubmitCode(code);
+                       } else {
+                         QMessageBox::critical(this, tr("Error"),
+                                               tr("Invalid format code"));
+                       }
                      });
   }
 
   void sendData(const QString &username, const QString &email,
-                const QString &password) {
+                const QString &password) const {
+    assert(client != nullptr);
     client->sendData(username, email, password);
   }
 
-  void sendLoginData(const QString &email,const QString&password) {
-    client->sendUserLoginData(email,password);
+  void sendLoginData(const QString &email, const QString &password) const {
+    assert(client != nullptr);
+    client->sendUserLoginData(email, password);
   }
 
-  ~CodeDialog() = default;
+  ~CodeDialog() { delete client; }
 
 private:
   Client *client;

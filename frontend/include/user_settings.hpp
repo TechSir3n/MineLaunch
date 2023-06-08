@@ -1,5 +1,7 @@
 #pragma once
 
+#include "./backend/include/updater_data.hpp"
+#include "./utils/hashing.hpp"
 #include <QDialog>
 #include <QGroupBox>
 #include <QHBoxLayout>
@@ -54,7 +56,9 @@ private:
   QLabel* passwordValueLabel;
 
   QPushButton *exitButton;
-  QPushButton *editAvatarButton;
   QPushButton *editPasswordButton;
   QPushButton *editUsernameButton;
+
+  Updater m_update;
+  Hash hash;
 };

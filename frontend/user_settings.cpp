@@ -1,14 +1,15 @@
 #include "./include/user_settings.hpp"
+#include "./include/welcome.hpp"
+#include "./include/dashboard.hpp"
+
 
 QStringList m_data;
 
-UserSettings::UserSettings(QWidget *parent) : QDialog(parent) {
-
-}
+UserSettings::UserSettings(QWidget *parent) : QDialog(parent) {}
 
 void UserSettings::getProfileData(const QString &name, const QString &email,
                                   const QString &password) {
-  m_data << name << email << password;
+    m_data = {name,email,password};
 }
 
 void UserSettings::initalizeGuiSettings(QTabWidget *m_tab) noexcept {
@@ -36,16 +37,15 @@ void UserSettings::initalizeGuiSettings(QTabWidget *m_tab) noexcept {
   emailLabel = new QLabel(tr("Email"));
   passwordLabel = new QLabel(tr("Password"));
 
-  nameValueLabel = new QLabel(tr("") + "" + m_data.value(0));
-  emailValueLabel = new QLabel(tr("") + "" + m_data.value(1));
-  passwordValueLabel = new QLabel(tr("") + "" + m_data.value(2));
+  nameValueLabel = new QLabel(tr("") + "" + m_data[0]);
+  emailValueLabel = new QLabel(tr("") + "" + m_data[1]);
+  passwordValueLabel = new QLabel(tr("") + "" + m_data[2]);
 
   nameLabel->setStyleSheet("font-size: 20px;");
   emailLabel->setStyleSheet("font-size: 20px;");
   passwordLabel->setStyleSheet("font-size: 20px;");
 
   exitButton = new QPushButton(tr("Logout"));
-  editAvatarButton = new QPushButton(tr("Edit avatar"));
   editPasswordButton = new QPushButton(tr("Change password"));
   editUsernameButton = new QPushButton(tr("Edit Name"));
 
@@ -54,7 +54,6 @@ void UserSettings::initalizeGuiSettings(QTabWidget *m_tab) noexcept {
   buttonLayout->addSpacerItem(
       new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
   buttonLayout->addWidget(editPasswordButton);
-  buttonLayout->addWidget(editAvatarButton);
   buttonLayout->addWidget(editUsernameButton);
 
   QGridLayout *nameLayout = new QGridLayout();
@@ -107,23 +106,24 @@ void UserSettings::initalizeGuiSettings(QTabWidget *m_tab) noexcept {
       Qt::LeftToRight, Qt::AlignCenter, profileWidget->size(),
       QGuiApplication::primaryScreen()->availableGeometry()));
 
-  QObject::connect(exitButton, &QPushButton::clicked, this, [=]() {
 
+  std::shared_ptr<WelcomePage> welcPtr = std::make_shared<WelcomePage>();
+  QObject::connect(exitButton, &QPushButton::clicked, this, [welcPtr]() {
+      DashBoard::getInstance().close();
+      welcPtr->show();
   });
 
-  QObject::connect(editAvatarButton, &QPushButton::clicked, this, [=]() {
-
+  QObject::connect(editPasswordButton, &QPushButton::clicked, this, [this]() {
+    QString newPassword =
+        QInputDialog::getText(this, "Input Dialog", "Enter new password");
+    emit sendNewPassword(hash.toHash(newPassword), (m_data[1]));
+    passwordValueLabel->setText(newPassword);
   });
 
-  QObject::connect(editPasswordButton, &QPushButton::clicked, this, [=]() {
-
+  QObject::connect(editUsernameButton, &QPushButton::clicked, this, [this]() {
+    QString newName =
+        QInputDialog::getText(this, "Input Dialog", "Enter new name");
+    emit sendNewUsername(newName, m_data[1]);
+    nameValueLabel->setText(newName);
   });
-
-  QObject::connect(editUsernameButton, &QPushButton::clicked, this, [=]() {
-    QString name =
-          QInputDialog::getText(this, "Input Dialog", "Enter new name");
-      emit sendNewUsername(name,m_data.value(1));
-  });
-
-
 }

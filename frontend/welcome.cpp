@@ -1,4 +1,5 @@
 #include "./include/welcome.hpp"
+#include "./include/signin.hpp"
 
 WelcomePage::WelcomePage(QWidget *parent) : QDialog(parent)
 {
@@ -14,7 +15,7 @@ WelcomePage::~WelcomePage()
 
 void WelcomePage::setupUI()
 {
-    QPixmap pixmap("/home/ruslan/Documents/MineLaunch/resources/u_ajax.png");
+    QPixmap pixmap(QCoreApplication::applicationDirPath() + "/../" + "MineLaunch/resources/u_ajax.png");
     if(pixmap.isNull()) {
         logger.log(LogLevel::Error,"Failed to load image");
     }
@@ -30,7 +31,8 @@ void WelcomePage::setupUI()
     QLabel* dummy2 = new QLabel();
     dummy2->setMinimumSize(0,0);
 
-    QLabel* link = new QLabel("<a href='/home/ruslan/Documents/MineLaunch/resources/aboutLaunch.html'>About MineLaucnh</a>");
+    const QString path = QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/aboutLaunch.html";
+    QLabel *link = new QLabel("<a href=\"" + path + "\">About MineLaucnh</a>");
     link->setTextFormat(Qt::RichText);
     link->setTextInteractionFlags(Qt::TextBrowserInteraction);
     link->setOpenExternalLinks(true);
@@ -59,15 +61,17 @@ void WelcomePage::setupUI()
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);
 
-    QIcon icon("/home/ruslan/Documents/MineLaunch/resources/u_ajax.png");
+    QIcon icon(QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/u_ajax.png");
     this->setFixedSize(550,380);
     this->setWindowIcon(icon);
 
-    QObject::connect(getStarted,&QPushButton::clicked,this,[&](){
+    QObject::connect(getStarted,&QPushButton::clicked,this,[&,this](){
+        this->close();
         signup.show();
     });
 
-    QObject::connect(logIn,&QPushButton::clicked,this,[&](){
-       signup.show();
+    QObject::connect(logIn,&QPushButton::clicked,this,[&,this](){
+        this->close();
+        SignIn::getInstance().show();
     });
 }

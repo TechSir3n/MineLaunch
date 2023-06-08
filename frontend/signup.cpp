@@ -119,11 +119,11 @@ void SignUp::setupUI() {
 
   QIcon icon(QCoreApplication::applicationDirPath() + "/../" +
              "/MineLaunch/resources/u_ajax.png");
-  auto result = CalculateCenterMonitor();
+  auto [x,y] = CalculateCenterMonitor();
 
   this->setWindowIcon(icon);
   this->setFixedSize(550, 770);
-  this->move(std::get<0>(result), std::get<1>(result));
+  this->move(x,y);
 
   QObject::connect(labelLogin, &QLabel::linkActivated, this,&SignUp::onLabelLinkActivated);
 
@@ -147,7 +147,6 @@ std::tuple<int, int> SignUp::CalculateCenterMonitor() {
 
 void SignUp::onLabelLinkActivated(const QString &link)
 {
-  qDebug() <<"Link: "<<link;
   SignIn::getInstance().show();
   close();
 }

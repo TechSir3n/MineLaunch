@@ -1,4 +1,5 @@
 #include "./include/client.hpp"
+#include "./include/signin.hpp"
 
 Client::Client(QObject *parent) : QObject(parent) {
   m_socket = new QTcpSocket(this);
@@ -30,7 +31,7 @@ void Client::sendData(const QString &username, const QString &email,
 void Client::sendSubmitCode(int code) {
   QJsonObject object;
   object["message"] = "code";
-  object["submit_code"] = code;
+  object["code"] = code;
 
   QJsonDocument doc(object);
   QByteArray jsonCode = doc.toJson();
@@ -52,8 +53,9 @@ void Client::sendUserLoginData(const QString &email, const QString &password) {
   emit dataSent(object);
 }
 
+
 void Client::readyRead() {
-  auto jsonData = m_socket->readAll();
+  const auto jsonData = m_socket->readAll();
   QJsonDocument doc = QJsonDocument::fromJson(jsonData);
   QVariantMap map = doc.toVariant().toMap();
 
@@ -61,6 +63,7 @@ void Client::readyRead() {
     logger.log(LogLevel::Info, "Success registration");
   } else if (map["status"].toString() == "success_login") {
     logger.log(LogLevel::Info, "Success Login");
+    SignIn::getInstance().close();
     DashBoard::getInstance().show();
   } else {
     logger.log(LogLevel::Error, map["status"].toString().toStdString());

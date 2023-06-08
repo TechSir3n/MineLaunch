@@ -2,6 +2,7 @@
 #include "./backend/include/dataHandler.hpp"
 #include "./backend/include/server.hpp"
 #include "./backend/include/smtp.hpp"
+#include "./backend/include/updater_data.hpp"
 #include "./frontend/include/dashboard.hpp"
 #include "./frontend/include/signin.hpp"
 #include "./frontend/include/signup.hpp"
@@ -18,12 +19,15 @@ int main(int argc, char *argv[]) {
 
   qRegisterMetaType<DataHandler *>("DataHandler*"); // регистрируем новый тип
 
+
+  //Database::getInstance().showData();
   //DashBoard::getInstance().show();
 
   Server::getInstance();
-  SignIn::getInstance().show();
 
+  SignIn::getInstance().show();
   DataHandler handler;
+
 
   QObject::connect(&Server::getInstance(), &Server::dataReceived, &handler,
                    &DataHandler::dataHandler);

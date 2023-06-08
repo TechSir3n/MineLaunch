@@ -1,9 +1,7 @@
 #include "./include/signin.hpp"
 
-SignIn::SignIn(QWidget *parent) : QDialog(parent) {
-  //if (!automaticLogin()) {
+SignIn::SignIn(QWidget *parent) : QDialog(parent),dialog(new CodeDialog()) {
       setupUI();
-  //}
 }
 
 SignIn::~SignIn() noexcept {
@@ -93,15 +91,14 @@ void SignIn::setupUI() {
   linePassword->setStyleSheet(lineEditStyle);
   lineEmail->setStyleSheet(lineEditStyle);
 
-  auto result = signup.CalculateCenterMonitor();
+  auto [x,y] = signup.CalculateCenterMonitor();
   QIcon icon(QCoreApplication::applicationDirPath() + "/../" +
              "/MineLaunch/resources/u_ajax.png");
 
   this->setWindowIcon(icon);
   this->setFixedSize(550, 700);
-  this->move(std::get<0>(result), std::get<1>(result));
+  this->move(x, y);
 
-  CodeDialog *dialog = new CodeDialog();
   QObject::connect(buttonSubmit, &QPushButton::clicked, this, [=]() {
     const QString password = linePassword->text();
     const QString email = lineEmail->text();
@@ -116,7 +113,6 @@ bool SignIn::automaticLogin() const noexcept {
   QString email = settings.value("email").toString();
   QString password = settings.value("password").toString();
 
-  CodeDialog *dialog = new CodeDialog();
   if (!email.isEmpty() && !password.isEmpty()) {
     lineEmail->setText(email);
     linePassword->setText(password);
