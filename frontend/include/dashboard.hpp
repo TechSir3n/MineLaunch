@@ -33,6 +33,8 @@
 #include <QVBoxLayout>
 #include <QtCore>
 #include <QEventLoop>
+#include "./backend/launcher/include/factory.hpp"
+#include "./backend/launcher/include/launcher.hpp"
 
 struct Mod {
   QString name;
@@ -78,16 +80,16 @@ private:
   void addSettings() noexcept;
 
 private:
-  QPushButton *play;
-  QPushButton *update;
-  QPushButton *save;
-  QPushButton *reset;
-  QPushButton *cancel;
-  QPushButton *search;
-  QPushButton *download;
-  QPushButton* connect;
-  QPushButton *updateList;
-  QPushButton *next;
+  QPushButton *playButton;
+  QPushButton *updateButton;
+  QPushButton *saveButton;
+  QPushButton *resetButton;
+  QPushButton *cancelButton;
+  QPushButton *searchButton;
+  QPushButton *downloadButton;
+  QPushButton* connectButton;
+  QPushButton *updateListButton;
+  QPushButton *nextButton;
 
   QStackedWidget *stackWidget;
   QTableWidget *modsTable;

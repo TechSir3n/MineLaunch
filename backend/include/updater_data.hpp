@@ -4,12 +4,12 @@
 #include "../database/include/sqlite.hpp"
 #include <QObject>
 
-class Updater : public QObject {
+class UserDataUpdater: public QObject {
     Q_OBJECT
 public:
-    explicit Updater(QWidget * parent = nullptr);
+    explicit UserDataUpdater(QWidget * parent = nullptr);
 
-    ~Updater() = default;
+    ~UserDataUpdater() = default;
 
 public slots:
     void getNewUsername(const QString &newName,const QString &email);

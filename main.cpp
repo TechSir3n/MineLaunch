@@ -19,10 +19,6 @@ int main(int argc, char *argv[]) {
 
   qRegisterMetaType<DataHandler *>("DataHandler*"); // регистрируем новый тип
 
-
-  //Database::getInstance().showData();
-  //DashBoard::getInstance().show();
-
   Server::getInstance();
 
   SignIn::getInstance().show();
@@ -34,7 +30,7 @@ int main(int argc, char *argv[]) {
   QObject::connect(&handler, &DataHandler::sendString, &Server::getInstance(),
                    &Server::getString);
 
-  // MainWindow w;
+//  // MainWindow w;
 
   //  QTranslator t;
   //  QStringList languages;

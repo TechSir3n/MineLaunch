@@ -59,6 +59,6 @@ private:
   QPushButton *editPasswordButton;
   QPushButton *editUsernameButton;
 
-  Updater m_update;
+  UserDataUpdater m_update;
   Hash hash;
 };

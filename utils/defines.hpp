@@ -25,9 +25,10 @@ enum class Error : unsigned int{
    Closed
 };
 
-
-enum class ActionType : unsigned int {
-    Login,
-    SignUp,
-    GetData
+enum class LauncherType {
+    Update,
+    Download,
+    Play,
+    Cancel
 };
+

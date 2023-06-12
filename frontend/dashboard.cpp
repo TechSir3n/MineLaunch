@@ -33,12 +33,12 @@ void DashBoard::loadMods() noexcept {
   }
   modsTable->setHorizontalHeaderLabels({"Name", "Description", "File"});
 
-  search = new QPushButton(tr("Search"));
-  download = new QPushButton(tr("Download"));
+  searchButton = new QPushButton(tr("Search"));
+  downloadButton = new QPushButton(tr("Download"));
 
   QHBoxLayout *searchLayout = new QHBoxLayout;
-  searchLayout->addWidget(download);
-  searchLayout->addWidget(search);
+  searchLayout->addWidget(downloadButton);
+  searchLayout->addWidget(searchButton);
   searchLayout->setAlignment(Qt::AlignRight);
 
   editSearch = new QLineEdit();
@@ -107,10 +107,10 @@ void DashBoard::loadMods() noexcept {
     }
   }
 
-  QObject::connect(search, &QPushButton::clicked, this,
+  QObject::connect(searchButton, &QPushButton::clicked, this,
                    &DashBoard::searchModsByName);
 
-  QObject::connect(download, &QPushButton::clicked, this, [&]() {
+  QObject::connect(downloadButton, &QPushButton::clicked, this, [&]() {
 
   });
 }
@@ -122,13 +122,13 @@ void DashBoard::loadServers() noexcept {
   webView->load(QUrl("https://minecraft-server-list.com/"));
   webView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-  connect = new QPushButton(tr("Connect"));
+  connectButton = new QPushButton(tr("Connect"));
   editIPServer = new QLineEdit();
   editIPServer->setPlaceholderText("Enter IP address for connect to server");
 
   QHBoxLayout *buttonLayout = new QHBoxLayout();
   buttonLayout->addWidget(editIPServer);
-  buttonLayout->addWidget(connect);
+  buttonLayout->addWidget(connectButton);
   buttonLayout->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
   QWidget *container = new QWidget();
@@ -139,7 +139,7 @@ void DashBoard::loadServers() noexcept {
 
   tabWidget->addTab(container, "Servers");
 
-  QObject::connect(connect, &QPushButton::clicked, this, []() {
+  QObject::connect(connectButton, &QPushButton::clicked, this, []() {
 
   });
 }
@@ -198,8 +198,8 @@ void DashBoard::addSettings() noexcept {
   QWidget *widgetSettings = new QWidget(this);
   tabWidget->addTab(widgetSettings, "Settings");
 
-  save = new QPushButton(tr("Save"));
-  reset = new QPushButton(tr("Reset"));
+  saveButton = new QPushButton(tr("Save"));
+  resetButton = new QPushButton(tr("Reset"));
 
   brightnessSlider = new QSlider(Qt::Horizontal);
   brightnessSlider->setMinimum(0);
@@ -262,8 +262,8 @@ void DashBoard::addSettings() noexcept {
   colorLabel->setFont(font);
 
   QHBoxLayout *buttonLayout = new QHBoxLayout;
-  buttonLayout->addWidget(save);
-  buttonLayout->addWidget(reset);
+  buttonLayout->addWidget(saveButton);
+  buttonLayout->addWidget(resetButton);
   buttonLayout->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
   QVBoxLayout *settingLayoutGame = new QVBoxLayout;
@@ -303,11 +303,11 @@ void DashBoard::addSettings() noexcept {
   QObject::connect(choiceColor, &QSlider::valueChanged, this,
                    &DashBoard::onSliderValueChanged);
 
-  QObject::connect(save, &QPushButton::clicked, this, []() {
+  QObject::connect(saveButton, &QPushButton::clicked, this, []() {
 
   });
 
-  QObject::connect(reset, &QPushButton::clicked, this, []() {
+  QObject::connect(resetButton, &QPushButton::clicked, this, []() {
 
   });
 }
@@ -328,18 +328,18 @@ void DashBoard::addGameTab() noexcept {
   pixmapLayout->addWidget(image);
   pixmapLayout->setAlignment(Qt::AlignCenter);
 
-  play = new QPushButton(tr("Play"));
-  cancel = new QPushButton(tr("Cancel"));
-  update = new QPushButton(tr("Update"));
-  download = new QPushButton(tr("Download"));
+  playButton = new QPushButton(tr("Play"));
+  cancelButton = new QPushButton(tr("Cancel"));
+  updateButton = new QPushButton(tr("Update"));
+  downloadButton = new QPushButton(tr("Download"));
 
   QHBoxLayout *hbox_layout = new QHBoxLayout;
   hbox_layout->addWidget(versionSelector);
   hbox_layout->addStretch();
-  hbox_layout->addWidget(play);
-  hbox_layout->addWidget(cancel);
-  hbox_layout->addWidget(download);
-  hbox_layout->addWidget(update);
+  hbox_layout->addWidget(playButton);
+  hbox_layout->addWidget(cancelButton);
+  hbox_layout->addWidget(downloadButton);
+  hbox_layout->addWidget(updateButton);
   hbox_layout->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
   QHBoxLayout *layout = new QHBoxLayout();
@@ -349,19 +349,21 @@ void DashBoard::addGameTab() noexcept {
   gameLayout->addLayout(layout);
   gameLayout->addLayout(hbox_layout);
 
-  QObject::connect(play, &QPushButton::clicked, this, []() {
+  QObject::connect(playButton, &QPushButton::clicked, this, []() {
 
   });
 
-  QObject::connect(cancel, &QPushButton::clicked, this, []() {
+  QObject::connect(cancelButton, &QPushButton::clicked, this, []() {
 
   });
 
-  QObject::connect(download, &QPushButton::clicked, this, []() {
+
+  QObject::connect(downloadButton, &QPushButton::clicked, this, [=]() {
 
   });
 
-  QObject::connect(update, &QPushButton::clicked, this, []() {
+
+  QObject::connect(updateButton, &QPushButton::clicked, this, []() {
 
   });
 }

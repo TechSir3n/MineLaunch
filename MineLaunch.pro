@@ -37,6 +37,8 @@ HEADERS += frontend/include/signup.hpp
 HEADERS += frontend/include/dashboard.hpp
 HEADERS += frontend/include/welcome.hpp
 HEADERS += frontend/include/client.hpp
+HEADERS += frontend/include/handler_signals.hpp
+
 
 HEADERS += utils/logger.hpp
 HEADERS += utils/defines.hpp
@@ -47,8 +49,13 @@ SOURCES += backend/server.cpp
 SOURCES += backend/dataHandler.cpp
 SOURCES += backend/updater_data.cpp
 SOURCES += backend/database/sqlite.cpp
+SOURCES += backend/launcher/downloader.cpp
+SOURCES += backend/launcher/updater.cpp
 
-
+HEADERS += backend/launcher/include/factory.hpp
+HEADERS += backend/launcher/include/updater.hpp
+HEADERS += backend/launcher/include/downloader.hpp
+HEADERS += backend/launcher/include/launcher.hpp
 HEADERS += backend/include/updater_data.hpp
 HEADERS += backend/include/dataHandler.hpp
 HEADERS += backend/include/server.hpp
