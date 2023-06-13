@@ -4,6 +4,11 @@ DashBoard::DashBoard(QWidget *parent)
     : QDialog(parent), tabWidget(new QTabWidget(this)),
       modsTable(new QTableWidget()), versionSelector(new QComboBox()),
       menuBar(new QMenuBar()) {
+
+  m_play = FactoryLauncher::createLauncher(LauncherType::Play);
+  m_download = FactoryLauncher::createLauncher(LauncherType::Download);
+  m_update = FactoryLauncher::createLauncher(LauncherType::Update);
+
   tabWidget->setFixedSize(QSize(1050, 710));
   versionSelector->setFixedWidth(100);
   initalizeUI();
@@ -149,6 +154,9 @@ void DashBoard::loadVersionsMinecraft() noexcept {
   QNetworkReply *reply = manager->get(QNetworkRequest(
       QUrl("https://launchermeta.mojang.com/mc/game/version_manifest.json")));
 
+  versionSelector->addItem("1.19.4-rc1");
+  versionSelector->setCurrentIndex(1);
+
   QObject::connect(reply, &QNetworkReply::finished, this, [=]() {
     if (reply->error() != QNetworkReply::NoError) {
       logger.log(LogLevel::Error, reply->errorString().toStdString());
@@ -180,7 +188,7 @@ void DashBoard::addMenuTab() noexcept {
   menuBar->addMenu(helpMenu);
 
   QAction *openAction = new QAction(tr("Open"));
-  openAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
+  openAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_O));
   QAction *helpAction = new QAction(tr("Help"));
   QAction *aboutAction = new QAction(tr("About"));
   QAction *exitAction = new QAction(tr("Exit"));
@@ -349,22 +357,20 @@ void DashBoard::addGameTab() noexcept {
   gameLayout->addLayout(layout);
   gameLayout->addLayout(hbox_layout);
 
-  QObject::connect(playButton, &QPushButton::clicked, this, []() {
-
+  QObject::connect(playButton, &QPushButton::clicked, this, [this]() {
+    m_play->start();
   });
 
-  QObject::connect(cancelButton, &QPushButton::clicked, this, []() {
+  QObject::connect(downloadButton, &QPushButton::clicked, this,
+                   [this]() { m_download->start(); });
 
-  });
+  QObject::connect(updateButton, &QPushButton::clicked, this,
+                   [this]() { m_update->start(); });
 
-
-  QObject::connect(downloadButton, &QPushButton::clicked, this, [=]() {
-
-  });
-
-
-  QObject::connect(updateButton, &QPushButton::clicked, this, []() {
-
+  QObject::connect(cancelButton, &QPushButton::clicked, this, [this]() {
+  //  if (m_play->gameIsRunning()) {
+      m_play->stop();
+  //  }
   });
 }
 

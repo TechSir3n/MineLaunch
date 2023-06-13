@@ -1,5 +1,7 @@
 #pragma once
 
+#include "./backend/launcher/include/factory.hpp"
+#include "./backend/launcher/include/launcher.hpp"
 #include "signup.hpp"
 #include "user_settings.hpp"
 #include <QAction>
@@ -7,8 +9,11 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDebug>
+#include <QTimer>
 #include <QDialog>
+#include <QEventLoop>
 #include <QFileInfo>
+#include <QFrame>
 #include <QGroupBox>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -17,24 +22,20 @@
 #include <QMap>
 #include <QMenu>
 #include <QMenuBar>
-#include <QFrame>
 #include <QPalette>
 #include <QPushButton>
-#include <QUrl>
-#include <QStackedWidget>
-#include <QtNetwork>
-#include <QtWebEngineWidgets>
 #include <QRadioButton>
 #include <QRegularExpression>
 #include <QSlider>
+#include <QStackedWidget>
 #include <QStringList>
 #include <QTabWidget>
 #include <QTableWidget>
+#include <QUrl>
 #include <QVBoxLayout>
 #include <QtCore>
-#include <QEventLoop>
-#include "./backend/launcher/include/factory.hpp"
-#include "./backend/launcher/include/launcher.hpp"
+#include <QtNetwork>
+#include <QtWebEngineWidgets>
 
 struct Mod {
   QString name;
@@ -49,9 +50,9 @@ private:
 
   ~DashBoard();
 
-  DashBoard(const DashBoard&) = delete;
+  DashBoard(const DashBoard &) = delete;
 
-  DashBoard & operator=(const DashBoard&) = delete;
+  DashBoard &operator=(const DashBoard &) = delete;
 
 public:
   static DashBoard &getInstance() {
@@ -87,7 +88,7 @@ private:
   QPushButton *cancelButton;
   QPushButton *searchButton;
   QPushButton *downloadButton;
-  QPushButton* connectButton;
+  QPushButton *connectButton;
   QPushButton *updateListButton;
   QPushButton *nextButton;
 
@@ -96,14 +97,14 @@ private:
   QTabWidget *tabWidget;
 
   QLineEdit *editSearch;
-  QLineEdit* editIPServer;
+  QLineEdit *editIPServer;
 
   QVector<Mod> loadedMods;
 
   QComboBox *versionSelector;
   QComboBox *screenExtension;
   QComboBox *qualityGraphic;
-  QComboBox* choiceLanguage;
+  QComboBox *choiceLanguage;
 
   QSlider *soundSlider;
   QSlider *brightnessSlider;
@@ -119,4 +120,7 @@ private:
 
 private:
   Logger logger;
+  Launcher *m_update;
+  Launcher *m_download;
+  Launcher *m_play;
 };

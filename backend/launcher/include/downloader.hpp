@@ -15,7 +15,7 @@ class Downloader :public Launcher {
 public:
    Downloader();
 
-  ~Downloader() = default;
+ virtual ~Downloader();
 
   Downloader(const Downloader &) = delete;
 
@@ -40,3 +40,5 @@ private:
   bool IsStopped;
 
 };
+
+

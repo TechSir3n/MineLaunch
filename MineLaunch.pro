@@ -1,4 +1,4 @@
-QT       += core gui
+QT  += core gui
 
 QT += network
 
@@ -51,7 +51,11 @@ SOURCES += backend/updater_data.cpp
 SOURCES += backend/database/sqlite.cpp
 SOURCES += backend/launcher/downloader.cpp
 SOURCES += backend/launcher/updater.cpp
+SOURCES += backend/launcher/game.cpp
+SOURCES += backend/launcher/downloadVersion.cpp
 
+
+HEADERS += backend/launcher/include/downloadVersion.hpp
 HEADERS += backend/launcher/include/factory.hpp
 HEADERS += backend/launcher/include/updater.hpp
 HEADERS += backend/launcher/include/downloader.hpp

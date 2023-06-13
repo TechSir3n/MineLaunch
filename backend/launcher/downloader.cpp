@@ -6,13 +6,16 @@ Downloader::Downloader()
 
 }
 
+Downloader::~Downloader()
+{
+
+}
+
 void Downloader::start() {
 
 }
 
 void Downloader::stop() {
-  m_process->kill();
-  IsStopped = true;
-  emit downloadStopped();
+
 }
 
