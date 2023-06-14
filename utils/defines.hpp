@@ -25,6 +25,7 @@ enum class Error : unsigned int{
    Closed
 };
 
+
 enum class LauncherType : unsigned int{
     Update,
     Download,

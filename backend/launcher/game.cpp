@@ -15,7 +15,7 @@ void PlayGame::start() {
 
   const QString classpath =
       "/home/ruslan/Documents/MineLaunch/backend/launcher/minecraft/libraries/"
-      "*:/home/ruslan/Documents/MineLaunch/backend/launcher/minecraft/versions/"
+      "*:/home/ruslan/Documents/MineLaunch/backend/launcher/minecraft/versions/1.19.4-rc1/"
       "client.jar";
 
   const QString token =

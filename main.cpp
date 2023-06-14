@@ -7,6 +7,7 @@
 #include "./frontend/include/signin.hpp"
 #include "./frontend/include/signup.hpp"
 #include "./frontend/include/user_settings.hpp"
+#include "./backend/launcher/include/downloadVersion.hpp"
 #include "mainwindow.h"
 #include <QApplication>
 #include <QInputDialog>
@@ -18,6 +19,7 @@ int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
 
   qRegisterMetaType<DataHandler *>("DataHandler*"); // регистрируем новый тип
+
 
   Server::getInstance();
 

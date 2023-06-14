@@ -2,6 +2,7 @@
 
 #include "./backend/launcher/include/factory.hpp"
 #include "./backend/launcher/include/launcher.hpp"
+
 #include "signup.hpp"
 #include "user_settings.hpp"
 #include <QAction>
@@ -80,6 +81,9 @@ private:
 
   void addSettings() noexcept;
 
+signals:
+  void sendVersionGame(const QString& version);
+
 private:
   QPushButton *playButton;
   QPushButton *updateButton;
@@ -121,6 +125,6 @@ private:
 private:
   Logger logger;
   Launcher *m_update;
-  Launcher *m_download;
+  Downloader *m_download;
   Launcher *m_play;
 };
