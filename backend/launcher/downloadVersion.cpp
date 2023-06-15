@@ -5,7 +5,7 @@ DownloadVersion::DownloadVersion(QObject *parent)
 
 DownloadVersion::~DownloadVersion() { delete m_manager; }
 
-bool DownloadVersion::downloadVersion(const QString &versionGame) noexcept {
+void DownloadVersion::downloadVersion(const QString &versionGame) noexcept {
   QUrl url(versionGame);
   QNetworkRequest request(url);
   QNetworkReply *reply = m_manager->get(request);
@@ -16,35 +16,34 @@ bool DownloadVersion::downloadVersion(const QString &versionGame) noexcept {
 
   if (reply->error() != QNetworkReply::NoError) {
     qDebug() << "Error download version: " << reply->errorString();
-    return false;
+    return;
   }
 
   QString fileName = url.fileName();
   QStringList parts = fileName.split("/");
   QString version = parts.last().replace(".json", "");
 
-  const QString path =
-      "/home/ruslan/Documents/MineLaunch/backend/launcher/minecraft/versions/";
+  const QString path = QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/backend/launcher/minecraft/versions/";
   QDir dir(path);
   if (!dir.exists()) {
     qDebug() << "Directory doesn't exists";
-    return false;
+    return ;
   }
 
   if (!dir.mkdir(version)) {
     qDebug() << "Error creating directory: " << version;
-    return false;
+    return ;
   }
 
   QFile file;
   file.setFileName(path + version + "/version.json");
   if (!file.open(QIODevice::WriteOnly)) {
     qDebug() << "Error open file for write: " << file.errorString();
-    return false;
+    return ;
   }
 
   file.write(reply->readAll());
   file.close();
 
-  return true;
+  return ;
 }

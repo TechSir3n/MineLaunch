@@ -160,7 +160,7 @@ void DashBoard::loadVersionsMinecraft() noexcept {
   versionSelector->addItem("1.20-pre4");
   versionSelector->addItem("1.19.4-pre4");
   versionSelector->addItem("23w17a");
-  versionSelector->setCurrentIndex(1);
+  versionSelector->setCurrentIndex(0);
 }
 
 void DashBoard::addMenuTab() noexcept {

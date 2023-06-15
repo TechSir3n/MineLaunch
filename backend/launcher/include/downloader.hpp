@@ -1,22 +1,22 @@
 #pragma once
 
-#include "launcher.hpp"
 #include "../../../frontend/include/handler_signals.hpp"
 #include "downloadClient.hpp"
 #include "downloadLibraries.hpp"
 #include "downloadVersion.hpp"
-#include <QSysInfo>
+#include "launcher.hpp"
 #include <QLCDNumber>
 #include <QProcess>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QSysInfo>
 
 #include <QObject>
 
-class Downloader :public Launcher {
-    Q_OBJECT
+class Downloader : public Launcher {
+  Q_OBJECT
 public:
-   Downloader();
+  Downloader();
 
   virtual ~Downloader();
 
@@ -43,9 +43,10 @@ private:
   QProcess *m_process;
   HandlerSignals *handler;
   QLCDNumber *m_lcdNumber;
-  DownloadVersion *version;
   QString m_version;
   bool IsStopped;
+
+private:
+  DownloadVersion *version;
+  DownloadLibraries *libraries;
 };
-
-

@@ -2,7 +2,8 @@
 
 Downloader::Downloader()
     : handler(new HandlerSignals()), m_process(new QProcess()),
-      m_lcdNumber(new QLCDNumber()), version(new DownloadVersion()) {}
+      m_lcdNumber(new QLCDNumber()), version(new DownloadVersion()),
+      libraries(new DownloadLibraries()) {}
 
 Downloader::~Downloader() {
   delete version;
@@ -12,16 +13,15 @@ Downloader::~Downloader() {
 }
 
 void Downloader::start() {
-  qDebug() << "m_version: " << m_version;
-
   if (m_version == "1.19.4-rc1") {
-    emit downloadError("This version is already installed by default ");
+      emit downloadError("This version is already installed by default ");
 
   } else if (m_version == "23w03a") {
     version->downloadVersion(
         "https://piston-meta.mojang.com/v1/packages/"
         "45574762988fd2ad3b9478cabcbe4024cd7321cc/23w03a.json");
 
+      libraries->downloadLibraries(m_version);
   } else if (m_version == "1.20-pre7") {
     version->downloadVersion(
         "https://piston-meta.mojang.com/v1/packages/"

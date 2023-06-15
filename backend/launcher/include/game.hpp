@@ -17,7 +17,6 @@ public:
 
   PlayGame &operator=(const PlayGame &) = delete;
 
-
 public:
   bool gameIsRunning() const;
 

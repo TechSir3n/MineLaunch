@@ -7,7 +7,7 @@
 #include "./frontend/include/signin.hpp"
 #include "./frontend/include/signup.hpp"
 #include "./frontend/include/user_settings.hpp"
-#include "./backend/launcher/include/downloadVersion.hpp"
+#include "./backend/launcher/include/downloadClient.hpp"
 #include "mainwindow.h"
 #include <QApplication>
 #include <QInputDialog>
@@ -20,17 +20,19 @@ int main(int argc, char *argv[]) {
 
   qRegisterMetaType<DataHandler *>("DataHandler*"); // регистрируем новый тип
 
+  DownloadClient lib;
+  lib.downloadClient("23w03a");
 
-  Server::getInstance();
+//  Server::getInstance();
 
-  SignIn::getInstance().show();
-  DataHandler handler;
+//  SignIn::getInstance().show();
+//  DataHandler handler;
 
 
-  QObject::connect(&Server::getInstance(), &Server::dataReceived, &handler,
-                   &DataHandler::dataHandler);
-  QObject::connect(&handler, &DataHandler::sendString, &Server::getInstance(),
-                   &Server::getString);
+//  QObject::connect(&Server::getInstance(), &Server::dataReceived, &handler,
+//                   &DataHandler::dataHandler);
+//  QObject::connect(&handler, &DataHandler::sendString, &Server::getInstance(),
+//                   &Server::getString);
 
 //  // MainWindow w;
 
