@@ -1,33 +1,11 @@
 #include "./include/downloadLibraries.hpp"
 
-<<<<<<< HEAD
-DownloadLibraries::DownloadLibraries(QObject *object) : QObject(object),m_manager(new QNetworkAccessManager())
-{
-
-}
-
-DownloadLibraries::~DownloadLibraries()
-{
-    delete m_manager;
-}
-
-
-void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept
-{
-    const QString path = QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/backend/launcher/minecraft/versions";
-    QDir dir(path);
-
-    QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-    if(dirs.contains(versionGame)) {
-            //QFile file("");
-
-    }
-=======
-DownloadLibraries::DownloadLibraries(QObject *object)
-    : QObject(object), m_manager(new QNetworkAccessManager()) {}
->>>>>>> 21eb63f (commit)
 
 DownloadLibraries::~DownloadLibraries() { delete m_manager; }
+
+DownloadLibraries::DownloadLibraries(QObject *object)
+    : QObject(object), m_manager(new QNetworkAccessManager()) {}
+
 
 void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
   const QString path = QCoreApplication::applicationDirPath() + "/../" +
@@ -49,15 +27,12 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
 
     for (const auto &library : libraries) {
       const auto &obj = library.toObject();
-
       const auto &urlString = obj["downloads"]["artifact"]["url"].toString();
-      qDebug() << "URL:" << urlString;
       if (!urlString.contains("windows") && !urlString.contains("macos")) {
         urls.push_back(QUrl(urlString));
       }
     }
   }
-
   const QString savePath = QCoreApplication::applicationDirPath() +
                            QDir::separator() + ".." + QDir::separator() +
                            "/MineLaunch/backend/launcher/minecraft/libraries/";
@@ -73,13 +48,6 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
     QNetworkReply *reply = m_manager->get(request);
 
     QEventLoop loop;
-//    QObject::connect(reply, &QNetworkReply::finished,
-//                     [&](qint64 byteReceived, qint64 bytesTotal) {
-//                       int progress =
-//                           static_cast<int>(byteReceived * 100 / bytesTotal);
-//                       emit progressChanged(progress);
-//                     });
-
     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
 
@@ -106,3 +74,10 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
   }
 }
 
+//    QObject::connect(reply, &QNetworkReply::finished,
+//                     [&](qint64 byteReceived, qint64 bytesTotal) {
+//                       int progress =
+//                           static_cast<int>(byteReceived * 100 /
+//                           bytesTotal);
+//                       emit progressChanged(progress);
+//                     });

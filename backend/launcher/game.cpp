@@ -11,15 +11,11 @@ PlayGame::~PlayGame() { delete m_process; }
 void PlayGame::start() {
   QStringList arguments;
 
-  const QString classpath = "/home/ruslan/Documents/MineLaunch/backend/"
-                            "launcher/minecraft/libraries/" +
-                            versionGame +
-                            "/"
-                            "*:/home/ruslan/Documents/MineLaunch/backend/"
-                            "launcher/minecraft/versions/" +
-                            versionGame +
-                            "/"
-                            "client.jar";
+    const QString classpath = "/home/ruslan/Documents/MineLaunch/backend/"
+                              "launcher/minecraft/libraries/1.20-pre7/"
+                              "*:/home/ruslan/Documents/MineLaunch/backend/"
+                              "launcher/minecraft/versions/1.20-pre7/client.jar";
+
 
   const QString token =
       "eyJraWQiOiJhYzg0YSIsImFsZyI6IkhTMjU2In0."
@@ -32,7 +28,8 @@ void PlayGame::start() {
       "p5rNp0OsaZHu2MRXmgD5PN-ss5ndr-xXUXGJUe4PZuw";
 
   arguments << "-cp" << classpath << "net.minecraft.client.main.Main"
-            << "--accessToken" << token << "--username"
+            << "--accessToken" << token
+            << "--username"
             << "Ruslan"
             << "--version" << versionGame;
 
@@ -85,7 +82,6 @@ void PlayGame::onReadyReadStandardOutput() {
   qDebug() << "Output: " << output;
 }
 
-void PlayGame::getVersionGame(const QString &t_versionGame)
-{
+void PlayGame::getVersionGame(const QString &t_versionGame) {
   versionGame = t_versionGame;
 }

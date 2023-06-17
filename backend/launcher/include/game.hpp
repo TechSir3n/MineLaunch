@@ -41,5 +41,5 @@ signals:
 private:
   QProcess *m_process;
   HandlerSignals *signal;
-  QString versionGame = "1.19.4-rc1";
+  QString versionGame ; // "1.19.4-rc1"
 };

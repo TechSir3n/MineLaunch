@@ -4,7 +4,10 @@ DownloadClient::DownloadClient(QObject *object)
     : QObject(object), m_manager(new QNetworkAccessManager()),
       m_process(new QProcess()) {}
 
-DownloadClient::~DownloadClient() { delete m_manager; }
+DownloadClient::~DownloadClient() {
+  delete m_manager;
+  delete m_process;
+}
 
 void DownloadClient::downloadClient(const QString &versionClient) {
   const QString path = QCoreApplication::applicationDirPath() + "/../" +
@@ -35,55 +38,37 @@ void DownloadClient::downloadClient(const QString &versionClient) {
     QNetworkReply *reply = m_manager->get(request);
 
     QEventLoop loop;
-<<<<<<< HEAD
-=======
-//    QObject::connect(reply, &QNetworkReply::finished,[&](qint64 byteReceived,qint64 bytesTotal)  {
-//       int progress= static_cast<int>(byteReceived * 100 / bytesTotal);
-//         emit progressChanged(progress);
-//    });
-
->>>>>>> 21eb63f (commit)
     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
 
     if (reply->error() != QNetworkReply::NoError) {
+      qDebug() << "Reply: " << reply->errorString();
       return;
     } else {
       const QString fileName = "client.jar";
-      QFile fileSave(path + versionClient + "/"  +  fileName);
-<<<<<<< HEAD
-
-
+      QFile fileSave(path + versionClient + "/" + fileName);
 
       if (fileSave.open(QIODevice::WriteOnly)) {
         fileSave.write(reply->readAll());
-
         fileSave.close();
 
-=======
-      if (fileSave.open(QIODevice::WriteOnly)) {
-        fileSave.write(reply->readAll());
-        fileSave.close();
->>>>>>> 21eb63f (commit)
       } else {
-
+        qDebug() << "Error open file for write [downloadClient]"
+                 << fileSave.errorString();
         return;
       }
+
+      file.close();
+      reply->deleteLater();
     }
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 21eb63f (commit)
-    file.close();
-    reply->deleteLater();
   } else {
-
+    qDebug() << "path doesn't exists";
     return;
   }
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 21eb63f (commit)
 }
+
+//    QObject::connect(reply, &QNetworkReply::finished,[&](qint64
+//    byteReceived,qint64 bytesTotal)  {
+//       int progress= static_cast<int>(byteReceived * 100 / bytesTotal);
+//         emit progressChanged(progress);
+//    });

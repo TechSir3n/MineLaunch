@@ -55,8 +55,10 @@ SOURCES += backend/launcher/game.cpp
 SOURCES += backend/launcher/downloadVersion.cpp
 SOURCES += backend/launcher/downloadLibraries.cpp
 SOURCES += backend/launcher/downloadClient.cpp
+SOURCES += backend/launcher/checkUpdates.cpp
 
 
+HEADERS += backend/launcher/include/checkUpdates.hpp
 HEADERS += backend/launcher//include/downloadLibraries.hpp
 HEADERS += backend/launcher//include/downloadClient.hpp
 HEADERS += backend/launcher/include/game.hpp
