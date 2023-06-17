@@ -4,19 +4,22 @@ PlayGame::PlayGame() : m_process(new QProcess()), signal(new HandlerSignals()) {
 
   QObject::connect(this, &PlayGame::gameLaunchError, signal,
                    &HandlerSignals::onGameLauncherError);
-
 }
-
 
 PlayGame::~PlayGame() { delete m_process; }
 
 void PlayGame::start() {
   QStringList arguments;
 
-  const QString classpath =
-      "/home/ruslan/Documents/MineLaunch/backend/launcher/minecraft/libraries/"
-      "*:/home/ruslan/Documents/MineLaunch/backend/launcher/minecraft/versions/1.19.4-rc1/"
-      "client.jar";
+  const QString classpath = "/home/ruslan/Documents/MineLaunch/backend/"
+                            "launcher/minecraft/libraries/" +
+                            versionGame +
+                            "/"
+                            "*:/home/ruslan/Documents/MineLaunch/backend/"
+                            "launcher/minecraft/versions/" +
+                            versionGame +
+                            "/"
+                            "client.jar";
 
   const QString token =
       "eyJraWQiOiJhYzg0YSIsImFsZyI6IkhTMjU2In0."
@@ -31,8 +34,7 @@ void PlayGame::start() {
   arguments << "-cp" << classpath << "net.minecraft.client.main.Main"
             << "--accessToken" << token << "--username"
             << "Ruslan"
-            << "--version"
-            << "1.19.4-rc1";
+            << "--version" << versionGame;
 
   m_process->startDetached("java", arguments);
 
@@ -49,11 +51,10 @@ void PlayGame::start() {
     qDebug() << "Error process: " << m_process->errorString();
   } else {
     qDebug() << "Process started successfully";
-  }
+  };
 }
 
-bool PlayGame::gameIsRunning() const
-{
+bool PlayGame::gameIsRunning() const {
   return m_process->state() == QProcess::Running;
 }
 
@@ -82,4 +83,9 @@ void PlayGame::onReadyReadStandardError() {
 void PlayGame::onReadyReadStandardOutput() {
   QString output = m_process->readAllStandardOutput();
   qDebug() << "Output: " << output;
+}
+
+void PlayGame::getVersionGame(const QString &t_versionGame)
+{
+  versionGame = t_versionGame;
 }

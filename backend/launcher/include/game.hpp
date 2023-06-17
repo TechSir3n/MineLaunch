@@ -25,6 +25,8 @@ public slots:
 
   void stop() override;
 
+  void getVersionGame(const QString &t_versionGame);
+
 private slots:
   void onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
@@ -32,10 +34,12 @@ private slots:
 
   void onReadyReadStandardOutput();
 
+
 signals:
   void gameLaunchError(int errorCode);
 
 private:
   QProcess *m_process;
   HandlerSignals *signal;
+  QString versionGame = "1.19.4-rc1";
 };

@@ -20,10 +20,14 @@ int main(int argc, char *argv[]) {
 
   qRegisterMetaType<DataHandler *>("DataHandler*"); // регистрируем новый тип
 
+<<<<<<< HEAD
   DownloadClient lib;
   lib.downloadClient("23w03a");
 
 //  Server::getInstance();
+=======
+  Server::getInstance();
+>>>>>>> 21eb63f (commit)
 
 //  SignIn::getInstance().show();
 //  DataHandler handler;

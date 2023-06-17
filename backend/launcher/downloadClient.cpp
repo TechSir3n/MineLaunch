@@ -35,6 +35,14 @@ void DownloadClient::downloadClient(const QString &versionClient) {
     QNetworkReply *reply = m_manager->get(request);
 
     QEventLoop loop;
+<<<<<<< HEAD
+=======
+//    QObject::connect(reply, &QNetworkReply::finished,[&](qint64 byteReceived,qint64 bytesTotal)  {
+//       int progress= static_cast<int>(byteReceived * 100 / bytesTotal);
+//         emit progressChanged(progress);
+//    });
+
+>>>>>>> 21eb63f (commit)
     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
 
@@ -43,6 +51,7 @@ void DownloadClient::downloadClient(const QString &versionClient) {
     } else {
       const QString fileName = "client.jar";
       QFile fileSave(path + versionClient + "/"  +  fileName);
+<<<<<<< HEAD
 
 
 
@@ -51,13 +60,21 @@ void DownloadClient::downloadClient(const QString &versionClient) {
 
         fileSave.close();
 
+=======
+      if (fileSave.open(QIODevice::WriteOnly)) {
+        fileSave.write(reply->readAll());
+        fileSave.close();
+>>>>>>> 21eb63f (commit)
       } else {
 
         return;
       }
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 21eb63f (commit)
     file.close();
     reply->deleteLater();
   } else {
@@ -65,5 +82,8 @@ void DownloadClient::downloadClient(const QString &versionClient) {
     return;
   }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 21eb63f (commit)
 }

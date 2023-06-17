@@ -5,13 +5,15 @@ DashBoard::DashBoard(QWidget *parent)
       modsTable(new QTableWidget()), versionSelector(new QComboBox()),
       menuBar(new QMenuBar()) {
 
-  m_play = FactoryLauncher::createLauncher(LauncherType::Play);
+    m_play = dynamic_cast<PlayGame*>(FactoryLauncher::createLauncher(LauncherType::Play));
   m_download = dynamic_cast<Downloader *>(
       FactoryLauncher::createLauncher(LauncherType::Download));
   m_update = FactoryLauncher::createLauncher(LauncherType::Update);
 
   QObject::connect(this, &DashBoard::sendVersionGame, m_download,
                    &Downloader::getVersionGame);
+  QObject::connect(this, &DashBoard::sendVersionGame, m_play,
+                   &PlayGame::getVersionGame);
 
   tabWidget->setFixedSize(QSize(1050, 710));
   versionSelector->setFixedWidth(100);
@@ -342,12 +344,14 @@ void DashBoard::addGameTab() noexcept {
   gameLayout->addLayout(layout);
   gameLayout->addLayout(hbox_layout);
 
-  QObject::connect(playButton, &QPushButton::clicked, this,
-                   [this]() { m_play->start(); });
+  QObject::connect(playButton, &QPushButton::clicked, this, [this]() {
+    QString version = versionSelector->currentText();
+    emit sendVersionGame(version);
+    m_play->start();
+  });
 
   QObject::connect(downloadButton, &QPushButton::clicked, this, [this]() {
     QString version = versionSelector->currentText();
-    qDebug() << "Version: " << version;
     emit sendVersionGame(version);
     m_download->start();
   });

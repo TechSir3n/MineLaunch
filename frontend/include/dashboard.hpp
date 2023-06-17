@@ -126,5 +126,5 @@ private:
   Logger logger;
   Launcher *m_update;
   Downloader *m_download;
-  Launcher *m_play;
+  PlayGame *m_play;
 };

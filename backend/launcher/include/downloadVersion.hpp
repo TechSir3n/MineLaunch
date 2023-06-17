@@ -1,30 +1,45 @@
 #pragma once
 
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
 #include <QByteArray>
+#include <QCoreApplication>
+#include <QDir>
+#include <QEventLoop>
 #include <QFile>
 #include <QJsonArray>
-#include <QEventLoop>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include <QObject>
+<<<<<<< HEAD
 #include <QDir>
 #include <QCoreApplication>
+=======
+>>>>>>> 21eb63f (commit)
 
-class DownloadVersion : public QObject{
-   Q_OBJECT
+class DownloadVersion : public QObject {
+  Q_OBJECT
 public:
-    DownloadVersion(QObject *parent = nullptr);
+  DownloadVersion(QObject *parent = nullptr);
 
-    virtual ~DownloadVersion();
+  virtual ~DownloadVersion();
 
-    DownloadVersion(const DownloadVersion &) = delete;
+  DownloadVersion(const DownloadVersion &) = delete;
 
-    DownloadVersion & operator=(const DownloadVersion &) = delete;
+  DownloadVersion &operator=(const DownloadVersion &) = delete;
 
 public:
+<<<<<<< HEAD
     void downloadVersion(const QString &versionGame) noexcept;
+=======
+  void downloadVersion(const QString &versionGame) noexcept;
+
+  QString getVersionGame() const noexcept;
+
+signals:
+  void progressChanged(int progress);
+>>>>>>> 21eb63f (commit)
 
 private:
-    QNetworkAccessManager *m_manager;
+  QNetworkAccessManager *m_manager;
+  QString m_versionGame;
 };
