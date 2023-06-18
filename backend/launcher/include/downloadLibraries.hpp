@@ -17,7 +17,7 @@
 #include <QVector>
 
 class DownloadLibraries : public QObject {
-    Q_OBJECT
+  Q_OBJECT
 public:
   DownloadLibraries(QObject *object = nullptr);
 
@@ -27,11 +27,21 @@ public:
 
   DownloadLibraries &operator=(const DownloadLibraries &) = delete;
 
+private:
+  QNetworkReply *getReply(QNetworkReply *reply = nullptr) noexcept;
+
 public:
   void downloadLibraries(const QString &versionGame) noexcept;
 
+public slots:
+  void stopIsDownloadingLibraries();
+
 signals:
   void progressChanged(int progress);
+
+  void errorDownloadLibraries();
+
+  void onFinished();
 
 private:
   QNetworkAccessManager *m_manager;

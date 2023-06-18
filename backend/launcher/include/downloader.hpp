@@ -11,6 +11,7 @@
 #include <QRegularExpressionMatch>
 #include <QSysInfo>
 #include <QObject>
+#include <QThread>
 #include <QProgressDialog>
 
 class Downloader : public Launcher {
@@ -31,6 +32,8 @@ signals:
 
   void downloadStopped();
 
+  void stopDownloading();
+
 public slots:
   void start() override;
 
@@ -43,10 +46,14 @@ public slots:
 public slots:
   void getVersionGame(const QString &version);
 
+public:
+  bool IsDownloading() const noexcept;
+
 private:
   QProcess *m_process;
   HandlerSignals *handler;
   QString versionStr;
+  QString m_IsDownloading = "stop";
   QProgressDialog *m_progress;
   bool IsStopped;
 

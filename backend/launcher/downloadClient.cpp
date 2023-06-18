@@ -36,9 +36,23 @@ void DownloadClient::downloadClient(const QString &versionClient) {
 
     QNetworkRequest request(clientValue.toString());
     QNetworkReply *reply = m_manager->get(request);
+    getReply(reply);
 
     QEventLoop loop;
     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+
+    QObject::connect(reply, &QNetworkReply::downloadProgress, this,
+                     [=](qint64 bytesReceived, qint64 bytesTotal) {
+                       int progress = (bytesTotal > 0)
+                                          ? (bytesReceived * 100 / bytesTotal)
+                                          : 0;
+                       emit progressChanged(progress);
+
+                       if (progress == 0) {
+                         emit onFinished();
+                       }
+                     });
+
     loop.exec();
 
     if (reply->error() != QNetworkReply::NoError) {
@@ -67,8 +81,11 @@ void DownloadClient::downloadClient(const QString &versionClient) {
   }
 }
 
-//    QObject::connect(reply, &QNetworkReply::finished,[&](qint64
-//    byteReceived,qint64 bytesTotal)  {
-//       int progress= static_cast<int>(byteReceived * 100 / bytesTotal);
-//         emit progressChanged(progress);
-//    });
+QNetworkReply *DownloadClient::getReply(QNetworkReply *reply) noexcept {
+  return reply;
+}
+
+void DownloadClient::stopIsDownloadingClient() {
+  auto reply = getReply();
+  reply->abort();
+}

@@ -27,10 +27,18 @@ public:
 public:
   void downloadClient(const QString &versionClient);
 
+private:
+  QNetworkReply *getReply(QNetworkReply *reply = nullptr) noexcept;
+
+public slots:
+  void stopIsDownloadingClient();
+
 signals:
   void errorDownloadClient();
 
   void progressChanged(int progress);
+
+  void onFinished();
 
 private:
   void onStandardOutput();

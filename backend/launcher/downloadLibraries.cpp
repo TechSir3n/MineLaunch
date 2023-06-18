@@ -1,11 +1,9 @@
 #include "./include/downloadLibraries.hpp"
 
-
-DownloadLibraries::~DownloadLibraries() { delete m_manager; }
-
 DownloadLibraries::DownloadLibraries(QObject *object)
     : QObject(object), m_manager(new QNetworkAccessManager()) {}
 
+DownloadLibraries::~DownloadLibraries() { delete m_manager; }
 
 void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
   const QString path = QCoreApplication::applicationDirPath() + "/../" +
@@ -46,9 +44,22 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
   for (const auto &url : urls) {
     QNetworkRequest request(url);
     QNetworkReply *reply = m_manager->get(request);
-
+    getReply(reply);
     QEventLoop loop;
     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+
+    QObject::connect(reply, &QNetworkReply::downloadProgress, this,
+                     [=](qint64 bytesReceived, qint64 bytesTotal) {
+                       int progress = (bytesTotal > 0)
+                                          ? (bytesReceived * 100 / bytesTotal)
+                                          : 0;
+                       emit progressChanged(progress);
+
+                       if (progress == 0) {
+                         emit onFinished();
+                       }
+                     });
+
     loop.exec();
 
     if (reply->error() != QNetworkReply::NoError) {
@@ -74,10 +85,11 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
   }
 }
 
-//    QObject::connect(reply, &QNetworkReply::finished,
-//                     [&](qint64 byteReceived, qint64 bytesTotal) {
-//                       int progress =
-//                           static_cast<int>(byteReceived * 100 /
-//                           bytesTotal);
-//                       emit progressChanged(progress);
-//                     });
+QNetworkReply *DownloadLibraries::getReply(QNetworkReply *reply) noexcept {
+  return reply;
+}
+
+void DownloadLibraries::stopIsDownloadingLibraries() {
+  auto reply = getReply();
+  reply->abort();
+}

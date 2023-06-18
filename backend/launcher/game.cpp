@@ -4,6 +4,7 @@ PlayGame::PlayGame() : m_process(new QProcess()), signal(new HandlerSignals()) {
 
   QObject::connect(this, &PlayGame::gameLaunchError, signal,
                    &HandlerSignals::onGameLauncherError);
+
 }
 
 PlayGame::~PlayGame() { delete m_process; }
@@ -12,9 +13,9 @@ void PlayGame::start() {
   QStringList arguments;
 
     const QString classpath = "/home/ruslan/Documents/MineLaunch/backend/"
-                              "launcher/minecraft/libraries/1.20-pre7/"
+                              "launcher/minecraft/libraries/" + versionGame + "/" +
                               "*:/home/ruslan/Documents/MineLaunch/backend/"
-                              "launcher/minecraft/versions/1.20-pre7/client.jar";
+                              "launcher/minecraft/versions/" + versionGame + "/client.jar";
 
 
   const QString token =

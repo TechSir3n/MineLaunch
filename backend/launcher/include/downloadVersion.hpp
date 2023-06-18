@@ -10,8 +10,6 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QObject>
-#include <QDir>
-#include <QCoreApplication>
 
 class DownloadVersion : public QObject {
   Q_OBJECT
@@ -29,8 +27,18 @@ public:
 
   QString getVersionGame() const noexcept;
 
+private:
+  QNetworkReply *getReply(QNetworkReply *reply = nullptr) noexcept;
+
+public slots:
+  void stopIsDownloadingVersion();
+
 signals:
   void progressChanged(int progress);
+
+  void errorDownloadVersion();
+
+  void onFinished();
 
 private:
   QNetworkAccessManager *m_manager;

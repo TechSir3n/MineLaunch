@@ -3,7 +3,9 @@
 Downloader::Downloader()
     : m_version(new DownloadVersion()), m_client(new DownloadClient()),
       m_library(new DownloadLibraries()), handler(new HandlerSignals()),
-      m_progress(new QProgressDialog) {}
+      m_progress(new QProgressDialog) {
+  m_IsDownloading = "downloading";
+}
 
 Downloader::~Downloader() {
   delete m_version;
@@ -22,12 +24,14 @@ void Downloader::start() {
     startProgressDialog();
 
     m_version->downloadVersion(
-        "https://piston-meta.mojang.com/v1/packages/45574762988fd2ad3b9478cabcbe4024cd7321cc/23w03a.json");
+        "https://piston-meta.mojang.com/v1/packages/"
+        "45574762988fd2ad3b9478cabcbe4024cd7321cc/23w03a.json");
 
     m_client->downloadClient("23w03a");
 
     m_library->downloadLibraries("23w03a1");
 
+    stopProgressDialog();
   } else if (versionStr == "1.20-pre7") {
     startProgressDialog();
 
@@ -56,6 +60,7 @@ void Downloader::start() {
 
   } else if (versionStr == "1.19.4-pre4") {
     startProgressDialog();
+
     m_version->downloadVersion(
         "https://piston-meta.mojang.com/v1/packages/"
         "bfc041cde4125e6fb9da3fa1386ee881c663ca22/1.19.4-pre4.json");
@@ -64,8 +69,8 @@ void Downloader::start() {
     m_library->downloadLibraries("1.19.4-pre4");
 
     stopProgressDialog();
-  } else if (versionStr == "23w17a") {
 
+  } else if (versionStr == "23w17a") {
     startProgressDialog();
     m_version->downloadVersion(
         "https://piston-meta.mojang.com/v1/packages/"
@@ -78,9 +83,18 @@ void Downloader::start() {
   }
 }
 
-void Downloader::stop() {}
+void Downloader::stop() {
+  emit stopDownloading();
+  QObject::connect(this, &Downloader::stopDownloading, m_version,
+                   &DownloadVersion::stopIsDownloadingVersion);
+  QObject::connect(this, &Downloader::stopDownloading, m_client,
+                   &DownloadClient::stopIsDownloadingClient);
+  QObject::connect(this, &Downloader::stopDownloading, m_library,
+                   &DownloadLibraries::stopIsDownloadingLibraries);
+}
 
 void Downloader::startProgressDialog() {
+
   m_progress->setLabelText("Downloading...");
   m_progress->setCancelButtonText("Cancel");
   m_progress->setRange(0, 100);
@@ -96,8 +110,19 @@ void Downloader::startProgressDialog() {
                    &QProgressDialog::setValue);
 }
 
-void Downloader::stopProgressDialog() { m_progress->close(); }
+void Downloader::stopProgressDialog() {
+  QObject::connect(m_library, &DownloadLibraries::onFinished, m_progress,
+                   &QProgressDialog::close);
+  QObject::connect(m_version, &DownloadVersion::onFinished, m_progress,
+                   &QProgressDialog::close);
+  QObject::connect(m_client, &DownloadClient::onFinished, m_progress,
+                   &QProgressDialog::close);
+}
 
 void Downloader::getVersionGame(const QString &version) {
   versionStr = version;
+}
+
+bool Downloader::IsDownloading() const noexcept {
+  return m_IsDownloading == "downloading" ? true : false;
 }

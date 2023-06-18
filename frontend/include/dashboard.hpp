@@ -16,6 +16,7 @@
 #include <QFileInfo>
 #include <QFrame>
 #include <QGroupBox>
+#include <QDesktopServices>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -86,7 +87,6 @@ signals:
 
 private:
   QPushButton *playButton;
-  QPushButton *updateButton;
   QPushButton *saveButton;
   QPushButton *resetButton;
   QPushButton *cancelButton;
@@ -124,7 +124,6 @@ private:
 
 private:
   Logger logger;
-  Launcher *m_update;
   Downloader *m_download;
   PlayGame *m_play;
 };

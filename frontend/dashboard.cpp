@@ -9,7 +9,6 @@ DashBoard::DashBoard(QWidget *parent)
       FactoryLauncher::createLauncher(LauncherType::Play));
   m_download = dynamic_cast<Downloader *>(
       FactoryLauncher::createLauncher(LauncherType::Download));
-  m_update = FactoryLauncher::createLauncher(LauncherType::Update);
 
   QObject::connect(this, &DashBoard::sendVersionGame, m_download,
                    &Downloader::getVersionGame);
@@ -158,7 +157,7 @@ void DashBoard::loadServers() noexcept {
 
 void DashBoard::loadVersionsMinecraft() noexcept {
   versionSelector->addItem("1.19.4-rc1");
-  versionSelector->addItem("23w03a1");
+  versionSelector->addItem("23w03a");
   versionSelector->addItem("1.20-pre7");
   versionSelector->addItem("1.20-pre4");
   versionSelector->addItem("1.19.4-pre4");
@@ -177,17 +176,34 @@ void DashBoard::addMenuTab() noexcept {
 
   QAction *openAction = new QAction(tr("Open"));
   openAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_O));
+
   QAction *helpAction = new QAction(tr("Help"));
+  helpAction->setShortcut(tr("F1"));
+
   QAction *aboutAction = new QAction(tr("About"));
+
   QAction *exitAction = new QAction(tr("Exit"));
-  QAction *settingsAction = new QAction(tr("Settings Game"));
   exitAction->setShortcut(Qt::CTRL | Qt::Key_Q);
+
+  QAction *settingsAction = new QAction(tr("Settings Game"));
+
 
   fileMenu->addAction(openAction);
   fileMenu->addAction(exitAction);
   settingsMenu->addAction(settingsAction);
   helpMenu->addAction(helpAction);
   helpMenu->addAction(aboutAction);
+
+  QObject::connect(exitAction, &QAction::triggered, qApp, &QApplication::quit);
+
+  QObject::connect(helpAction,&QAction::triggered,this,[this](){
+      tabWidget->setCurrentIndex(4);
+  });
+
+  QObject::connect(aboutAction, &QAction::triggered, this, []() {
+    QDesktopServices::openUrl(QUrl(QCoreApplication::applicationDirPath() + "/../" +
+                                     "/MineLaunch/resources/aboutLaunch.html"));
+  });
 }
 
 void DashBoard::addSettings() noexcept {
@@ -326,7 +342,6 @@ void DashBoard::addGameTab() noexcept {
 
   playButton = new QPushButton(tr("Play"));
   cancelButton = new QPushButton(tr("Cancel"));
-  updateButton = new QPushButton(tr("Update"));
   downloadButton = new QPushButton(tr("Download"));
 
   QHBoxLayout *hbox_layout = new QHBoxLayout;
@@ -335,7 +350,6 @@ void DashBoard::addGameTab() noexcept {
   hbox_layout->addWidget(playButton);
   hbox_layout->addWidget(cancelButton);
   hbox_layout->addWidget(downloadButton);
-  hbox_layout->addWidget(updateButton);
   hbox_layout->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
   QHBoxLayout *layout = new QHBoxLayout();
@@ -345,25 +359,25 @@ void DashBoard::addGameTab() noexcept {
   gameLayout->addLayout(layout);
   gameLayout->addLayout(hbox_layout);
 
-
   QObject::connect(playButton, &QPushButton::clicked, this, [this]() {
-     QString version = versionSelector->currentText();
+    QString version = versionSelector->currentText();
     emit sendVersionGame(version);
     m_play->start();
   });
 
   QObject::connect(downloadButton, &QPushButton::clicked, this, [this]() {
-       QString version = versionSelector->currentText();
+    QString version = versionSelector->currentText();
     emit sendVersionGame(version);
     m_download->start();
-
   });
 
-  QObject::connect(updateButton, &QPushButton::clicked, this,
-                   [this]() { m_update->start(); });
-
-  QObject::connect(cancelButton, &QPushButton::clicked, this,
-                   [this]() { m_play->stop(); });
+  QObject::connect(cancelButton, &QPushButton::clicked, this, [this]() {
+    if (m_play->gameIsRunning()) {
+      m_play->stop();
+    } else if (m_download->IsDownloading()) {
+      m_download->stop();
+    }
+  });
 }
 
 void DashBoard::searchModsByName() {
