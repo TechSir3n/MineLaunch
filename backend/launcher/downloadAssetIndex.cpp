@@ -34,7 +34,14 @@ void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
 
     QEventLoop loop;
     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+
+
     loop.exec();
+
+    if(reply->error()!=QNetworkReply::NoError) {
+      emit errorDownloadAssetIndex("Error download asset index :" + reply->errorString());
+      return;
+    }
 
     const QString savePath =
         QCoreApplication::applicationDirPath() + "/../" +
@@ -61,6 +68,7 @@ void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
 
     saveFile.write(reply->readAll());
     saveFile.close();
+    reply->deleteLater();
   }
 }
 

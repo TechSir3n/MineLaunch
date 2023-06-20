@@ -61,6 +61,7 @@ void DownloadVersion::downloadVersion(const QString &versionGame) noexcept {
   }
 
   file.write(reply->readAll());
+  reply->deleteLater();
   file.close();
 }
 

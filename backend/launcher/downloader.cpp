@@ -53,6 +53,8 @@ void Downloader::start() {
 
     m_index->downloadAssetIndex("23w03a1");
 
+    m_resources->downloadResources("23w03a1");
+
     stopProgressDialog();
   } else if (versionStr == "1.20-pre7") {
     startProgressDialog();
@@ -64,7 +66,10 @@ void Downloader::start() {
     m_client->downloadClient("1.20-pre7");
 
     m_library->downloadLibraries("1.20-pre7");
+
     m_index->downloadAssetIndex("1.20-pre7");
+
+    m_resources->downloadResources("1.20-pre7");
 
     stopProgressDialog();
 
@@ -81,6 +86,8 @@ void Downloader::start() {
 
     m_index->downloadAssetIndex("1.20-pre4");
 
+   m_resources->downloadResources("1.20-pre4");
+
     stopProgressDialog();
 
   } else if (versionStr == "1.19.4-pre4") {
@@ -96,8 +103,9 @@ void Downloader::start() {
 
     m_index->downloadAssetIndex("1.19.4-pre4");
 
-    stopProgressDialog();
+     m_resources->downloadResources("1.19.4-pre4");
 
+    stopProgressDialog();
   } else if (versionStr == "23w17a") {
     startProgressDialog();
     m_version->downloadVersion(
@@ -109,6 +117,8 @@ void Downloader::start() {
     m_library->downloadLibraries("23w17a");
 
     m_index->downloadAssetIndex("23w17a");
+
+    m_resources->downloadResources("23w17a");
 
     stopProgressDialog();
   }

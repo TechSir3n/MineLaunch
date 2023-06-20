@@ -39,14 +39,15 @@ HEADERS += frontend/include/welcome.hpp
 HEADERS += frontend/include/client.hpp
 HEADERS += frontend/include/handler_signals.hpp
 
-
 HEADERS += assistance/systeminfo.hpp
+HEADERS += assistance/path.hpp
 HEADERS += assistance/clearLogs.hpp
 HEADERS += utils/logger.hpp
 HEADERS += utils/defines.hpp
 HEADERS += utils/validator.hpp
 HEADERS += utils/hashing.hpp
 
+SOURCES += assistance/path.cpp
 SOURCES += backend/server.cpp
 SOURCES += backend/dataHandler.cpp
 SOURCES += backend/updater_data.cpp
@@ -58,7 +59,6 @@ SOURCES += backend/launcher/downloadLibraries.cpp
 SOURCES += backend/launcher/downloadClient.cpp
 SOURCES += backend/launcher/downloadAssetIndex.cpp
 SOURCES += backend/launcher/downloadResources.cpp
-
 
 HEADERS += backend/launcher/include/downloadLibraries.hpp
 HEADERS += backend/launcher/include/downloadClient.hpp

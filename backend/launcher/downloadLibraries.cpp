@@ -74,10 +74,10 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
 
     if (file.open(QIODevice::WriteOnly)) {
       file.write(reply->readAll());
+
       file.close();
-      qDebug() << "File saved to:" << filePath;
     } else {
-      qDebug() << "Failed to save file";
+      qDebug() << "Failed to save file: " << file.errorString();
       return;
     }
 

@@ -3,6 +3,19 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QVector>
+#include <QCoreApplication>
+#include <QStringList>
+#include <QDir>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QByteArray>
+#include <QJsonValue>
+#include <QFile>
+
+
+#define HTTP "https://resources.download.minecraft.net"
 
 class DownloadResources : public QObject {
   Q_OBJECT
@@ -14,6 +27,9 @@ public:
   DownloadResources(const DownloadResources &) = delete;
 
   DownloadResources &operator=(const DownloadResources &) = delete;
+
+public:
+  void downloadResources(const QString &versionGame);
 
 public slots:
   void stopIsDownloadingResources();
@@ -30,4 +46,5 @@ private:
 
 private:
   QNetworkAccessManager *m_manager;
+  QVector<QString> hashes;
 };
