@@ -18,6 +18,10 @@ void PlayGame::start() {
                               "launcher/minecraft/versions/" + versionGame + "/client.jar";
 
 
+  const QString assetDir = "/home/ruslan/Documents/MineLaunch/backend/launcher/minecraft/assets/indexes" + versionGame;
+
+    const QString assetIndex =  "";
+
   const QString token =
       "eyJraWQiOiJhYzg0YSIsImFsZyI6IkhTMjU2In0."
       "eyJ4dWlkIjoiMjUzNTQ0Nzc0NTA0NjIxNiIsImFnZyI6IkFkdWx0Iiwic3ViIjoiZGRlMzU0"
@@ -30,6 +34,8 @@ void PlayGame::start() {
 
   arguments << "-cp" << classpath << "net.minecraft.client.main.Main"
             << "--accessToken" << token
+            <<"--assetDir" << assetDir
+            <<"--assetIndex" << assetIndex
             << "--username"
             << "Ruslan"
             << "--version" << versionGame;

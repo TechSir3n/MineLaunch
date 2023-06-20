@@ -32,7 +32,7 @@ void DownloadVersion::downloadVersion(const QString &versionGame) noexcept {
   loop.exec();
 
   if (reply->error() != QNetworkReply::NoError) {
-    qDebug() << "Error download version: " << reply->errorString();
+    emit errorDownloadVersion(reply->errorString());
     return;
   }
 

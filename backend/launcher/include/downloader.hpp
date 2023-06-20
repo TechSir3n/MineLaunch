@@ -3,7 +3,9 @@
 #include "../../../frontend/include/handler_signals.hpp"
 #include "downloadClient.hpp"
 #include "downloadLibraries.hpp"
+#include "downloadResources.hpp"
 #include "downloadVersion.hpp"
+#include "downloadAssetIndex.hpp"
 #include "launcher.hpp"
 #include <QLCDNumber>
 #include <QProcess>
@@ -53,12 +55,14 @@ private:
   QProcess *m_process;
   HandlerSignals *handler;
   QString versionStr;
-  QString m_IsDownloading = "stop";
   QProgressDialog *m_progress;
   bool IsStopped;
+  QString m_IsDownloading = "stop";
 
 private:
   DownloadVersion *m_version;
   DownloadLibraries *m_library;
   DownloadClient *m_client;
+  DownloadAssetIndex *m_index;
+  DownloadResources * m_resources;
 };

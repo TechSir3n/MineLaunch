@@ -7,7 +7,7 @@
 #include "./frontend/include/signin.hpp"
 #include "./frontend/include/signup.hpp"
 #include "./frontend/include/user_settings.hpp"
-#include "./backend/launcher/include/downloadClient.hpp"
+#include "./backend/launcher/include/downloadAssetIndex.hpp"
 #include "mainwindow.h"
 #include <QApplication>
 #include <QInputDialog>

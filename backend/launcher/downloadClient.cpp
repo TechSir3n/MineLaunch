@@ -1,7 +1,7 @@
 #include "./include/downloadClient.hpp"
 
-DownloadClient::DownloadClient(QObject *object)
-    : QObject(object), m_manager(new QNetworkAccessManager()),
+DownloadClient::DownloadClient(QObject *parent)
+    : QObject(parent), m_manager(new QNetworkAccessManager()),
       m_process(new QProcess()) {}
 
 DownloadClient::~DownloadClient() {
@@ -56,7 +56,7 @@ void DownloadClient::downloadClient(const QString &versionClient) {
     loop.exec();
 
     if (reply->error() != QNetworkReply::NoError) {
-      qDebug() << "Reply: " << reply->errorString();
+      emit errorDownloadClient(reply->errorString());
       return;
     } else {
       const QString fileName = "client.jar";

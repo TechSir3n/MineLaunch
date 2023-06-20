@@ -181,6 +181,9 @@ void DashBoard::addMenuTab() noexcept {
   helpAction->setShortcut(tr("F1"));
 
   QAction *aboutAction = new QAction(tr("About"));
+  aboutAction->setShortcut(tr("F2"));
+
+  QAction *clearLogs = new QAction(tr("Clear logs"));
 
   QAction *exitAction = new QAction(tr("Exit"));
   exitAction->setShortcut(Qt::CTRL | Qt::Key_Q);
@@ -189,6 +192,7 @@ void DashBoard::addMenuTab() noexcept {
 
 
   fileMenu->addAction(openAction);
+  fileMenu->addAction(clearLogs);
   fileMenu->addAction(exitAction);
   settingsMenu->addAction(settingsAction);
   helpMenu->addAction(helpAction);
@@ -332,7 +336,7 @@ void DashBoard::addGameTab() noexcept {
 
   QLabel *image = new QLabel();
   QPixmap pixmap(QCoreApplication::applicationDirPath() + "/../" +
-                 "/MineLaunch/resources/images.jpeg");
+                 "/MineLaunch/resources/images.png");
   QPixmap scaledPixmap = pixmap.scaled(QSize(480, 290), Qt::KeepAspectRatio);
   image->setPixmap(scaledPixmap);
 

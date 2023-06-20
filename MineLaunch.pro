@@ -40,6 +40,8 @@ HEADERS += frontend/include/client.hpp
 HEADERS += frontend/include/handler_signals.hpp
 
 
+HEADERS += assistance/systeminfo.hpp
+HEADERS += assistance/clearLogs.hpp
 HEADERS += utils/logger.hpp
 HEADERS += utils/defines.hpp
 HEADERS += utils/validator.hpp
@@ -54,15 +56,19 @@ SOURCES += backend/launcher/game.cpp
 SOURCES += backend/launcher/downloadVersion.cpp
 SOURCES += backend/launcher/downloadLibraries.cpp
 SOURCES += backend/launcher/downloadClient.cpp
+SOURCES += backend/launcher/downloadAssetIndex.cpp
+SOURCES += backend/launcher/downloadResources.cpp
 
 
-HEADERS += backend/launcher//include/downloadLibraries.hpp
-HEADERS += backend/launcher//include/downloadClient.hpp
+HEADERS += backend/launcher/include/downloadLibraries.hpp
+HEADERS += backend/launcher/include/downloadClient.hpp
 HEADERS += backend/launcher/include/game.hpp
 HEADERS += backend/launcher/include/downloadVersion.hpp
 HEADERS += backend/launcher/include/factory.hpp
 HEADERS += backend/launcher/include/downloader.hpp
 HEADERS += backend/launcher/include/launcher.hpp
+HEADERS += backend/launcher/include/downloadAssetIndex.hpp
+HEADERS += backend/launcher/include/downloadResources.hpp
 HEADERS += backend/include/updater_data.hpp
 HEADERS += backend/include/dataHandler.hpp
 HEADERS += backend/include/server.hpp

@@ -36,7 +36,7 @@ public slots:
 signals:
   void progressChanged(int progress);
 
-  void errorDownloadVersion();
+  void errorDownloadVersion(const QString &errorStr);
 
   void onFinished();
 

@@ -19,7 +19,7 @@
 class DownloadLibraries : public QObject {
   Q_OBJECT
 public:
-  DownloadLibraries(QObject *object = nullptr);
+  DownloadLibraries(QObject *parent = nullptr);
 
   ~DownloadLibraries();
 
@@ -39,7 +39,7 @@ public slots:
 signals:
   void progressChanged(int progress);
 
-  void errorDownloadLibraries();
+  void errorDownloadLibraries(const QString &errorStr);
 
   void onFinished();
 

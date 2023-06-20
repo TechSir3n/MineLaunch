@@ -16,7 +16,7 @@ class DownloadClient : public QObject {
   Q_OBJECT
 
 public:
-  DownloadClient(QObject *object = nullptr);
+  DownloadClient(QObject *parent = nullptr);
 
   ~DownloadClient();
 
@@ -34,7 +34,7 @@ public slots:
   void stopIsDownloadingClient();
 
 signals:
-  void errorDownloadClient();
+  void errorDownloadClient(const QString &errorStr);
 
   void progressChanged(int progress);
 

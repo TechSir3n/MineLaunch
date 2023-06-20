@@ -3,8 +3,26 @@
 Downloader::Downloader()
     : m_version(new DownloadVersion()), m_client(new DownloadClient()),
       m_library(new DownloadLibraries()), handler(new HandlerSignals()),
-      m_progress(new QProgressDialog) {
+      m_progress(new QProgressDialog), m_index(new DownloadAssetIndex()),
+      m_resources(new DownloadResources()) {
   m_IsDownloading = "downloading";
+
+  QObject::connect(m_version, &DownloadVersion::errorDownloadVersion, handler,
+                   &HandlerSignals::onDownloadVersionError);
+
+  QObject::connect(m_library, &DownloadLibraries::errorDownloadLibraries,
+                   handler, &HandlerSignals::onDownloadLibrariesError);
+
+  QObject::connect(m_client, &DownloadClient::errorDownloadClient, handler,
+                   &HandlerSignals::onDownloadClientError);
+
+  QObject::connect(m_index, &DownloadAssetIndex::errorDownloadAssetIndex,
+                   handler, &HandlerSignals::onDownloadAssetIndexError);
+
+  QObject::connect(m_resources, &DownloadResources::errorDownloadResources,
+                   handler, &HandlerSignals::onDownloadAssetResoucresError);
+
+  m_progress->close();
 }
 
 Downloader::~Downloader() {
@@ -13,7 +31,9 @@ Downloader::~Downloader() {
   delete m_process;
   delete m_client;
   delete m_library;
+  delete m_resources;
   delete m_progress;
+  delete m_index;
 }
 
 void Downloader::start() {
@@ -31,6 +51,8 @@ void Downloader::start() {
 
     m_library->downloadLibraries("23w03a1");
 
+    m_index->downloadAssetIndex("23w03a1");
+
     stopProgressDialog();
   } else if (versionStr == "1.20-pre7") {
     startProgressDialog();
@@ -42,6 +64,7 @@ void Downloader::start() {
     m_client->downloadClient("1.20-pre7");
 
     m_library->downloadLibraries("1.20-pre7");
+    m_index->downloadAssetIndex("1.20-pre7");
 
     stopProgressDialog();
 
@@ -56,6 +79,8 @@ void Downloader::start() {
 
     m_library->downloadLibraries("1.20-pre4");
 
+    m_index->downloadAssetIndex("1.20-pre4");
+
     stopProgressDialog();
 
   } else if (versionStr == "1.19.4-pre4") {
@@ -66,7 +91,10 @@ void Downloader::start() {
         "bfc041cde4125e6fb9da3fa1386ee881c663ca22/1.19.4-pre4.json");
 
     m_client->downloadClient("1.19.4-pre4");
+
     m_library->downloadLibraries("1.19.4-pre4");
+
+    m_index->downloadAssetIndex("1.19.4-pre4");
 
     stopProgressDialog();
 
@@ -77,7 +105,10 @@ void Downloader::start() {
         "f518509785dee0c0a7013f94f94b1423c732d298/23w17a.json");
 
     m_client->downloadClient("23w17a");
+
     m_library->downloadLibraries("23w17a");
+
+    m_index->downloadAssetIndex("23w17a");
 
     stopProgressDialog();
   }
@@ -91,6 +122,10 @@ void Downloader::stop() {
                    &DownloadClient::stopIsDownloadingClient);
   QObject::connect(this, &Downloader::stopDownloading, m_library,
                    &DownloadLibraries::stopIsDownloadingLibraries);
+  QObject::connect(this, &Downloader::stopDownloading, m_index,
+                   &DownloadAssetIndex::stopIsDownloadingAssetIndex);
+  QObject::connect(this, &Downloader::stopDownloading, m_resources,
+                   &DownloadResources::stopIsDownloadingResources);
 }
 
 void Downloader::startProgressDialog() {
@@ -108,6 +143,10 @@ void Downloader::startProgressDialog() {
                    &QProgressDialog::setValue);
   QObject::connect(m_library, &DownloadLibraries::progressChanged, m_progress,
                    &QProgressDialog::setValue);
+  QObject::connect(m_index, &DownloadAssetIndex::progressChanged, m_progress,
+                   &QProgressDialog::setValue);
+  QObject::connect(m_resources, &DownloadResources::progressChanged, m_progress,
+                   &QProgressDialog::setValue);
 }
 
 void Downloader::stopProgressDialog() {
@@ -116,6 +155,11 @@ void Downloader::stopProgressDialog() {
   QObject::connect(m_version, &DownloadVersion::onFinished, m_progress,
                    &QProgressDialog::close);
   QObject::connect(m_client, &DownloadClient::onFinished, m_progress,
+                   &QProgressDialog::close);
+
+  QObject::connect(m_index, &DownloadAssetIndex::onFinished, m_progress,
+                   &QProgressDialog::close);
+  QObject::connect(m_resources, &DownloadResources::onFinished, m_progress,
                    &QProgressDialog::close);
 }
 

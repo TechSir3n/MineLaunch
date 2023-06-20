@@ -1,7 +1,7 @@
 #include "./include/downloadLibraries.hpp"
 
-DownloadLibraries::DownloadLibraries(QObject *object)
-    : QObject(object), m_manager(new QNetworkAccessManager()) {}
+DownloadLibraries::DownloadLibraries(QObject *parent)
+    : QObject(parent), m_manager(new QNetworkAccessManager()) {}
 
 DownloadLibraries::~DownloadLibraries() { delete m_manager; }
 
@@ -63,7 +63,7 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
     loop.exec();
 
     if (reply->error() != QNetworkReply::NoError) {
-      qDebug() << "Reply Error: " << reply->errorString();
+      emit errorDownloadLibraries(reply->errorString());
       return;
     }
 
