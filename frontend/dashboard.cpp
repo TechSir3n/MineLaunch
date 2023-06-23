@@ -1,4 +1,5 @@
 #include "./include/dashboard.hpp"
+#include "./assistance/path.hpp"
 
 DashBoard::DashBoard(QWidget *parent)
     : QDialog(parent), tabWidget(new QTabWidget(this)),
@@ -61,7 +62,7 @@ void DashBoard::loadMods() noexcept {
 
   tabWidget->addTab(widgetMods, "Mods");
 
-  QFile file(QCoreApplication::applicationDirPath() + "/../" +
+  QFile file(Path::launcherPath() + "/../" +
              "/MineLaunch/resources/mods/config/config.json");
   if (!file.open(QIODevice::ReadOnly)) {
     logger.log(LogLevel::Error, "Failed to open file [addMods]");
@@ -205,7 +206,7 @@ void DashBoard::addMenuTab() noexcept {
   });
 
   QObject::connect(aboutAction, &QAction::triggered, this, []() {
-    QDesktopServices::openUrl(QUrl(QCoreApplication::applicationDirPath() + "/../" +
+    QDesktopServices::openUrl(QUrl(Path::launcherPath()+ "/../" +
                                      "/MineLaunch/resources/aboutLaunch.html"));
   });
 }
@@ -335,7 +336,7 @@ void DashBoard::addGameTab() noexcept {
   tabWidget->addTab(widgetShowGame, "Game");
 
   QLabel *image = new QLabel();
-  QPixmap pixmap(QCoreApplication::applicationDirPath() + "/../" +
+  QPixmap pixmap(Path::launcherPath() + "/../" +
                  "/MineLaunch/resources/images.png");
   QPixmap scaledPixmap = pixmap.scaled(QSize(480, 290), Qt::KeepAspectRatio);
   image->setPixmap(scaledPixmap);

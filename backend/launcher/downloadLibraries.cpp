@@ -1,4 +1,5 @@
 #include "./include/downloadLibraries.hpp"
+#include "./assistance/path.hpp"
 
 DownloadLibraries::DownloadLibraries(QObject *parent)
     : QObject(parent), m_manager(new QNetworkAccessManager()) {}
@@ -6,7 +7,7 @@ DownloadLibraries::DownloadLibraries(QObject *parent)
 DownloadLibraries::~DownloadLibraries() { delete m_manager; }
 
 void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
-  const QString path = QCoreApplication::applicationDirPath() + "/../" +
+  const QString path = Path::launcherPath() + "/../" +
                        "/MineLaunch/backend/launcher/minecraft/versions/";
   QDir dir(path);
 
@@ -31,15 +32,18 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
       }
     }
   }
-  const QString savePath = QCoreApplication::applicationDirPath() +
-                           QDir::separator() + ".." + QDir::separator() +
+  const QString savePath = Path::launcherPath() + QDir::separator() + ".." +
+                           QDir::separator() +
                            "/MineLaunch/backend/launcher/minecraft/libraries/";
   QDir librariesDir(savePath);
   if (!librariesDir.exists()) {
     qDebug() << "like this directory doesn't exits";
     return;
   }
-  librariesDir.mkdir(versionGame);
+  if (!librariesDir.mkdir(versionGame)) {
+    qDebug() << "Error create directory,maybe it created already";
+    return;
+  }
 
   for (const auto &url : urls) {
     QNetworkRequest request(url);
@@ -74,7 +78,6 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
 
     if (file.open(QIODevice::WriteOnly)) {
       file.write(reply->readAll());
-
       file.close();
     } else {
       qDebug() << "Failed to save file: " << file.errorString();

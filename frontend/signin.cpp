@@ -1,4 +1,5 @@
 #include "./include/signin.hpp"
+#include "./assistance/path.hpp"
 
 SignIn::SignIn(QWidget *parent) : QDialog(parent),dialog(new CodeDialog()) {
       setupUI();
@@ -26,7 +27,7 @@ void SignIn::setupUI() {
   buttonSubmit = new QPushButton(tr("Sign in"));
 
   QToolButton *toolButton = new QToolButton();
-  toolButton->setIcon(QIcon(QCoreApplication::applicationDirPath() + "/../" +
+  toolButton->setIcon(QIcon(Path::launcherPath() + "/../" +
                             "/MineLaunch/resources/211661_eye_icon.png"));
   toolButton->setCursor(Qt::PointingHandCursor);
 
@@ -39,7 +40,7 @@ void SignIn::setupUI() {
   });
 
   QLabel *logo = new QLabel();
-  QPixmap logoImage(QCoreApplication::applicationDirPath() + "/../" +
+  QPixmap logoImage(Path::launcherPath() + "/../" +
                     "MineLaunch/resources/u_ajax.png");
   logo->setPixmap(logoImage);
   logo->setAlignment(Qt::AlignCenter);
@@ -92,7 +93,7 @@ void SignIn::setupUI() {
   lineEmail->setStyleSheet(lineEditStyle);
 
   auto [x,y] = signup.CalculateCenterMonitor();
-  QIcon icon(QCoreApplication::applicationDirPath() + "/../" +
+  QIcon icon(Path::launcherPath()+ "/../" +
              "/MineLaunch/resources/u_ajax.png");
 
   this->setWindowIcon(icon);

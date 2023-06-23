@@ -14,7 +14,6 @@
 #include <QJsonValue>
 #include <QFile>
 
-
 #define HTTP "https://resources.download.minecraft.net"
 
 class DownloadResources : public QObject {
@@ -29,7 +28,7 @@ public:
   DownloadResources &operator=(const DownloadResources &) = delete;
 
 public:
-  void downloadResources(const QString &versionGame);
+  void downloadResources(const QString &version);
 
 public slots:
   void stopIsDownloadingResources();

@@ -1,27 +1,27 @@
 #pragma once
 
-#include <QObject>
+#include <QByteArray>
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include <QCoreApplication>
-#include <QFile>
-#include <QDir>
-#include <QJsonValue>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QByteArray>
+#include <QObject>
 
 class DownloadAssetIndex : public QObject {
-    Q_OBJECT
+  Q_OBJECT
 public:
- DownloadAssetIndex(QObject *parent = nullptr);
+  DownloadAssetIndex(QObject *parent = nullptr);
 
   ~DownloadAssetIndex();
 
   DownloadAssetIndex(const DownloadAssetIndex &) = delete;
 
-  DownloadAssetIndex&operator=(const DownloadAssetIndex &) = delete;
+  DownloadAssetIndex &operator=(const DownloadAssetIndex &) = delete;
 
 public:
   void downloadAssetIndex(const QString &versionGame);
@@ -37,11 +37,9 @@ signals:
   void onFinished();
 
 private:
-  QString &getAssetIndex() const noexcept;
-
   QNetworkReply *getReply(QNetworkReply *reply = nullptr) noexcept;
 
-
 private:
-    QNetworkAccessManager *m_manager;
+  QNetworkAccessManager *m_manager;
+  QString m_assetIndex;
 };

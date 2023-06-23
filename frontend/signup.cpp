@@ -1,6 +1,7 @@
 #include "./include/signup.hpp"
 #include "./include/code_submit.hpp"
 #include "./include/signin.hpp"
+#include "./assistance/path.hpp"
 
 SignUp::SignUp(QWidget *parent) : QDialog(parent) {
     setupUI();
@@ -38,7 +39,7 @@ void SignUp::setupUI() {
   checkboxLayout->addStretch();
   checkboxLayout->addWidget(buttonSubmit);
 
-  const QString path = QCoreApplication::applicationDirPath() + "/../" + "/MineLaunch/resources/aboutLaunch.html";
+  const QString path = Path::launcherPath() + "/../" + "/MineLaunch/resources/aboutLaunch.html";
   QLabel *labelLink = new QLabel("<a href=\"" + path + "\">About MineLaucnh</a>");
   labelLink->setTextFormat(Qt::RichText);
   labelLink->setOpenExternalLinks(true);
@@ -62,7 +63,7 @@ void SignUp::setupUI() {
   browserLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
   QLabel *logo = new QLabel();
-  QPixmap logoImage(QCoreApplication::applicationDirPath() + "/../" +
+  QPixmap logoImage(Path::launcherPath() + "/../" +
                     "/MineLaunch/resources/u_ajax.png");
   logo->setPixmap(logoImage);
   logo->setAlignment(Qt::AlignCenter);
@@ -96,11 +97,11 @@ void SignUp::setupUI() {
   labelPassword->setFont(labelFont);
 
   QToolButton *toolButton = new QToolButton();
-  toolButton->setIcon(QIcon(QCoreApplication::applicationDirPath() + "/../" +
+  toolButton->setIcon(QIcon(Path::launcherPath() + "/../" +
                             "/MineLaunch/resources/211661_eye_icon.png"));
   toolButton->setCursor(Qt::PointingHandCursor);
 
-  QObject::connect(toolButton, &QToolButton::clicked, [=]() {
+  QObject::connect(toolButton, &QToolButton::clicked,this, [=]() {
     if (linePassword->echoMode() == QLineEdit::Password) {
       linePassword->setEchoMode(QLineEdit::Normal);
     } else {
@@ -117,7 +118,7 @@ void SignUp::setupUI() {
   linePassword->setStyleSheet(lineEditStyle);
   lineUsername->setStyleSheet(lineEditStyle);
 
-  QIcon icon(QCoreApplication::applicationDirPath() + "/../" +
+  QIcon icon(Path::launcherPath()+ "/../" +
              "/MineLaunch/resources/u_ajax.png");
   auto [x,y] = CalculateCenterMonitor();
 

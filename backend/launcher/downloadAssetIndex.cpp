@@ -1,4 +1,5 @@
 #include "./include/downloadAssetIndex.hpp"
+#include "./assistance/path.hpp"
 
 DownloadAssetIndex::DownloadAssetIndex(QObject *parent)
     : QObject(parent), m_manager(new QNetworkAccessManager()) {}
@@ -6,7 +7,7 @@ DownloadAssetIndex::DownloadAssetIndex(QObject *parent)
 DownloadAssetIndex::~DownloadAssetIndex() { delete m_manager; }
 
 void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
-  const QString path = QCoreApplication::applicationDirPath() + "/../" +
+  const QString path = Path::launcherPath() + "/../" +
                        "/MineLaunch/backend/launcher/minecraft/versions/";
   QDir dir(path);
   QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
@@ -26,7 +27,7 @@ void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
     QJsonValue assetIndexValue =
         obj.value("assetIndex").toObject().value("url");
 
-    qDebug()<<"Url Assset: " << assetIndexValue.toString();
+    QString httpHashVersion = assetIndexValue.toString().split("/").last();
 
     QNetworkRequest request(assetIndexValue.toString());
     QNetworkReply *reply = m_manager->get(request);
@@ -34,17 +35,27 @@ void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
 
     QEventLoop loop;
     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    QObject::connect(reply, &QNetworkReply::downloadProgress, this,
+                     [=](qint64 bytesReceived, qint64 bytesTotal) {
+                       int progress = (bytesTotal > 0)
+                                          ? (bytesReceived * 100 / bytesTotal)
+                                          : 0;
+                       emit progressChanged(progress);
 
+                       if (progress == 0) {
+                         emit onFinished();
+                       }
+                     });
 
     loop.exec();
 
-    if(reply->error()!=QNetworkReply::NoError) {
-      emit errorDownloadAssetIndex("Error download asset index :" + reply->errorString());
+    if (reply->error() != QNetworkReply::NoError) {
+      emit errorDownloadAssetIndex("Error download asset index :" +
+                                   reply->errorString());
       return;
     }
 
-    const QString savePath =
-        QCoreApplication::applicationDirPath() + "/../" +
+    const QString savePath = Path::launcherPath() + "/../" +
         "/MineLaunch/backend/launcher/minecraft/assets/indexes/";
 
     QDir saveDir(savePath);
@@ -54,12 +65,7 @@ void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
       return;
     }
 
-    if (!saveDir.mkdir(versionGame)) {
-      qDebug() << "Failed to create directory [downloadAssetIndex]";
-      return;
-    }
-
-    QFile saveFile(savePath + versionGame + "/" + "version.json");
+    QFile saveFile(savePath + httpHashVersion);
     if (!saveFile.open(QIODevice::WriteOnly)) {
       qDebug() << "Failed to open file for write [downloadAssetIndex]: "
                << file.errorString();
@@ -78,7 +84,7 @@ void DownloadAssetIndex::stopIsDownloadingAssetIndex() {
   reply->abort();
 }
 
-QString &DownloadAssetIndex::getAssetIndex() const noexcept {}
+
 
 QNetworkReply *DownloadAssetIndex::getReply(QNetworkReply *reply) noexcept {
   return reply;

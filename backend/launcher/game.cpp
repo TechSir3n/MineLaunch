@@ -1,26 +1,27 @@
 #include "./include/game.hpp"
+#include "./assistance/path.hpp"
 
 PlayGame::PlayGame() : m_process(new QProcess()), signal(new HandlerSignals()) {
 
   QObject::connect(this, &PlayGame::gameLaunchError, signal,
                    &HandlerSignals::onGameLauncherError);
-
 }
 
 PlayGame::~PlayGame() { delete m_process; }
 
 void PlayGame::start() {
+
   QStringList arguments;
 
-    const QString classpath = "/home/ruslan/Documents/MineLaunch/backend/"
-                              "launcher/minecraft/libraries/" + versionGame + "/" +
-                              "*:/home/ruslan/Documents/MineLaunch/backend/"
-                              "launcher/minecraft/versions/" + versionGame + "/client.jar";
+  const QString classpath = Path::launcherPath() + "/../" +"/MineLaunch/backend/"
+                            "launcher/minecraft/libraries/" +
+                            versionGame + "/" +
+                            "*:" +  Path::launcherPath() +"/../" + "/MineLaunch/backend/"
+                            "launcher/minecraft/versions/" +
+                            versionGame + "/client.jar";
 
-
-  const QString assetDir = "/home/ruslan/Documents/MineLaunch/backend/launcher/minecraft/assets/indexes" + versionGame;
-
-    const QString assetIndex =  "";
+  const QString assetIndex = getAssetIndex();
+  const QString assetDir = Path::launcherPath() + "/../" + "/MineLaunch/backend/launcher/minecraft/assets/";
 
   const QString token =
       "eyJraWQiOiJhYzg0YSIsImFsZyI6IkhTMjU2In0."
@@ -33,10 +34,8 @@ void PlayGame::start() {
       "p5rNp0OsaZHu2MRXmgD5PN-ss5ndr-xXUXGJUe4PZuw";
 
   arguments << "-cp" << classpath << "net.minecraft.client.main.Main"
-            << "--accessToken" << token
-            <<"--assetDir" << assetDir
-            <<"--assetIndex" << assetIndex
-            << "--username"
+            << "--accessToken" << token << "--assetsDir" << assetDir
+            << "--assetIndex" << assetIndex << "--username"
             << "Ruslan"
             << "--version" << versionGame;
 
@@ -91,4 +90,28 @@ void PlayGame::onReadyReadStandardOutput() {
 
 void PlayGame::getVersionGame(const QString &t_versionGame) {
   versionGame = t_versionGame;
+}
+
+QString PlayGame::getAssetIndex() noexcept {
+  if (versionGame == "1.19.4-rc1") {
+    m_assetIndex = "3";
+    return m_assetIndex;
+  } else if (versionGame == "23w03a") {
+    m_assetIndex = "2";
+    return m_assetIndex;
+  } else if (versionGame == "1.20-pre7") {
+    m_assetIndex = "5";
+    return m_assetIndex;
+  } else if (versionGame == "1.20-pre4") {
+    m_assetIndex = "5";
+    return m_assetIndex;
+  } else if (versionGame == "1.19.4-pre4") {
+    m_assetIndex = "3";
+    return m_assetIndex;
+  } else if (versionGame == "23w17a") {
+    m_assetIndex = "5";
+    return m_assetIndex;
+  }
+
+  return QString();
 }

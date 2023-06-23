@@ -1,4 +1,5 @@
 #include "./include/downloadVersion.hpp"
+#include "assistance/path.hpp"
 
 DownloadVersion::DownloadVersion(QObject *parent)
     : QObject(parent), m_manager(new QNetworkAccessManager()) {}
@@ -40,7 +41,7 @@ void DownloadVersion::downloadVersion(const QString &versionGame) noexcept {
   QStringList parts = fileName.split("/");
   QString version = parts.last().replace(".json", "");
 
-  const QString path = QCoreApplication::applicationDirPath() + "/../" +
+  const QString path =  Path::launcherPath() + "/../" +
                        "/MineLaunch/backend/launcher/minecraft/versions/";
   QDir dir(path);
   if (!dir.exists()) {

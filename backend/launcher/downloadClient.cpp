@@ -1,4 +1,5 @@
 #include "./include/downloadClient.hpp"
+#include "./assistance/path.hpp"
 
 DownloadClient::DownloadClient(QObject *parent)
     : QObject(parent), m_manager(new QNetworkAccessManager()),
@@ -10,7 +11,7 @@ DownloadClient::~DownloadClient() {
 }
 
 void DownloadClient::downloadClient(const QString &versionClient) {
-  const QString path = QCoreApplication::applicationDirPath() + "/../" +
+  const QString path = Path::launcherPath() + "/../" +
                        "/MineLaunch/backend/launcher/minecraft/versions/";
   QDir dir(path);
   QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);

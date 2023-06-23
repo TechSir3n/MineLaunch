@@ -27,6 +27,9 @@ public slots:
 
   void getVersionGame(const QString &t_versionGame);
 
+private:
+  QString getAssetIndex() noexcept;
+
 private slots:
   void onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
@@ -41,5 +44,6 @@ signals:
 private:
   QProcess *m_process;
   HandlerSignals *signal;
-  QString versionGame ; // "1.19.4-rc1"
+  QString versionGame ;
+  QString m_assetIndex;
 };
