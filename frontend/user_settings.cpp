@@ -1,15 +1,18 @@
 #include "./include/user_settings.hpp"
-#include "./include/welcome.hpp"
 #include "./include/dashboard.hpp"
-
+#include "./include/welcome.hpp"
 
 QStringList m_data;
 
-UserSettings::UserSettings(QWidget *parent) : QDialog(parent) {}
+UserSettings::UserSettings(QWidget *parent) : QDialog(parent) {
+  PlayGame *game = new PlayGame();
+  QObject::connect(this, &UserSettings::sendUsername, game,
+                   &PlayGame::getUsername);
+}
 
 void UserSettings::getProfileData(const QString &name, const QString &email,
                                   const QString &password) {
-    m_data = {name,email,password};
+  m_data = {name, email, password};
 }
 
 void UserSettings::initalizeGuiSettings(QTabWidget *m_tab) noexcept {
@@ -40,6 +43,8 @@ void UserSettings::initalizeGuiSettings(QTabWidget *m_tab) noexcept {
   nameValueLabel = new QLabel(tr("") + "" + m_data[0]);
   emailValueLabel = new QLabel(tr("") + "" + m_data[1]);
   passwordValueLabel = new QLabel(tr("") + "" + m_data[2]);
+
+  emit sendUsername(nameValueLabel->text());
 
   nameLabel->setStyleSheet("font-size: 20px;");
   emailLabel->setStyleSheet("font-size: 20px;");
@@ -106,11 +111,10 @@ void UserSettings::initalizeGuiSettings(QTabWidget *m_tab) noexcept {
       Qt::LeftToRight, Qt::AlignCenter, profileWidget->size(),
       QGuiApplication::primaryScreen()->availableGeometry()));
 
-
   std::shared_ptr<WelcomePage> welcPtr = std::make_shared<WelcomePage>();
   QObject::connect(exitButton, &QPushButton::clicked, this, [welcPtr]() {
-      DashBoard::getInstance().close();
-      welcPtr->show();
+    DashBoard::getInstance().close();
+    welcPtr->show();
   });
 
   QObject::connect(editPasswordButton, &QPushButton::clicked, this, [this]() {

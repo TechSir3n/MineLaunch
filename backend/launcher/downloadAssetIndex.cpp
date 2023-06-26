@@ -7,8 +7,8 @@ DownloadAssetIndex::DownloadAssetIndex(QObject *parent)
 DownloadAssetIndex::~DownloadAssetIndex() { delete m_manager; }
 
 void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
-  const QString path = Path::launcherPath() + "/../" +
-                       "/MineLaunch/backend/launcher/minecraft/versions/";
+    const QString path = QDir::cleanPath(Path::launcherPath() + "/../" +
+                                         "/MineLaunch/backend/launcher/minecraft/versions/");
   QDir dir(path);
   QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
   if (dirs.contains(versionGame)) {
@@ -55,8 +55,8 @@ void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
       return;
     }
 
-    const QString savePath = Path::launcherPath() + "/../" +
-        "/MineLaunch/backend/launcher/minecraft/assets/indexes/";
+    const QString savePath = QDir::cleanPath(Path::launcherPath() + "/../" +
+                                             "/MineLaunch/backend/launcher/minecraft/assets/indexes/");
 
     QDir saveDir(savePath);
     if (!saveDir.exists()) {
@@ -83,8 +83,6 @@ void DownloadAssetIndex::stopIsDownloadingAssetIndex() {
   auto reply = getReply();
   reply->abort();
 }
-
-
 
 QNetworkReply *DownloadAssetIndex::getReply(QNetworkReply *reply) noexcept {
   return reply;

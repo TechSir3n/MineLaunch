@@ -53,7 +53,6 @@ void Client::sendUserLoginData(const QString &email, const QString &password) {
   emit dataSent(object);
 }
 
-
 void Client::readyRead() {
   const auto jsonData = m_socket->readAll();
   QJsonDocument doc = QJsonDocument::fromJson(jsonData);

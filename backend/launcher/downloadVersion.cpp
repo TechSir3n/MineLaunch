@@ -41,8 +41,9 @@ void DownloadVersion::downloadVersion(const QString &versionGame) noexcept {
   QStringList parts = fileName.split("/");
   QString version = parts.last().replace(".json", "");
 
-  const QString path =  Path::launcherPath() + "/../" +
-                       "/MineLaunch/backend/launcher/minecraft/versions/";
+  const QString path =
+      QDir::cleanPath(Path::launcherPath() + "/../" +
+                      "/MineLaunch/backend/launcher/minecraft/versions/");
   QDir dir(path);
   if (!dir.exists()) {
     qDebug() << "Directory doesn't exists";

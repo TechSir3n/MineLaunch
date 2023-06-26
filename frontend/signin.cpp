@@ -1,8 +1,12 @@
 #include "./include/signin.hpp"
 #include "./assistance/path.hpp"
+#include "./include/welcome.hpp"
 
-SignIn::SignIn(QWidget *parent) : QDialog(parent),dialog(new CodeDialog()) {
-      setupUI();
+SignIn::SignIn(QWidget *parent) : QDialog(parent), dialog(new CodeDialog()) {
+  setupUI();
+
+
+
 }
 
 SignIn::~SignIn() noexcept {
@@ -27,8 +31,9 @@ void SignIn::setupUI() {
   buttonSubmit = new QPushButton(tr("Sign in"));
 
   QToolButton *toolButton = new QToolButton();
-  toolButton->setIcon(QIcon(Path::launcherPath() + "/../" +
-                            "/MineLaunch/resources/211661_eye_icon.png"));
+  toolButton->setIcon(
+      QIcon(QDir::cleanPath(Path::launcherPath() + "/../" +
+                            "/MineLaunch/resources/211661_eye_icon.png")));
   toolButton->setCursor(Qt::PointingHandCursor);
 
   QObject::connect(toolButton, &QToolButton::clicked, this, [=]() {
@@ -40,8 +45,8 @@ void SignIn::setupUI() {
   });
 
   QLabel *logo = new QLabel();
-  QPixmap logoImage(Path::launcherPath() + "/../" +
-                    "MineLaunch/resources/u_ajax.png");
+  QPixmap logoImage(QDir::cleanPath(Path::launcherPath() + "/../" +
+                                    "MineLaunch/resources/u_ajax.png"));
   logo->setPixmap(logoImage);
   logo->setAlignment(Qt::AlignCenter);
   logo->setFixedSize(230, 130);
@@ -92,9 +97,9 @@ void SignIn::setupUI() {
   linePassword->setStyleSheet(lineEditStyle);
   lineEmail->setStyleSheet(lineEditStyle);
 
-  auto [x,y] = signup.CalculateCenterMonitor();
-  QIcon icon(Path::launcherPath()+ "/../" +
-             "/MineLaunch/resources/u_ajax.png");
+  auto [x, y] = signup.CalculateCenterMonitor();
+  QIcon icon(QDir::cleanPath(Path::launcherPath() + "/../" +
+                             "/MineLaunch/resources/u_ajax.png"));
 
   this->setWindowIcon(icon);
   this->setFixedSize(550, 700);
@@ -125,8 +130,7 @@ bool SignIn::automaticLogin() const noexcept {
   return false;
 }
 
-void SignIn::showEvent(QShowEvent *event)
-{
+void SignIn::showEvent(QShowEvent *event) {
   QDialog::showEvent(event);
   if (!automaticLogin()) {
     setupUI();

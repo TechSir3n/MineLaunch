@@ -7,8 +7,8 @@ DownloadLibraries::DownloadLibraries(QObject *parent)
 DownloadLibraries::~DownloadLibraries() { delete m_manager; }
 
 void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
-  const QString path = Path::launcherPath() + "/../" +
-                       "/MineLaunch/backend/launcher/minecraft/versions/";
+    const QString path = QDir::cleanPath(Path::launcherPath() + "/../" +
+                                         "/MineLaunch/backend/launcher/minecraft/versions/");
   QDir dir(path);
 
   QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
@@ -32,9 +32,9 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
       }
     }
   }
-  const QString savePath = Path::launcherPath() + QDir::separator() + ".." +
+  const QString savePath = QDir::cleanPath(Path::launcherPath() + QDir::separator() + ".." +
                            QDir::separator() +
-                           "/MineLaunch/backend/launcher/minecraft/libraries/";
+                                           "/MineLaunch/backend/launcher/minecraft/libraries/");
   QDir librariesDir(savePath);
   if (!librariesDir.exists()) {
     qDebug() << "like this directory doesn't exits";

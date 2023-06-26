@@ -13,15 +13,19 @@ void PlayGame::start() {
 
   QStringList arguments;
 
-  const QString classpath = Path::launcherPath() + "/../" +"/MineLaunch/backend/"
-                            "launcher/minecraft/libraries/" +
-                            versionGame + "/" +
-                            "*:" +  Path::launcherPath() +"/../" + "/MineLaunch/backend/"
-                            "launcher/minecraft/versions/" +
-                            versionGame + "/client.jar";
+  const QString classpath =
+      QDir::cleanPath(Path::launcherPath() + "/../" +
+                      "/MineLaunch/backend/"
+                      "launcher/minecraft/libraries/" +
+                      versionGame + "/" + "*:" + Path::launcherPath() + "/../" +
+                      "/MineLaunch/backend/"
+                      "launcher/minecraft/versions/" +
+                      versionGame + "/client.jar");
 
   const QString assetIndex = getAssetIndex();
-  const QString assetDir = Path::launcherPath() + "/../" + "/MineLaunch/backend/launcher/minecraft/assets/";
+  const QString assetDir =
+      QDir::cleanPath(Path::launcherPath() + "/../" +
+                      "/MineLaunch/backend/launcher/minecraft/assets/");
 
   const QString token =
       "eyJraWQiOiJhYzg0YSIsImFsZyI6IkhTMjU2In0."
@@ -33,11 +37,16 @@ void PlayGame::start() {
       "YmYiOjE2ODY1OTM3ODAsImV4cCI6MTY4NjY4MDE4MCwiaWF0IjoxNjg2NTkzNzgwfQ."
       "p5rNp0OsaZHu2MRXmgD5PN-ss5ndr-xXUXGJUe4PZuw";
 
-  arguments << "-cp" << classpath << "net.minecraft.client.main.Main"
-            << "--accessToken" << token << "--assetsDir" << assetDir
-            << "--assetIndex" << assetIndex << "--username"
-            << "Ruslan"
-            << "--version" << versionGame;
+  arguments << "-cp" << classpath << mainClass << "--accessToken" << token
+            << "--assetsDir" << assetDir << "--assetIndex" << assetIndex
+            << "--username" << m_username << "--version" << versionGame
+            << "--soundVolume" << m_soundValue;
+
+  arguments.append(m_extensionArgs);
+
+  arguments.append(m_screenModeArgs);
+
+  arguments.append(m_gammaArgs);
 
   m_process->startDetached("java", arguments);
 
@@ -49,12 +58,6 @@ void PlayGame::start() {
 
   QObject::connect(m_process, &QProcess::readyReadStandardOutput, this,
                    &PlayGame::onReadyReadStandardOutput);
-
-  if (!m_process->waitForFinished()) {
-    qDebug() << "Error process: " << m_process->errorString();
-  } else {
-    qDebug() << "Process started successfully";
-  };
 }
 
 bool PlayGame::gameIsRunning() const {
@@ -86,6 +89,26 @@ void PlayGame::onReadyReadStandardError() {
 void PlayGame::onReadyReadStandardOutput() {
   QString output = m_process->readAllStandardOutput();
   qDebug() << "Output: " << output;
+}
+
+void PlayGame::getUsername(const QString &username) { m_username = username; }
+
+void PlayGame::getExtensionSettings(const QStringList &extensionArgs) {
+
+  m_extensionArgs = extensionArgs;
+}
+
+void PlayGame::getScreenMode(const QStringList &screenModeArgs) {
+  m_screenModeArgs = screenModeArgs;
+}
+
+void PlayGame::getGamma(const QStringList &gammaArgs)
+{
+  m_gammaArgs = gammaArgs;
+}
+
+void PlayGame::getSoundValue(const QString &soundValueArg) {
+  m_soundValue = soundValueArg;
 }
 
 void PlayGame::getVersionGame(const QString &t_versionGame) {

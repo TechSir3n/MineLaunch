@@ -39,9 +39,11 @@ public slots:
   void getProfileData(const QString &name, const QString &email,
                       const QString &password);
 signals:
+  void sendUsername(const QString &username);
+
   void sendNewUsername(const QString &newName,const QString &email);
 
- void sendNewPassword(const QString &newPassword,const QString &email);
+  void sendNewPassword(const QString &newPassword,const QString &email);
 
 public:
   void initalizeGuiSettings(QTabWidget *m_tab) noexcept;

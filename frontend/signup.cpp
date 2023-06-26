@@ -1,10 +1,12 @@
 #include "./include/signup.hpp"
+#include "./assistance/path.hpp"
 #include "./include/code_submit.hpp"
 #include "./include/signin.hpp"
-#include "./assistance/path.hpp"
 
 SignUp::SignUp(QWidget *parent) : QDialog(parent) {
-    setupUI();
+  setupUI();
+
+
 }
 
 SignUp::~SignUp() noexcept {
@@ -39,8 +41,10 @@ void SignUp::setupUI() {
   checkboxLayout->addStretch();
   checkboxLayout->addWidget(buttonSubmit);
 
-  const QString path = Path::launcherPath() + "/../" + "/MineLaunch/resources/aboutLaunch.html";
-  QLabel *labelLink = new QLabel("<a href=\"" + path + "\">About MineLaucnh</a>");
+  const QString path = QDir::cleanPath(
+      Path::launcherPath() + "/../" + "/MineLaunch/resources/aboutLaunch.html");
+  QLabel *labelLink =
+      new QLabel("<a href=\"" + path + "\">About MineLaucnh</a>");
   labelLink->setTextFormat(Qt::RichText);
   labelLink->setOpenExternalLinks(true);
   labelLink->setTextInteractionFlags(Qt::TextBrowserInteraction);
@@ -49,7 +53,7 @@ void SignUp::setupUI() {
 
   labelLogin->setCursor(Qt::PointingHandCursor);
   labelLogin->setWordWrap(false);
-  labelLogin->setProperty("openExternalLinks",true);
+  labelLogin->setProperty("openExternalLinks", true);
   labelLogin->setToolTip("Click here to sign in");
   labelTitle->setAlignment(Qt::AlignCenter);
 
@@ -97,11 +101,12 @@ void SignUp::setupUI() {
   labelPassword->setFont(labelFont);
 
   QToolButton *toolButton = new QToolButton();
-  toolButton->setIcon(QIcon(Path::launcherPath() + "/../" +
-                            "/MineLaunch/resources/211661_eye_icon.png"));
+  toolButton->setIcon(
+      QIcon(QDir::cleanPath(Path::launcherPath() + "/../" +
+                            "/MineLaunch/resources/211661_eye_icon.png")));
   toolButton->setCursor(Qt::PointingHandCursor);
 
-  QObject::connect(toolButton, &QToolButton::clicked,this, [=]() {
+  QObject::connect(toolButton, &QToolButton::clicked, this, [=]() {
     if (linePassword->echoMode() == QLineEdit::Password) {
       linePassword->setEchoMode(QLineEdit::Normal);
     } else {
@@ -118,18 +123,19 @@ void SignUp::setupUI() {
   linePassword->setStyleSheet(lineEditStyle);
   lineUsername->setStyleSheet(lineEditStyle);
 
-  QIcon icon(Path::launcherPath()+ "/../" +
-             "/MineLaunch/resources/u_ajax.png");
-  auto [x,y] = CalculateCenterMonitor();
+  QIcon icon(QDir::cleanPath(Path::launcherPath() + "/../" +
+                             "/MineLaunch/resources/u_ajax.png"));
+  auto [x, y] = CalculateCenterMonitor();
 
   this->setWindowIcon(icon);
   this->setFixedSize(550, 770);
-  this->move(x,y);
+  this->move(x, y);
 
-  QObject::connect(labelLogin, &QLabel::linkActivated, this,&SignUp::onLabelLinkActivated);
+  QObject::connect(labelLogin, &QLabel::linkActivated, this,
+                   &SignUp::onLabelLinkActivated);
 
-  CodeDialog* dialog = new CodeDialog();
-  QObject::connect(buttonSubmit, &QPushButton::clicked, this, [dialog,this]() {
+  CodeDialog *dialog = new CodeDialog();
+  QObject::connect(buttonSubmit, &QPushButton::clicked, this, [dialog, this]() {
     const QString password = linePassword->text();
     const QString email = lineEmail->text();
     const QString username = lineUsername->text();
@@ -146,8 +152,7 @@ std::tuple<int, int> SignUp::CalculateCenterMonitor() {
   return std::make_tuple(x, y);
 }
 
-void SignUp::onLabelLinkActivated(const QString &link)
-{
+void SignUp::onLabelLinkActivated(const QString &link) {
   SignIn::getInstance().show();
   close();
 }

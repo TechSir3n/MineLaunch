@@ -11,8 +11,8 @@ DownloadClient::~DownloadClient() {
 }
 
 void DownloadClient::downloadClient(const QString &versionClient) {
-  const QString path = Path::launcherPath() + "/../" +
-                       "/MineLaunch/backend/launcher/minecraft/versions/";
+  const QString path = QDir::cleanPath(Path::launcherPath() + "/../" +
+                                       "/MineLaunch/backend/launcher/minecraft/versions/");
   QDir dir(path);
   QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
   if (dirs.contains(versionClient)) {

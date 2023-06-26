@@ -20,6 +20,9 @@ private:
   QPushButton *logIn;
 
   Logger logger;
-  SignUp signup;
+  SignUp *signup;
+
+  bool IsExitSignIn = false;
+  bool IsExitSignUp = false;
 };
 

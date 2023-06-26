@@ -11,10 +11,22 @@ DashBoard::DashBoard(QWidget *parent)
   m_download = dynamic_cast<Downloader *>(
       FactoryLauncher::createLauncher(LauncherType::Download));
 
-  QObject::connect(this, &DashBoard::sendVersionGame, m_download,
+  QObject::connect(this, &DashBoard::sendSaveVersionGame, m_download,
                    &Downloader::getVersionGame);
-  QObject::connect(this, &DashBoard::sendVersionGame, m_play,
+  QObject::connect(this, &DashBoard::sendSaveVersionGame, m_play,
                    &PlayGame::getVersionGame);
+
+  QObject::connect(this, &DashBoard::sendSaveExtension, m_play,
+                   &PlayGame::getExtensionSettings);
+
+  QObject::connect(this, &DashBoard::sendSaveScreenMode, m_play,
+                   &PlayGame::getScreenMode);
+
+  QObject::connect(this, &DashBoard::sendSaveSound, m_play,
+                   &PlayGame::getSoundValue);
+
+  QObject::connect(this, &DashBoard::sendSaveGamma, m_play,
+                   &PlayGame::getGamma);
 
   tabWidget->setFixedSize(QSize(1050, 710));
   versionSelector->setFixedWidth(100);
@@ -62,8 +74,8 @@ void DashBoard::loadMods() noexcept {
 
   tabWidget->addTab(widgetMods, "Mods");
 
-  QFile file(Path::launcherPath() + "/../" +
-             "/MineLaunch/resources/mods/config/config.json");
+  QFile file(QDir::cleanPath(Path::launcherPath() + "/../" +
+                             "/MineLaunch/resources/mods/config/config.json"));
   if (!file.open(QIODevice::ReadOnly)) {
     logger.log(LogLevel::Error, "Failed to open file [addMods]");
     return;
@@ -177,37 +189,41 @@ void DashBoard::addMenuTab() noexcept {
 
   QAction *openAction = new QAction(tr("Open"));
   openAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_O));
-
   QAction *helpAction = new QAction(tr("Help"));
-  helpAction->setShortcut(tr("F1"));
-
+  helpAction->setShortcut(QKeySequence(Qt::ALT | Qt::Key_H));
   QAction *aboutAction = new QAction(tr("About"));
-  aboutAction->setShortcut(tr("F2"));
-
-  QAction *clearLogs = new QAction(tr("Clear logs"));
-
+  aboutAction->setShortcut(QKeySequence(Qt::ALT | Qt::Key_Z));
+  QAction *clearLogsAction = new QAction(tr("Clear logs"));
   QAction *exitAction = new QAction(tr("Exit"));
   exitAction->setShortcut(Qt::CTRL | Qt::Key_Q);
-
   QAction *settingsAction = new QAction(tr("Settings Game"));
 
-
   fileMenu->addAction(openAction);
-  fileMenu->addAction(clearLogs);
+  fileMenu->addAction(clearLogsAction);
   fileMenu->addAction(exitAction);
+
   settingsMenu->addAction(settingsAction);
+
   helpMenu->addAction(helpAction);
   helpMenu->addAction(aboutAction);
 
   QObject::connect(exitAction, &QAction::triggered, qApp, &QApplication::quit);
 
-  QObject::connect(helpAction,&QAction::triggered,this,[this](){
-      tabWidget->setCurrentIndex(4);
+  QObject::connect(helpAction, &QAction::triggered, this, [this]() {
+
   });
 
   QObject::connect(aboutAction, &QAction::triggered, this, []() {
-    QDesktopServices::openUrl(QUrl(Path::launcherPath()+ "/../" +
-                                     "/MineLaunch/resources/aboutLaunch.html"));
+    QDesktopServices::openUrl(
+        QUrl(QDir::cleanPath(Path::launcherPath() + "/../" +
+                             "/MineLaunch/resources/aboutLaunch.html")));
+  });
+
+  QObject::connect(clearLogsAction, &QAction::triggered, this,
+                   [this]() { cl.clearLogs(); });
+
+  QObject::connect(openAction, &QAction::triggered, this, []() {
+
   });
 }
 
@@ -320,8 +336,40 @@ void DashBoard::addSettings() noexcept {
   QObject::connect(choiceColor, &QSlider::valueChanged, this,
                    &DashBoard::onSliderValueChanged);
 
-  QObject::connect(saveButton, &QPushButton::clicked, this, []() {
+  QObject::connect(saveButton, &QPushButton::clicked, this, [this]() {
+    QString extension = screenExtension->currentText();
+   const auto argsExtension = QStringList() << "-w" << extension.split("x").at(0)
+                                       << "-h" << extension.split("x").at(1);
+    emit sendSaveExtension(argsExtension);
 
+    if (fullScreen->isChecked() == true) {
+      qDebug() << "Full Screen: " << fullScreen->text();
+     const  auto argsFullScreen = QStringList() << "--fullscreen";
+      emit sendSaveScreenMode(argsFullScreen);
+
+    } else if (windowMode->isChecked() == true) {
+      qDebug() << "TextWindow:" << windowMode->text();
+     const  auto argsWindowMode = QStringList() << "--width"
+                                          << "1300"
+                                          << "--height"
+                                          << "750";
+      emit sendSaveScreenMode(argsWindowMode);
+
+      int soundValue = soundSlider->value();
+      emit sendSaveSound(QString::number(soundValue));
+
+      int gammaValue = brightnessSlider->value();
+      auto argsGamma = QStringList() << "--gamma" << QString::number(gammaValue);
+      emit sendSaveGamma(argsGamma);
+
+     const auto languageSelected = choiceLanguage->currentText();
+      if(languageSelected == "English")  {
+
+      } else {
+
+      }
+
+    }
   });
 
   QObject::connect(resetButton, &QPushButton::clicked, this, []() {
@@ -336,9 +384,11 @@ void DashBoard::addGameTab() noexcept {
   tabWidget->addTab(widgetShowGame, "Game");
 
   QLabel *image = new QLabel();
-  QPixmap pixmap(Path::launcherPath() + "/../" +
-                 "/MineLaunch/resources/images.png");
-  QPixmap scaledPixmap = pixmap.scaled(QSize(480, 290), Qt::KeepAspectRatio);
+  QPixmap pixmap(
+      QDir::cleanPath(Path::launcherPath() + "/../" +
+                      "/MineLaunch/resources/"
+                      "java-edition-launcher-minecraft-java-edition.jpg"));
+  QPixmap scaledPixmap = pixmap.scaled(tabWidget->size(), Qt::KeepAspectRatio);
   image->setPixmap(scaledPixmap);
 
   QVBoxLayout *pixmapLayout = new QVBoxLayout;
@@ -366,13 +416,13 @@ void DashBoard::addGameTab() noexcept {
 
   QObject::connect(playButton, &QPushButton::clicked, this, [this]() {
     QString version = versionSelector->currentText();
-    emit sendVersionGame(version);
+    emit sendSaveVersionGame(version);
     m_play->start();
   });
 
   QObject::connect(downloadButton, &QPushButton::clicked, this, [this]() {
     QString version = versionSelector->currentText();
-    emit sendVersionGame(version);
+    emit sendSaveVersionGame(version);
     m_download->start();
   });
 

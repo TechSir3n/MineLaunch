@@ -2,7 +2,7 @@
 
 #include "./backend/launcher/include/factory.hpp"
 #include "./backend/launcher/include/launcher.hpp"
-
+#include "./assistance/clearLogs.hpp"
 #include "signup.hpp"
 #include "user_settings.hpp"
 #include <QAction>
@@ -83,7 +83,15 @@ private:
   void addSettings() noexcept;
 
 signals:
-  void sendVersionGame(const QString& version);
+  void sendSaveVersionGame(const QString& version);
+
+  void sendSaveExtension(const QStringList &extensionArgs);
+
+  void sendSaveScreenMode(const QStringList &screenModeArgs);
+
+  void sendSaveGamma(const QStringList &gammaArgs);
+
+  void sendSaveSound(const QString &soundValue);
 
 private:
   QPushButton *playButton;
@@ -126,4 +134,5 @@ private:
   Logger logger;
   Downloader *m_download;
   PlayGame *m_play;
+  ClearLogs cl;
 };

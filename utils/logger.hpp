@@ -25,7 +25,7 @@ enum class LogLevel {
   Critical
 };
 
-static const fs::path LOGS_DIRECTORY = "/home/ruslan/Documents/MineLaunch/utils/logs_files/";
+const fs::path LOGS_DIRECTORY = "/home/ruslan/Documents/MineLaunch/utils/logs_files/";
 
 class Logger {
 public:

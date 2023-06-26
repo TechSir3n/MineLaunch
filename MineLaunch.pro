@@ -59,7 +59,9 @@ SOURCES += backend/launcher/downloadLibraries.cpp
 SOURCES += backend/launcher/downloadClient.cpp
 SOURCES += backend/launcher/downloadAssetIndex.cpp
 SOURCES += backend/launcher/downloadResources.cpp
+SOURCES += backend/launcher/jsonParse.cpp
 
+HEADERS += backend/launcher/include/jsonParse.hpp
 HEADERS += backend/launcher/include/downloadLibraries.hpp
 HEADERS += backend/launcher/include/downloadClient.hpp
 HEADERS += backend/launcher/include/game.hpp

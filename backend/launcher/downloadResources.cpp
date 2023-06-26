@@ -5,8 +5,8 @@ DownloadResources::DownloadResources(QObject *parent)
     : QObject(parent), m_manager(new QNetworkAccessManager()) {}
 
 void DownloadResources::downloadResources(const QString &versionHash) {
-  const QString path = Path::launcherPath() + "/../" +
-                       "/MineLaunch/backend/launcher/minecraft/assets/indexes/";
+    const QString path = QDir::cleanPath(Path::launcherPath() + "/../" +
+                                         "/MineLaunch/backend/launcher/minecraft/assets/indexes/");
 
   QFile file(path + versionHash + ".json");
   if (!file.open(QIODevice::ReadOnly)) {
@@ -27,8 +27,8 @@ void DownloadResources::downloadResources(const QString &versionHash) {
   }
 
   const QString savePath =
-      Path::launcherPath() + "/../" +
-      "/MineLaunch/backend/launcher/minecraft/assets/objects/";
+      QDir::cleanPath(Path::launcherPath() + "/../" +
+                                           "/MineLaunch/backend/launcher/minecraft/assets/objects/");
   QDir saveDir(savePath);
   if (!saveDir.exists()) {
     qDebug() << "Error directory,inccorect enter path or it doesn't exists";
