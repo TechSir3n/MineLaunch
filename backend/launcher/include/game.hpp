@@ -2,6 +2,7 @@
 
 #include "./frontend/include/handler_signals.hpp"
 #include "launcher.hpp"
+#include "utils/logger.hpp"
 #include <QDir>
 #include <QObject>
 #include <QProcess>
@@ -35,10 +36,15 @@ public slots:
 
   void getGamma(const QStringList &gammaArgs);
 
+  void getQuality(const QStringList &qualityArg);
+
   void getSoundValue(const QString &soundValueArg);
+
+  void getIPAddressAndPort(const QStringList &connectServerArgs);
 
 private:
   QString getAssetIndex() noexcept;
+
 
 private slots:
   void onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
@@ -60,7 +66,10 @@ private:
   QStringList m_screenModeArgs;
   QStringList m_extensionArgs;
   QStringList m_gammaArgs;
+  QStringList m_qualityArgs;
+  QStringList m_connectServerArgs;
 
 private:
   static constexpr const char *mainClass = "net.minecraft.client.main.Main";
+    Logger logger;
 };

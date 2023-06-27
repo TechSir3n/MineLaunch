@@ -1,8 +1,8 @@
 #pragma once
 
+#include "./assistance/clearLogs.hpp"
 #include "./backend/launcher/include/factory.hpp"
 #include "./backend/launcher/include/launcher.hpp"
-#include "./assistance/clearLogs.hpp"
 #include "signup.hpp"
 #include "user_settings.hpp"
 #include <QAction>
@@ -10,13 +10,12 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDebug>
-#include <QTimer>
+#include <QDesktopServices>
 #include <QDialog>
 #include <QEventLoop>
 #include <QFileInfo>
 #include <QFrame>
 #include <QGroupBox>
-#include <QDesktopServices>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -33,6 +32,7 @@
 #include <QStringList>
 #include <QTabWidget>
 #include <QTableWidget>
+#include <QTimer>
 #include <QUrl>
 #include <QVBoxLayout>
 #include <QtCore>
@@ -83,13 +83,17 @@ private:
   void addSettings() noexcept;
 
 signals:
-  void sendSaveVersionGame(const QString& version);
+  void sendSaveVersionGame(const QString &version);
 
   void sendSaveExtension(const QStringList &extensionArgs);
 
   void sendSaveScreenMode(const QStringList &screenModeArgs);
 
   void sendSaveGamma(const QStringList &gammaArgs);
+
+  void sendSaveQuality(const QStringList &qualityArgs);
+
+  void sendIPServerAndPort(const QStringList &connectServerArgs);
 
   void sendSaveSound(const QString &soundValue);
 
@@ -105,11 +109,13 @@ private:
   QPushButton *nextButton;
 
   QStackedWidget *stackWidget;
+  QSettings settings;
   QTableWidget *modsTable;
   QTabWidget *tabWidget;
 
   QLineEdit *editSearch;
   QLineEdit *editIPServer;
+  QLineEdit *editPort;
 
   QVector<Mod> loadedMods;
 
@@ -121,6 +127,8 @@ private:
   QSlider *soundSlider;
   QSlider *brightnessSlider;
   QSlider *choiceColor;
+  QSlider *choiceColorButton;
+  QSlider *choiceColorButtonText;
 
   QMenuBar *menuBar;
   QRadioButton *fullScreen;

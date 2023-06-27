@@ -6,6 +6,11 @@ DashBoard::DashBoard(QWidget *parent)
       modsTable(new QTableWidget()), versionSelector(new QComboBox()),
       menuBar(new QMenuBar()) {
 
+  QString style = settings.value("style").toString();
+  if (!style.isEmpty()) {
+    tabWidget->setStyleSheet(style);
+  }
+
   m_play = dynamic_cast<PlayGame *>(
       FactoryLauncher::createLauncher(LauncherType::Play));
   m_download = dynamic_cast<Downloader *>(
@@ -27,6 +32,12 @@ DashBoard::DashBoard(QWidget *parent)
 
   QObject::connect(this, &DashBoard::sendSaveGamma, m_play,
                    &PlayGame::getGamma);
+
+  QObject::connect(this, &DashBoard::sendSaveQuality, m_play,
+                   &PlayGame::getQuality);
+
+  QObject::connect(this, &DashBoard::sendIPServerAndPort, m_play,
+                   &PlayGame::getIPAddressAndPort);
 
   tabWidget->setFixedSize(QSize(1050, 710));
   versionSelector->setFixedWidth(100);
@@ -140,31 +151,57 @@ void DashBoard::loadMods() noexcept {
 }
 
 void DashBoard::loadServers() noexcept {
-
   QWebEngineView *webView = new QWebEngineView(this);
 
   webView->load(QUrl("https://minecraft-server-list.com/"));
   webView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
   connectButton = new QPushButton(tr("Connect"));
+  connectButton->setStyleSheet(
+      "background-color: #1e90ff; color: white; font-weight: bold;");
+
   editIPServer = new QLineEdit();
-  editIPServer->setPlaceholderText("Enter IP address for connect to server");
+  editIPServer->setPlaceholderText(
+      tr("Enter IP address for connect to server"));
+
+  editPort = new QLineEdit();
+  editPort->setPlaceholderText(tr("Enter port of address server"));
+
+  const QString style =
+      "QLineEdit { border: 2px solid gray; border-radius: 10px; padding: 0 "
+      "8px; background-color: #f8f8f8; color: #333; }";
+
+  editIPServer->setStyleSheet(style);
+  editPort->setStyleSheet(style);
 
   QHBoxLayout *buttonLayout = new QHBoxLayout();
   buttonLayout->addWidget(editIPServer);
+  buttonLayout->addWidget(editPort);
   buttonLayout->addWidget(connectButton);
   buttonLayout->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+  buttonLayout->setContentsMargins(0, 0, 0, 0);
+  buttonLayout->setSpacing(10);
 
   QWidget *container = new QWidget();
   QVBoxLayout *layout = new QVBoxLayout();
   layout->addWidget(webView);
   layout->addLayout(buttonLayout);
+
+  layout->setContentsMargins(10, 10, 10, 10);
+  layout->setSpacing(10);
+  layout->setAlignment(Qt::AlignCenter);
+
   container->setLayout(layout);
 
   tabWidget->addTab(container, "Servers");
 
-  QObject::connect(connectButton, &QPushButton::clicked, this, []() {
+  QObject::connect(connectButton, &QPushButton::clicked, this, [this]() {
+    const QString IPAddress = editIPServer->text();
+    const QString port = editPort->text();
 
+    const auto argsConnectToServer = QStringList() << "--server" << IPAddress
+                                                   << "--port" << port;
+    emit sendIPServerAndPort(argsConnectToServer);
   });
 }
 
@@ -236,13 +273,23 @@ void DashBoard::addSettings() noexcept {
 
   brightnessSlider = new QSlider(Qt::Horizontal);
   brightnessSlider->setMinimum(0);
-  brightnessSlider->setMaximum(100);
-  brightnessSlider->setValue(50);
+  brightnessSlider->setMaximum(50);
+  brightnessSlider->setValue(25);
 
   soundSlider = new QSlider(Qt::Horizontal);
   soundSlider->setMinimum(0);
-  soundSlider->setMaximum(100);
-  soundSlider->setValue(100);
+  soundSlider->setMaximum(50);
+  soundSlider->setValue(25);
+
+  choiceColorButton = new QSlider(Qt::Horizontal);
+  choiceColorButton->setMinimum(0);
+  choiceColorButton->setValue(25);
+  choiceColorButton->setMaximum(50);
+
+  choiceColorButtonText = new QSlider(Qt::Horizontal);
+  choiceColorButtonText->setMinimum(0);
+  choiceColorButtonText->setMaximum(50);
+  choiceColorButtonText->setValue(25);
 
   screenExtension = new QComboBox();
   screenExtension->addItem(tr("1920x1080"));
@@ -252,7 +299,7 @@ void DashBoard::addSettings() noexcept {
   QLabel *colorLabel = new QLabel(tr("Color Launcher"));
   choiceColor = new QSlider(Qt::Horizontal);
   choiceColor->setMinimum(0);
-  choiceColor->setMaximum(100);
+  choiceColor->setMaximum(50);
   choiceColor->setValue(25);
 
   QLabel *languageLabel = new QLabel(tr("Language"));
@@ -284,15 +331,18 @@ void DashBoard::addSettings() noexcept {
   QLabel *soundLabel = new QLabel(tr("Sound"));
   QLabel *extenstionLabel = new QLabel(tr("Screen Extension"));
   QLabel *qualityLabel = new QLabel(tr("Quality Graphic"));
+  QLabel *colorButtonLabel = new QLabel(tr("Color Button"));
+  QLabel *colorButtonTextLabel = new QLabel(tr("Color Button Text"));
 
   QFont font("Arial", 11, QFont::Bold);
-
   screenLabel->setFont(font);
   soundLabel->setFont(font);
   extenstionLabel->setFont(font);
   qualityLabel->setFont(font);
   brightLabel->setFont(font);
   colorLabel->setFont(font);
+  colorButtonLabel->setFont(font);
+  colorButtonTextLabel->setFont(font);
 
   QHBoxLayout *buttonLayout = new QHBoxLayout;
   buttonLayout->addWidget(saveButton);
@@ -322,6 +372,10 @@ void DashBoard::addSettings() noexcept {
   QVBoxLayout *settingLauncherLayout = new QVBoxLayout;
   settingLauncherLayout->addWidget(colorLabel);
   settingLauncherLayout->addWidget(choiceColor);
+  settingLauncherLayout->addWidget(colorButtonLabel);
+  settingLauncherLayout->addWidget(choiceColorButton);
+  settingLauncherLayout->addWidget(colorButtonTextLabel);
+  settingLauncherLayout->addWidget(choiceColorButtonText);
   settingLauncherLayout->addWidget(separator);
   settingLauncherLayout->addWidget(languageLabel);
   settingLauncherLayout->addWidget(choiceLanguage);
@@ -336,45 +390,54 @@ void DashBoard::addSettings() noexcept {
   QObject::connect(choiceColor, &QSlider::valueChanged, this,
                    &DashBoard::onSliderValueChanged);
 
+  QObject::connect(choiceColorButton, &QSlider::valueChanged, this,
+                   &DashBoard::onSliderValueChanged);
+
+  QObject::connect(choiceColorButtonText, &QSlider::valueChanged, this,
+                   &DashBoard::onSliderValueChanged);
+
   QObject::connect(saveButton, &QPushButton::clicked, this, [this]() {
-    QString extension = screenExtension->currentText();
-   const auto argsExtension = QStringList() << "-w" << extension.split("x").at(0)
-                                       << "-h" << extension.split("x").at(1);
+    const QString extension = screenExtension->currentText();
+    const auto argsExtension = QStringList()
+                               << "-w" << extension.split("x").at(0) << "-h"
+                               << extension.split("x").at(1);
     emit sendSaveExtension(argsExtension);
 
     if (fullScreen->isChecked() == true) {
       qDebug() << "Full Screen: " << fullScreen->text();
-     const  auto argsFullScreen = QStringList() << "--fullscreen";
+      const auto argsFullScreen = QStringList() << "--fullscreen";
       emit sendSaveScreenMode(argsFullScreen);
 
     } else if (windowMode->isChecked() == true) {
       qDebug() << "TextWindow:" << windowMode->text();
-     const  auto argsWindowMode = QStringList() << "--width"
-                                          << "1300"
-                                          << "--height"
-                                          << "750";
+      const auto argsWindowMode = QStringList() << "--width"
+                                                << "1300"
+                                                << "--height"
+                                                << "750";
       emit sendSaveScreenMode(argsWindowMode);
 
       int soundValue = soundSlider->value();
       emit sendSaveSound(QString::number(soundValue));
 
       int gammaValue = brightnessSlider->value();
-      auto argsGamma = QStringList() << "--gamma" << QString::number(gammaValue);
+      auto argsGamma = QStringList()
+                       << "--gamma" << QString::number(gammaValue);
       emit sendSaveGamma(argsGamma);
+    }
 
-     const auto languageSelected = choiceLanguage->currentText();
-      if(languageSelected == "English")  {
+    const QString quality = qualityGraphic->currentText();
+    const auto argsQuality = QStringList() << "--quality" << quality;
+    emit sendSaveQuality(argsQuality);
 
-      } else {
+    auto languageSelected = choiceLanguage->currentText();
+    if (languageSelected == "Russian") {
 
-      }
-
+    } else {
     }
   });
 
-  QObject::connect(resetButton, &QPushButton::clicked, this, []() {
-
-  });
+  QObject::connect(resetButton, &QPushButton::clicked, this,
+                   [this]() { settings.remove("style"); });
 }
 
 void DashBoard::addGameTab() noexcept {
@@ -456,28 +519,92 @@ void DashBoard::searchModsByName() {
 }
 
 void DashBoard::onSliderValueChanged(int value) {
+  Q_UNUSED(value);
 
-  const QString tabStyle =
-      "QTabWidget::pane { border-color: gray; background-color: ";
-  if (value <= 10) {
-    tabWidget->setStyleSheet(tabStyle + "cyan; }");
-  } else if (value <= 20) {
-    tabWidget->setStyleSheet(tabStyle + "grey; }");
-  } else if (value <= 30) {
-    tabWidget->setStyleSheet(tabStyle + "green; }");
-  } else if (value <= 40) {
-    tabWidget->setStyleSheet(tabStyle + "brown; }");
-  } else if (value <= 50) {
-    tabWidget->setStyleSheet(tabStyle + "peach; }");
-  } else if (value <= 60) {
-    tabWidget->setStyleSheet(tabStyle + "white; } ");
-  } else if (value <= 70) {
-    tabWidget->setStyleSheet(tabStyle + "blue; }");
-  } else if (value <= 85) {
-    tabWidget->setStyleSheet(tabStyle + "grey; }");
-  } else if (value <= 95) {
-    tabWidget->setStyleSheet(tabStyle + "magenta; }");
-  } else if (value <= 100) {
-    tabWidget->setStyleSheet(tabStyle + "black; }");
+  QString tabStyle;
+  if (choiceColorButton->value() <= 5) {
+    tabStyle += "QPushButton { background-color: cyan; } ";
+  } else if (choiceColorButton->value() <= 10) {
+    tabStyle += "QPushButton { background-color: grey; } ";
+  } else if (choiceColorButton->value() <= 15) {
+    tabStyle += "QPushButton { background-color: aqua; } ";
+  } else if (choiceColorButton->value() <= 22) {
+    tabStyle += "QPushButton { background-color: blueviolet; } ";
+  } else if (choiceColorButton->value() <= 24) {
+    tabStyle += "QPushButton { background-color: lightgreen; } ";
+  } else if (choiceColorButton->value() <= 25) {
+    tabStyle += "QPushButton { background-color: peru; } ";
+  } else if (choiceColorButton->value() <= 27) {
+    tabStyle += "QPushButton { background-color: magenta; } ";
+  } else if (choiceColorButton->value() <= 30) {
+    tabStyle += "QPushButton { background-color: green; } ";
+  } else if (choiceColorButton->value() <= 35) {
+    tabStyle += "QPushButton { background-color: darkcyan; } ";
+  } else if (choiceColorButton->value() <= 45) {
+    tabStyle += "QPushButton { background-color: azure; } ";
+  } else if (choiceColorButton->value() <= 50) {
+    tabStyle += "QPushButton { background-color: brown; } ";
   }
+
+  if (choiceColor->value() <= 5) {
+    tabStyle +=
+        "QTabWidget::pane { border-color: gray; background-color: violet; } ";
+  } else if (choiceColor->value() <= 10) {
+    tabStyle +=
+        "QTabWidget::pane { border-color: gray; background-color: brown; } ";
+  } else if (choiceColor->value() <= 15) {
+    tabStyle +=
+        "QTabWidget::pane { border-color: gray; background-color: olive; } ";
+  } else if (choiceColor->value() <= 22) {
+    tabStyle +=
+        "QTabWidget::pane { border-color: gray; background-color: peach; } ";
+  } else if (choiceColor->value() <= 24) {
+    tabStyle +=
+        "QTabWidget::pane { border-color: gray; background-color: maroon; } ";
+  } else if (choiceColor->value() <= 25) {
+    tabStyle +=
+        "QTabWidget::pane { border-color: gray; background-color: white; } ";
+  } else if (choiceColor->value() <= 30) {
+    tabStyle +=
+        "QTabWidget::pane { border-color: gray; background-color: cyan; } ";
+  } else if (choiceColor->value() <= 35) {
+    tabStyle += "QTabWidget::pane { border-color: gray; background-color: "
+                "lightgreen; } ";
+  } else if (choiceColor->value() <= 40) {
+    tabStyle += "QTabWidget::pane { border-color: gray; background-color: "
+                "darkorange; } ";
+  } else if (choiceColor->value() <= 45) {
+    tabStyle +=
+        "QTabWidget::pane { border-color: gray; background-color: blue; } ";
+  } else if (choiceColor->value() <= 50) {
+    tabStyle +=
+        "QTabWidget::pane { border-color: gray; background-color: crimson; } ";
+  }
+
+  if (choiceColorButtonText->value() <= 5) {
+    tabStyle += "QPushButton { color: blue; } ";
+  } else if (choiceColorButtonText->value() <= 15) {
+    tabStyle += "QPushButton { color: grey; } ";
+  } else if (choiceColorButtonText->value() <= 15) {
+    tabStyle += "QPushButton { color: magenta; } ";
+  } else if (choiceColorButtonText->value() <= 22) {
+    tabStyle += "QPushButton { color: black; } ";
+  } else if (choiceColorButtonText->value() <= 24) {
+    tabStyle += "QPushButton { color: violet; } ";
+  } else if (choiceColorButtonText->value() <= 25) {
+    tabStyle += "QPushButton { color: green; } ";
+  } else if (choiceColorButtonText->value() <= 30) {
+    tabStyle += "QPushButton { color: peru; } ";
+  } else if (choiceColorButtonText->value() <= 35) {
+    tabStyle += "QPushButton { color: white; } ";
+  } else if (choiceColorButtonText->value() <= 40) {
+    tabStyle += "QPushButton { color: maroon; } ";
+  } else if (choiceColorButtonText->value() <= 45) {
+    tabStyle += "QPushButton { color: limegreen; } ";
+  } else if (choiceColorButtonText->value() <= 50) {
+    tabStyle += "QPushButton { color: darkblue; } ";
+  }
+
+  tabWidget->setStyleSheet(tabStyle);
+  settings.setValue("style", tabWidget->styleSheet());
 }

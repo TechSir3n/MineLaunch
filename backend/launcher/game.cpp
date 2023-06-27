@@ -40,13 +40,9 @@ void PlayGame::start() {
   arguments << "-cp" << classpath << mainClass << "--accessToken" << token
             << "--assetsDir" << assetDir << "--assetIndex" << assetIndex
             << "--username" << m_username << "--version" << versionGame
-            << "--soundVolume" << m_soundValue;
-
-  arguments.append(m_extensionArgs);
-
-  arguments.append(m_screenModeArgs);
-
-  arguments.append(m_gammaArgs);
+            << "--soundVolume" << m_soundValue << m_extensionArgs
+            << m_screenModeArgs << m_gammaArgs << m_qualityArgs
+            << m_connectServerArgs;
 
   m_process->startDetached("java", arguments);
 
@@ -58,6 +54,10 @@ void PlayGame::start() {
 
   QObject::connect(m_process, &QProcess::readyReadStandardOutput, this,
                    &PlayGame::onReadyReadStandardOutput);
+
+  if (m_process->state() != QProcess::Running) {
+    logger.log(LogLevel::Error, "Something went wrong while start process");
+  }
 }
 
 bool PlayGame::gameIsRunning() const {
@@ -102,13 +102,20 @@ void PlayGame::getScreenMode(const QStringList &screenModeArgs) {
   m_screenModeArgs = screenModeArgs;
 }
 
-void PlayGame::getGamma(const QStringList &gammaArgs)
-{
+void PlayGame::getGamma(const QStringList &gammaArgs) {
   m_gammaArgs = gammaArgs;
 }
 
 void PlayGame::getSoundValue(const QString &soundValueArg) {
   m_soundValue = soundValueArg;
+}
+
+void PlayGame::getIPAddressAndPort(const QStringList &connectServerArgs) {
+  m_connectServerArgs = connectServerArgs;
+}
+
+void PlayGame::getQuality(const QStringList &qualityArg) {
+  m_qualityArgs = qualityArg;
 }
 
 void PlayGame::getVersionGame(const QString &t_versionGame) {

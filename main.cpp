@@ -8,7 +8,6 @@
 #include "./frontend/include/signup.hpp"
 #include "./frontend/include/user_settings.hpp"
 #include "./backend/launcher/include/downloadResources.hpp"
-
 #include "mainwindow.h"
 #include <QApplication>
 #include <QInputDialog>
@@ -32,29 +31,5 @@ int main(int argc, char *argv[]) {
   QObject::connect(&handler, &DataHandler::sendString, &Server::getInstance(),
                    &Server::getString);
 
-//  // MainWindow w;
-
-  //  QTranslator t;
-  //  QStringList languages;
-  //  languages << "Russian"
-  //            << "English"
-  //            << "Chinese"
-  //            <<"French";
-
-  //  QString lang =
-  //      QInputDialog::getItem(nullptr, "Select language", "Language",
-  //      languages);
-
-  //  if (lang == "Russian") {
-
-  //  } else if (lang == "Chinese") {
-
-  //  } else if(lang == "French") {
-
-  //  }
-
-  // DashBoard s;
-  // s.show();
-  // w.show();
   return a.exec();
 }
