@@ -18,6 +18,15 @@
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
 
+
+  QTranslator ts;
+  if(ts.load(":/translations/launcher_ru.qm")) {
+      qDebug() << "We here";
+  a.installTranslator(&ts);
+  } else {
+     qDebug()<<"Something went wrong";
+  }
+
   qRegisterMetaType<DataHandler *>("DataHandler*"); // регистрируем новый тип
 
   Server::getInstance();

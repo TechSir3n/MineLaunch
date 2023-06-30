@@ -143,4 +143,6 @@ private:
   Downloader *m_download;
   PlayGame *m_play;
   ClearLogs cl;
+  static constexpr char *ENGLISH_LANG = "en";
+  static constexpr char *RUSSIAN_LANG = "ru";
 };

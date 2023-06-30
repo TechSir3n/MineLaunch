@@ -202,6 +202,9 @@ void DashBoard::loadServers() noexcept {
     const auto argsConnectToServer = QStringList() << "--server" << IPAddress
                                                    << "--port" << port;
     emit sendIPServerAndPort(argsConnectToServer);
+
+    editIPServer->clear();
+    editPort->clear();
   });
 }
 
@@ -409,7 +412,6 @@ void DashBoard::addSettings() noexcept {
       emit sendSaveScreenMode(argsFullScreen);
 
     } else if (windowMode->isChecked() == true) {
-      qDebug() << "TextWindow:" << windowMode->text();
       const auto argsWindowMode = QStringList() << "--width"
                                                 << "1300"
                                                 << "--height"
@@ -433,6 +435,7 @@ void DashBoard::addSettings() noexcept {
     if (languageSelected == "Russian") {
 
     } else {
+
     }
   });
 
