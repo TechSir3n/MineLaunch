@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=MineLaunch
+Version=1.0
+Exec=cd $HOME/Documents/build-MineLaunch-Desktop_Qt_6_3_2_GCC_64bit-Debug/ && ./MineLaunch
+Terminal=false
+Comment=A custom launcher application for use Minecraft on multiple platforms.
+Type=Application
+Icon=$HOME/Documents/MineLaunch/resources/u_ajax.png
+Keywords=game;minecraft;mc;
+StartupWMClass=MineLaunch
+Categories=Games;Utility;

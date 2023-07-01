@@ -1,7 +1,7 @@
 #pragma once
 
 #include "./backend/include/updater_data.hpp"
-#include "./utils/hashing.hpp"
+#include "./assistance/hashing.hpp"
 #include <QDialog>
 #include <QGroupBox>
 #include <QHBoxLayout>

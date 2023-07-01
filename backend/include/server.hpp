@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../utils/logger.hpp"
+#include "../../assistance/logger.hpp"
 #include <QCoreApplication>
 #include <QTcpServer>
 #include <QTcpSocket>

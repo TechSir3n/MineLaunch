@@ -1,12 +1,12 @@
 #pragma once
 
 #include "../include/smtp.hpp"
-#include "utils/hashing.hpp"
-#include "utils/logger.hpp"
+#include "assistance/hashing.hpp"
+#include "assistance/logger.hpp"
 #include "backend/database/include/sqlite.hpp"
 #include "./frontend/include/user_settings.hpp"
 #include "server.hpp"
-#include "utils/validator.hpp"
+#include "assistance/validator.hpp"
 #include <QObject>
 #include <QJsonObject>
 #include <cstdlib>

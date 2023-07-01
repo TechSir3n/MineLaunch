@@ -1,8 +1,7 @@
 #pragma once
 
 #include "dashboard.hpp"
-//#include "signin.hpp"
-#include "utils/logger.hpp"
+#include "assistance/logger.hpp"
 #include <QByteArray>
 #include <QJsonDocument>
 #include <QJsonObject>

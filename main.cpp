@@ -1,31 +1,16 @@
-#include "./backend/database/include/sqlite.hpp"
-#include "./backend/include/dataHandler.hpp"
-#include "./backend/include/server.hpp"
-#include "./backend/include/smtp.hpp"
-#include "./backend/include/updater_data.hpp"
-#include "./frontend/include/dashboard.hpp"
-#include "./frontend/include/signin.hpp"
-#include "./frontend/include/signup.hpp"
-#include "./frontend/include/user_settings.hpp"
-#include "./backend/launcher/include/downloadResources.hpp"
+#include "./assistance/custom.hpp"
 #include "mainwindow.h"
 #include <QApplication>
-#include <QInputDialog>
-#include <QObject>
-#include <QStringList>
-#include <QTranslator>
 
 int main(int argc, char *argv[]) {
+
   QApplication a(argc, argv);
+  a.setStyle("fusion");
 
-
+  QString language = Custom().getLanguage();
   QTranslator ts;
-  if(ts.load(":/translations/launcher_ru.qm")) {
-      qDebug() << "We here";
-  a.installTranslator(&ts);
-  } else {
-     qDebug()<<"Something went wrong";
-  }
+  if (ts.load(":/translations/launcher_" + language + ".qm"))
+    a.installTranslator(&ts);
 
   qRegisterMetaType<DataHandler *>("DataHandler*"); // регистрируем новый тип
 
@@ -33,7 +18,6 @@ int main(int argc, char *argv[]) {
 
   SignIn::getInstance().show();
   DataHandler handler;
-
 
   QObject::connect(&Server::getInstance(), &Server::dataReceived, &handler,
                    &DataHandler::dataHandler);

@@ -2,7 +2,7 @@
 
 #include "./frontend/include/handler_signals.hpp"
 #include "launcher.hpp"
-#include "utils/logger.hpp"
+#include "assistance/logger.hpp"
 #include <QDir>
 #include <QObject>
 #include <QProcess>

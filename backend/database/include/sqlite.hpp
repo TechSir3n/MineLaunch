@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../utils/logger.hpp"
+#include "../../../assistance/logger.hpp"
 #include <QtSql>
 #include <QSqlDatabase>
 #include <QSqlQuery>

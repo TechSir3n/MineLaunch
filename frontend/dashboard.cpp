@@ -4,12 +4,13 @@
 DashBoard::DashBoard(QWidget *parent)
     : QDialog(parent), tabWidget(new QTabWidget(this)),
       modsTable(new QTableWidget()), versionSelector(new QComboBox()),
-      menuBar(new QMenuBar()) {
+      menuBar(new QMenuBar()), m_custom(new Custom()) {
 
   QString style = settings.value("style").toString();
   if (!style.isEmpty()) {
     tabWidget->setStyleSheet(style);
   }
+
 
   m_play = dynamic_cast<PlayGame *>(
       FactoryLauncher::createLauncher(LauncherType::Play));
@@ -39,12 +40,23 @@ DashBoard::DashBoard(QWidget *parent)
   QObject::connect(this, &DashBoard::sendIPServerAndPort, m_play,
                    &PlayGame::getIPAddressAndPort);
 
+  QObject::connect(this, &DashBoard::sendSaveLanguage, m_custom,
+                   &Custom::setLanguage);
+
   tabWidget->setFixedSize(QSize(1050, 710));
   versionSelector->setFixedWidth(100);
   initalizeUI();
+
+  this->setAutoFillBackground(true);
 }
 
-DashBoard::~DashBoard() {}
+DashBoard::~DashBoard() {
+  delete m_custom;
+  delete menuBar;
+  delete versionSelector;
+  delete modsTable;
+  delete tabWidget;
+}
 
 void DashBoard::initalizeUI() noexcept {
   loadVersionsMinecraft();
@@ -318,12 +330,15 @@ void DashBoard::addSettings() noexcept {
 
   groupBoxGame = new QGroupBox(tr("Settings Game"));
   groupBoxLauncher = new QGroupBox(tr("Settings Launcher"));
+  groupLauncherState = new QGroupBox(tr("After Launch State"));
 
   groupBoxGame->setFont(QFont("Arial", 12, QFont::Bold));
   groupBoxLauncher->setFont(QFont("Arial", 12, QFont::Bold));
 
   fullScreen = new QRadioButton(tr("Full Screen"));
   windowMode = new QRadioButton(tr("Window Mode"));
+  launcherOpen = new QRadioButton(tr("Keep Launcher Open"));
+  launcherClose = new QRadioButton(tr("Close Launcher"));
   buttonGroup = new QButtonGroup();
   buttonGroup->addButton(fullScreen);
   buttonGroup->addButton(windowMode);
@@ -346,6 +361,12 @@ void DashBoard::addSettings() noexcept {
   colorLabel->setFont(font);
   colorButtonLabel->setFont(font);
   colorButtonTextLabel->setFont(font);
+
+  QHBoxLayout *stateLaunchLayout = new QHBoxLayout;
+  stateLaunchLayout->addWidget(launcherOpen);
+  stateLaunchLayout->addWidget(launcherClose);
+
+  groupLauncherState->setLayout(stateLaunchLayout);
 
   QHBoxLayout *buttonLayout = new QHBoxLayout;
   buttonLayout->addWidget(saveButton);
@@ -388,6 +409,7 @@ void DashBoard::addSettings() noexcept {
   QVBoxLayout *l_layout = new QVBoxLayout(widgetSettings);
   l_layout->addWidget(groupBoxGame);
   l_layout->addWidget(groupBoxLauncher);
+  l_layout->addWidget(groupLauncherState);
   l_layout->addLayout(buttonLayout);
 
   QObject::connect(choiceColor, &QSlider::valueChanged, this,
@@ -407,7 +429,6 @@ void DashBoard::addSettings() noexcept {
     emit sendSaveExtension(argsExtension);
 
     if (fullScreen->isChecked() == true) {
-      qDebug() << "Full Screen: " << fullScreen->text();
       const auto argsFullScreen = QStringList() << "--fullscreen";
       emit sendSaveScreenMode(argsFullScreen);
 
@@ -433,9 +454,9 @@ void DashBoard::addSettings() noexcept {
 
     auto languageSelected = choiceLanguage->currentText();
     if (languageSelected == "Russian") {
-
+      emit sendSaveLanguage(RUSSIAN_LANG);
     } else {
-
+      emit sendSaveLanguage(ENGLISH_LANG);
     }
   });
 
@@ -607,6 +628,8 @@ void DashBoard::onSliderValueChanged(int value) {
   } else if (choiceColorButtonText->value() <= 50) {
     tabStyle += "QPushButton { color: darkblue; } ";
   }
+
+
 
   tabWidget->setStyleSheet(tabStyle);
   settings.setValue("style", tabWidget->styleSheet());

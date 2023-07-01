@@ -3,6 +3,7 @@
 #include "./assistance/clearLogs.hpp"
 #include "./backend/launcher/include/factory.hpp"
 #include "./backend/launcher/include/launcher.hpp"
+#include "./assistance/custom.hpp"
 #include "signup.hpp"
 #include "user_settings.hpp"
 #include <QAction>
@@ -97,6 +98,8 @@ signals:
 
   void sendSaveSound(const QString &soundValue);
 
+  void sendSaveLanguage(const char *language);
+
 private:
   QPushButton *playButton;
   QPushButton *saveButton;
@@ -107,6 +110,12 @@ private:
   QPushButton *connectButton;
   QPushButton *updateListButton;
   QPushButton *nextButton;
+
+  QRadioButton *fullScreen;
+  QRadioButton *windowMode;
+  QRadioButton *launcherOpen;
+  QRadioButton *launcherClose;
+  QButtonGroup *buttonGroup;
 
   QStackedWidget *stackWidget;
   QSettings settings;
@@ -130,19 +139,18 @@ private:
   QSlider *choiceColorButton;
   QSlider *choiceColorButtonText;
 
+
   QMenuBar *menuBar;
-  QRadioButton *fullScreen;
-  QRadioButton *windowMode;
-  QButtonGroup *buttonGroup;
 
   QGroupBox *groupBoxGame;
   QGroupBox *groupBoxLauncher;
-
+  QGroupBox *groupLauncherState;
 private:
   Logger logger;
   Downloader *m_download;
   PlayGame *m_play;
   ClearLogs cl;
+  Custom *m_custom;
   static constexpr char *ENGLISH_LANG = "en";
   static constexpr char *RUSSIAN_LANG = "ru";
 };

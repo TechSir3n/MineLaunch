@@ -1,6 +1,6 @@
 #pragma once
 
-#include "./utils/defines.hpp"
+#include "./assistance/defines.hpp"
 #include "downloader.hpp"
 #include "game.hpp"
 

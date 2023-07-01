@@ -41,6 +41,7 @@ SOURCES += \
     frontend/client.cpp \
     frontend/user_settings.cpp \
     assistance/path.cpp \
+    assistance/custom.cpp \
     backend/server.cpp \
     backend/dataHandler.cpp \
     backend/updater_data.cpp \
@@ -83,11 +84,12 @@ HEADERS += \
     frontend/include/handler_signals.hpp \
     assistance/systeminfo.hpp \
     assistance/path.hpp \
+    assistance/custom.hpp \
     assistance/clearLogs.hpp \
-    utils/logger.hpp \
-    utils/defines.hpp \
-    utils/validator.hpp \
-    utils/hashing.hpp \
+    assistance/logger.hpp \
+    assistance/defines.hpp \
+    assistance/validator.hpp \
+    assistance/hashing.hpp \
     backend/launcher/include/jsonParse.hpp \
     backend/launcher/include/downloadLibraries.hpp \
     backend/launcher/include/downloadClient.hpp \

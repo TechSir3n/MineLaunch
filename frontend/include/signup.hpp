@@ -1,7 +1,7 @@
 #pragma once
 
-#include "./utils/defines.hpp"
-#include "./utils/logger.hpp"
+#include "./assistance/defines.hpp"
+#include "./assistance/logger.hpp"
 #include "dashboard.hpp"
 #include <QApplication>
 #include <QCheckBox>
