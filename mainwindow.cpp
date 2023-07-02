@@ -5,7 +5,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
 
-
     this->setWindowTitle("MineLaunch");
 }
 

@@ -2,7 +2,6 @@
 This Minecraft launcher was written in C++ using Qt, making it cross-platform. The launcher is designed to run Minecraft on Windows, macOS and Linux.
 
 
-
 # Building from source
 To build the launcher from source, follow these steps:
 

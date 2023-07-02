@@ -11,7 +11,6 @@ DashBoard::DashBoard(QWidget *parent)
     tabWidget->setStyleSheet(style);
   }
 
-
   m_play = dynamic_cast<PlayGame *>(
       FactoryLauncher::createLauncher(LauncherType::Play));
   m_download = dynamic_cast<Downloader *>(
@@ -43,7 +42,7 @@ DashBoard::DashBoard(QWidget *parent)
   QObject::connect(this, &DashBoard::sendSaveLanguage, m_custom,
                    &Custom::setLanguage);
 
-  tabWidget->setFixedSize(QSize(1050, 710));
+  tabWidget->setFixedSize(QSize(1150, 880));
   versionSelector->setFixedWidth(100);
   initalizeUI();
 
@@ -67,7 +66,7 @@ void DashBoard::initalizeUI() noexcept {
   UserSettings::getInstance().initalizeGuiSettings(tabWidget);
   addSettings();
 
-  this->setMinimumSize(1050, 710);
+  this->setMinimumSize(1150, 880);
   this->setWindowTitle("Minecraft Launcher");
 }
 
@@ -306,6 +305,16 @@ void DashBoard::addSettings() noexcept {
   choiceColorButtonText->setMaximum(50);
   choiceColorButtonText->setValue(25);
 
+  maximumUseMemory = new QSlider(Qt::Horizontal);
+  maximumUseMemory->setValue(4586);
+  maximumUseMemory->setMinimum(2048);
+  maximumUseMemory->setMaximum(64000);
+
+  minimumUseMemory = new QSlider(Qt::Horizontal);
+  minimumUseMemory->setValue(4586);
+  minimumUseMemory->setMinimum(2048);
+  minimumUseMemory->setMaximum(64000);
+
   screenExtension = new QComboBox();
   screenExtension->addItem(tr("1920x1080"));
   screenExtension->addItem(tr("1280x760"));
@@ -331,9 +340,12 @@ void DashBoard::addSettings() noexcept {
   groupBoxGame = new QGroupBox(tr("Settings Game"));
   groupBoxLauncher = new QGroupBox(tr("Settings Launcher"));
   groupLauncherState = new QGroupBox(tr("After Launch State"));
+  groupMemorySettings = new QGroupBox(tr("Game Memory Settings"));
 
   groupBoxGame->setFont(QFont("Arial", 12, QFont::Bold));
   groupBoxLauncher->setFont(QFont("Arial", 12, QFont::Bold));
+  groupLauncherState->setFont(QFont("Arial", 12, QFont::Bold));
+  groupMemorySettings->setFont(QFont("Arial", 12, QFont::Bold));
 
   fullScreen = new QRadioButton(tr("Full Screen"));
   windowMode = new QRadioButton(tr("Window Mode"));
@@ -351,6 +363,8 @@ void DashBoard::addSettings() noexcept {
   QLabel *qualityLabel = new QLabel(tr("Quality Graphic"));
   QLabel *colorButtonLabel = new QLabel(tr("Color Button"));
   QLabel *colorButtonTextLabel = new QLabel(tr("Color Button Text"));
+  QLabel *minimumUseMemoryLabel = new QLabel(tr("Minimum Use Memory"));
+  QLabel *maximumUseMemoryLabel = new QLabel(tr("Maximum Use Memory"));
 
   QFont font("Arial", 11, QFont::Bold);
   screenLabel->setFont(font);
@@ -362,7 +376,16 @@ void DashBoard::addSettings() noexcept {
   colorButtonLabel->setFont(font);
   colorButtonTextLabel->setFont(font);
 
-  QHBoxLayout *stateLaunchLayout = new QHBoxLayout;
+  QVBoxLayout *memoryLayout = new QVBoxLayout;
+  memoryLayout->addWidget(minimumUseMemoryLabel);
+  memoryLayout->addWidget(minimumUseMemory);
+  memoryLayout->addSpacing(12);
+  memoryLayout->addWidget(maximumUseMemoryLabel);
+  memoryLayout->addWidget(maximumUseMemory);
+
+  groupMemorySettings->setLayout(memoryLayout);
+
+  QVBoxLayout *stateLaunchLayout = new QVBoxLayout;
   stateLaunchLayout->addWidget(launcherOpen);
   stateLaunchLayout->addWidget(launcherClose);
 
@@ -408,6 +431,7 @@ void DashBoard::addSettings() noexcept {
 
   QVBoxLayout *l_layout = new QVBoxLayout(widgetSettings);
   l_layout->addWidget(groupBoxGame);
+  l_layout->addWidget(groupMemorySettings);
   l_layout->addWidget(groupBoxLauncher);
   l_layout->addWidget(groupLauncherState);
   l_layout->addLayout(buttonLayout);
@@ -421,6 +445,18 @@ void DashBoard::addSettings() noexcept {
   QObject::connect(choiceColorButtonText, &QSlider::valueChanged, this,
                    &DashBoard::onSliderValueChanged);
 
+  QObject::connect(minimumUseMemory, &QSlider::valueChanged, this,
+                   [minimumUseMemoryLabel,this](int value) {
+                     QString textValue = QString("Minimum Memory: %1 MB").arg(value);
+                     minimumUseMemoryLabel->setText(textValue);
+                   });
+
+  QObject::connect(maximumUseMemory, &QSlider::valueChanged, this,
+                   [maximumUseMemoryLabel,this](int value) {
+                     QString textValue = QString("Maximum Memory: %1 MB").arg(value);
+                     maximumUseMemoryLabel->setText(textValue);
+                   });
+
   QObject::connect(saveButton, &QPushButton::clicked, this, [this]() {
     const QString extension = screenExtension->currentText();
     const auto argsExtension = QStringList()
@@ -428,7 +464,7 @@ void DashBoard::addSettings() noexcept {
                                << extension.split("x").at(1);
     emit sendSaveExtension(argsExtension);
 
-    if (fullScreen->isChecked() == true) {
+    if (fullScreen->isChecked()) {
       const auto argsFullScreen = QStringList() << "--fullscreen";
       emit sendSaveScreenMode(argsFullScreen);
 
@@ -438,15 +474,21 @@ void DashBoard::addSettings() noexcept {
                                                 << "--height"
                                                 << "750";
       emit sendSaveScreenMode(argsWindowMode);
-
-      int soundValue = soundSlider->value();
-      emit sendSaveSound(QString::number(soundValue));
-
-      int gammaValue = brightnessSlider->value();
-      auto argsGamma = QStringList()
-                       << "--gamma" << QString::number(gammaValue);
-      emit sendSaveGamma(argsGamma);
     }
+
+    if (launcherOpen->isChecked()) {
+      return;
+    } else if (launcherClose->isChecked()) {
+      QObject::connect(playButton, &QPushButton::clicked, this,
+                       [this]() { this->close(); });
+    }
+
+    int soundValue = soundSlider->value();
+    emit sendSaveSound(QString::number(soundValue));
+
+    int gammaValue = brightnessSlider->value();
+    auto argsGamma = QStringList() << "--gamma" << QString::number(gammaValue);
+    emit sendSaveGamma(argsGamma);
 
     const QString quality = qualityGraphic->currentText();
     const auto argsQuality = QStringList() << "--quality" << quality;
@@ -462,6 +504,21 @@ void DashBoard::addSettings() noexcept {
 
   QObject::connect(resetButton, &QPushButton::clicked, this,
                    [this]() { settings.remove("style"); });
+}
+
+std::tuple<int, int> DashBoard::getInfoRAM()
+{
+  qint64 availableMemory = QSysInfo::availableVirtualMemory();
+  qDebug() << "Available memory: " << availableMemory / (1024 * 1024) << "MB";
+
+  qint64 totalMemory = QSysInfo::totalVirtualMemory();
+
+  qDebug() << "Total memory: " << totalMemory / (1024 * 1024) << "MB";
+
+  qint64 minimumMemory = QSysInfo::minimumVirtualMemory();
+  qDebug() << "Minimum memory: " << minimumMemory / (1024 * 1024) << "MB";
+
+  return std::make_tuple<int,int>();
 }
 
 void DashBoard::addGameTab() noexcept {
@@ -628,8 +685,6 @@ void DashBoard::onSliderValueChanged(int value) {
   } else if (choiceColorButtonText->value() <= 50) {
     tabStyle += "QPushButton { color: darkblue; } ";
   }
-
-
 
   tabWidget->setStyleSheet(tabStyle);
   settings.setValue("style", tabWidget->styleSheet());

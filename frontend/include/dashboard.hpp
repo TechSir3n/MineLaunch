@@ -24,6 +24,7 @@
 #include <QMap>
 #include <QMenu>
 #include <QMenuBar>
+#include <QSysInfo>
 #include <QPalette>
 #include <QPushButton>
 #include <QRadioButton>
@@ -83,6 +84,8 @@ private:
 
   void addSettings() noexcept;
 
+  std::tuple<int,int> getInfoRAM();
+
 signals:
   void sendSaveVersionGame(const QString &version);
 
@@ -138,13 +141,15 @@ private:
   QSlider *choiceColor;
   QSlider *choiceColorButton;
   QSlider *choiceColorButtonText;
-
+  QSlider *maximumUseMemory;
+  QSlider *minimumUseMemory;
 
   QMenuBar *menuBar;
 
   QGroupBox *groupBoxGame;
   QGroupBox *groupBoxLauncher;
   QGroupBox *groupLauncherState;
+  QGroupBox *groupMemorySettings;
 private:
   Logger logger;
   Downloader *m_download;
