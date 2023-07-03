@@ -6,6 +6,4 @@
 class Path {
 public:
     static QString launcherPath();
-
-
 };

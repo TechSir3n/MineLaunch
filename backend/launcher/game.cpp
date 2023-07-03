@@ -42,7 +42,7 @@ void PlayGame::start() {
             << "--username" << m_username << "--version" << versionGame
             << "--soundVolume" << m_soundValue << m_extensionArgs
             << m_screenModeArgs << m_gammaArgs << m_qualityArgs
-            << m_connectServerArgs;
+            << m_connectServerArgs << m_setUseMemory;
 
   m_process->startDetached("java", arguments);
 
@@ -91,34 +91,39 @@ void PlayGame::onReadyReadStandardOutput() {
   qDebug() << "Output: " << output;
 }
 
-void PlayGame::getUsername(const QString &username) { m_username = username; }
+void PlayGame::setUsername(const QString &username) { m_username = username; }
 
-void PlayGame::getExtensionSettings(const QStringList &extensionArgs) {
+void PlayGame::setExtensionSettings(const QStringList &extensionArgs) {
 
   m_extensionArgs = extensionArgs;
 }
 
-void PlayGame::getScreenMode(const QStringList &screenModeArgs) {
+void PlayGame::setScreenMode(const QStringList &screenModeArgs) {
   m_screenModeArgs = screenModeArgs;
 }
 
-void PlayGame::getGamma(const QStringList &gammaArgs) {
+void PlayGame::setGamma(const QStringList &gammaArgs) {
   m_gammaArgs = gammaArgs;
 }
 
-void PlayGame::getSoundValue(const QString &soundValueArg) {
+void PlayGame::setSoundValue(const QString &soundValueArg) {
   m_soundValue = soundValueArg;
 }
 
-void PlayGame::getIPAddressAndPort(const QStringList &connectServerArgs) {
+void PlayGame::setIPAddressAndPort(const QStringList &connectServerArgs) {
   m_connectServerArgs = connectServerArgs;
 }
 
-void PlayGame::getQuality(const QStringList &qualityArg) {
+void PlayGame::setdMaxAndMinMemory(const std::tuple<int, int> &memoryUse) {
+  m_setUseMemory = QStringList() << "-Xmx" << QString::number(std::get<0>(memoryUse)) << "-Xms"
+                                 << QString::number(std::get<1>(memoryUse));
+}
+
+void PlayGame::setQuality(const QStringList &qualityArg) {
   m_qualityArgs = qualityArg;
 }
 
-void PlayGame::getVersionGame(const QString &t_versionGame) {
+void PlayGame::setVersionGame(const QString &t_versionGame) {
   versionGame = t_versionGame;
 }
 

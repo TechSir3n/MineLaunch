@@ -26,25 +26,26 @@ public slots:
 
   void stop() override;
 
-  void getVersionGame(const QString &t_versionGame);
+  void setVersionGame(const QString &t_versionGame);
 
-  void getUsername(const QString &username);
+  void setUsername(const QString &username);
 
-  void getExtensionSettings(const QStringList &extensionArgs);
+  void setExtensionSettings(const QStringList &extensionArgs);
 
-  void getScreenMode(const QStringList &screenModeArgs);
+  void setScreenMode(const QStringList &screenModeArgs);
 
-  void getGamma(const QStringList &gammaArgs);
+  void setGamma(const QStringList &gammaArgs);
 
-  void getQuality(const QStringList &qualityArg);
+  void setQuality(const QStringList &qualityArg);
 
-  void getSoundValue(const QString &soundValueArg);
+  void setSoundValue(const QString &soundValueArg);
 
-  void getIPAddressAndPort(const QStringList &connectServerArgs);
+  void setIPAddressAndPort(const QStringList &connectServerArgs);
+
+  void setdMaxAndMinMemory(const std::tuple<int,int> &memoryUse);
 
 private:
   QString getAssetIndex() noexcept;
-
 
 private slots:
   void onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
@@ -68,6 +69,7 @@ private:
   QStringList m_gammaArgs;
   QStringList m_qualityArgs;
   QStringList m_connectServerArgs;
+  QStringList m_setUseMemory;
 
 private:
   static constexpr const char *mainClass = "net.minecraft.client.main.Main";

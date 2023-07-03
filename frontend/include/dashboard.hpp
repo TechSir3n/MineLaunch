@@ -24,7 +24,6 @@
 #include <QMap>
 #include <QMenu>
 #include <QMenuBar>
-#include <QSysInfo>
 #include <QPalette>
 #include <QPushButton>
 #include <QRadioButton>
@@ -84,8 +83,6 @@ private:
 
   void addSettings() noexcept;
 
-  std::tuple<int,int> getInfoRAM();
-
 signals:
   void sendSaveVersionGame(const QString &version);
 
@@ -102,6 +99,8 @@ signals:
   void sendSaveSound(const QString &soundValue);
 
   void sendSaveLanguage(const char *language);
+
+  void sendMaxAndMinMemory(const std::tuple<int,int>& memoryUse);
 
 private:
   QPushButton *playButton;

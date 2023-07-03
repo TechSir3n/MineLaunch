@@ -7,13 +7,15 @@ DownloadLibraries::DownloadLibraries(QObject *parent)
 DownloadLibraries::~DownloadLibraries() { delete m_manager; }
 
 void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
-    const QString path = QDir::cleanPath(Path::launcherPath() + "/../" +
-                                         "/MineLaunch/backend/launcher/minecraft/versions/");
+  const QString path =
+      QDir::cleanPath(Path::launcherPath() + "/../" +
+                      "/MineLaunch/backend/launcher/minecraft/versions/");
   QDir dir(path);
 
   QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
   if (dirs.contains(versionGame)) {
-    QFile file(path + versionGame + "/" + "version.json");
+    const QString filePath = dir.filePath(versionGame + "/version.json");
+    QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
       qDebug() << "Failed open file for read [downloadLibraries] "
                << file.errorString();
@@ -32,9 +34,9 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
       }
     }
   }
-  const QString savePath = QDir::cleanPath(Path::launcherPath() + QDir::separator() + ".." +
-                           QDir::separator() +
-                                           "/MineLaunch/backend/launcher/minecraft/libraries/");
+  const QString savePath = QDir::cleanPath(
+      Path::launcherPath() + QDir::separator() + ".." + QDir::separator() +
+      "/MineLaunch/backend/launcher/minecraft/libraries/");
   QDir librariesDir(savePath);
   if (!librariesDir.exists()) {
     qDebug() << "like this directory doesn't exits";

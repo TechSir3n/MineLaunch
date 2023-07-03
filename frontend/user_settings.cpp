@@ -7,7 +7,7 @@ QStringList m_data;
 UserSettings::UserSettings(QWidget *parent) : QDialog(parent) {
   PlayGame *game = new PlayGame();
   QObject::connect(this, &UserSettings::sendUsername, game,
-                   &PlayGame::getUsername);
+                   &PlayGame::setUsername);
 }
 
 void UserSettings::getProfileData(const QString &name, const QString &email,
@@ -111,9 +111,9 @@ void UserSettings::initalizeGuiSettings(QTabWidget *m_tab) noexcept {
       Qt::LeftToRight, Qt::AlignCenter, profileWidget->size(),
       QGuiApplication::primaryScreen()->availableGeometry()));
 
-  std::shared_ptr<WelcomePage> welcPtr = std::make_shared<WelcomePage>();
-  QObject::connect(exitButton, &QPushButton::clicked, this, [welcPtr]() {
+  QObject::connect(exitButton, &QPushButton::clicked, this, []() {
     DashBoard::getInstance().close();
+    WelcomePage *welcPtr = new WelcomePage();
     welcPtr->show();
   });
 

@@ -173,7 +173,7 @@ void Downloader::stopProgressDialog() {
                    &QProgressDialog::close);
 }
 
-void Downloader::getVersionGame(const QString &version) {
+void Downloader::setVersionGame(const QString &version) {
   versionStr = version;
 }
 

@@ -17,32 +17,35 @@ DashBoard::DashBoard(QWidget *parent)
       FactoryLauncher::createLauncher(LauncherType::Download));
 
   QObject::connect(this, &DashBoard::sendSaveVersionGame, m_download,
-                   &Downloader::getVersionGame);
+                   &Downloader::setVersionGame);
   QObject::connect(this, &DashBoard::sendSaveVersionGame, m_play,
-                   &PlayGame::getVersionGame);
+                   &PlayGame::setVersionGame);
 
   QObject::connect(this, &DashBoard::sendSaveExtension, m_play,
-                   &PlayGame::getExtensionSettings);
+                   &PlayGame::setExtensionSettings);
 
   QObject::connect(this, &DashBoard::sendSaveScreenMode, m_play,
-                   &PlayGame::getScreenMode);
+                   &PlayGame::setScreenMode);
 
   QObject::connect(this, &DashBoard::sendSaveSound, m_play,
-                   &PlayGame::getSoundValue);
+                   &PlayGame::setSoundValue);
 
   QObject::connect(this, &DashBoard::sendSaveGamma, m_play,
-                   &PlayGame::getGamma);
+                   &PlayGame::setGamma);
 
   QObject::connect(this, &DashBoard::sendSaveQuality, m_play,
-                   &PlayGame::getQuality);
+                   &PlayGame::setQuality);
 
   QObject::connect(this, &DashBoard::sendIPServerAndPort, m_play,
-                   &PlayGame::getIPAddressAndPort);
+                   &PlayGame::setIPAddressAndPort);
+
+  QObject::connect(this, &DashBoard::sendMaxAndMinMemory, m_play,
+                   &PlayGame::setdMaxAndMinMemory);
 
   QObject::connect(this, &DashBoard::sendSaveLanguage, m_custom,
                    &Custom::setLanguage);
 
-  tabWidget->setFixedSize(QSize(1150, 880));
+  tabWidget->setFixedSize(QSize(1350, 880));
   versionSelector->setFixedWidth(100);
   initalizeUI();
 
@@ -66,7 +69,7 @@ void DashBoard::initalizeUI() noexcept {
   UserSettings::getInstance().initalizeGuiSettings(tabWidget);
   addSettings();
 
-  this->setMinimumSize(1150, 880);
+  this->setMinimumSize(1350, 850);
   this->setWindowTitle("Minecraft Launcher");
 }
 
@@ -168,8 +171,9 @@ void DashBoard::loadServers() noexcept {
   webView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
   connectButton = new QPushButton(tr("Connect"));
-  connectButton->setStyleSheet(
-      "background-color: #1e90ff; color: white; font-weight: bold;");
+  connectButton->setStyleSheet("background-color: #1e90ff; color: white;");
+  connectButton->setFont(QFont("Arial", 12, QFont::Bold));
+  connectButton->setFixedWidth(100);
 
   editIPServer = new QLineEdit();
   editIPServer->setPlaceholderText(
@@ -316,9 +320,11 @@ void DashBoard::addSettings() noexcept {
   minimumUseMemory->setMaximum(64000);
 
   screenExtension = new QComboBox();
+  screenExtension->addItem(tr("2560x1440"));
   screenExtension->addItem(tr("1920x1080"));
-  screenExtension->addItem(tr("1280x760"));
+  screenExtension->addItem(tr("1280x720"));
   screenExtension->addItem(tr("1024x768"));
+  screenExtension->addItem(tr("854x480"));
 
   QLabel *colorLabel = new QLabel(tr("Color Launcher"));
   choiceColor = new QSlider(Qt::Horizontal);
@@ -446,16 +452,21 @@ void DashBoard::addSettings() noexcept {
                    &DashBoard::onSliderValueChanged);
 
   QObject::connect(minimumUseMemory, &QSlider::valueChanged, this,
-                   [minimumUseMemoryLabel,this](int value) {
-                     QString textValue = QString("Minimum Memory: %1 MB").arg(value);
+                   [minimumUseMemoryLabel, this](int value) {
+                     QString textValue =
+                         QString("Minimum Memory: %1 MB").arg(value);
                      minimumUseMemoryLabel->setText(textValue);
                    });
 
   QObject::connect(maximumUseMemory, &QSlider::valueChanged, this,
-                   [maximumUseMemoryLabel,this](int value) {
-                     QString textValue = QString("Maximum Memory: %1 MB").arg(value);
+                   [maximumUseMemoryLabel, this](int value) {
+                     QString textValue =
+                         QString("Maximum Memory: %1 MB").arg(value);
                      maximumUseMemoryLabel->setText(textValue);
                    });
+
+  emit sendMaxAndMinMemory(std::make_tuple<int, int>(
+      maximumUseMemory->value(), minimumUseMemory->value()));
 
   QObject::connect(saveButton, &QPushButton::clicked, this, [this]() {
     const QString extension = screenExtension->currentText();
@@ -506,54 +517,40 @@ void DashBoard::addSettings() noexcept {
                    [this]() { settings.remove("style"); });
 }
 
-std::tuple<int, int> DashBoard::getInfoRAM()
-{
-  qint64 availableMemory = QSysInfo::availableVirtualMemory();
-  qDebug() << "Available memory: " << availableMemory / (1024 * 1024) << "MB";
-
-  qint64 totalMemory = QSysInfo::totalVirtualMemory();
-
-  qDebug() << "Total memory: " << totalMemory / (1024 * 1024) << "MB";
-
-  qint64 minimumMemory = QSysInfo::minimumVirtualMemory();
-  qDebug() << "Minimum memory: " << minimumMemory / (1024 * 1024) << "MB";
-
-  return std::make_tuple<int,int>();
-}
-
 void DashBoard::addGameTab() noexcept {
   QWidget *widgetShowGame = new QWidget(this);
+  widgetShowGame->setStyleSheet("background-image: url(" +
+                                Path::launcherPath() + "/../" +
+                                "/MineLaunch/resources/mangrove-river-1.png);");
 
   QVBoxLayout *gameLayout = new QVBoxLayout(widgetShowGame);
   tabWidget->addTab(widgetShowGame, "Game");
-
-  QLabel *image = new QLabel();
-  QPixmap pixmap(
-      QDir::cleanPath(Path::launcherPath() + "/../" +
-                      "/MineLaunch/resources/"
-                      "java-edition-launcher-minecraft-java-edition.jpg"));
-  QPixmap scaledPixmap = pixmap.scaled(tabWidget->size(), Qt::KeepAspectRatio);
-  image->setPixmap(scaledPixmap);
-
-  QVBoxLayout *pixmapLayout = new QVBoxLayout;
-  pixmapLayout->addWidget(image);
-  pixmapLayout->setAlignment(Qt::AlignCenter);
 
   playButton = new QPushButton(tr("Play"));
   cancelButton = new QPushButton(tr("Cancel"));
   downloadButton = new QPushButton(tr("Download"));
 
+  QFont font("Arial", 16, QFont::Bold);
+  playButton->setFont(font);
+  cancelButton->setFont(font);
+  downloadButton->setFont(font);
+
+  versionSelector->setFont(QFont("Arial", 12, QFont::Bold));
+  versionSelector->setFixedWidth(105);
+  versionSelector->setStyleSheet("background-color: dark-green ;color: green;");
+  versionSelector->setFocusPolicy(Qt::NoFocus);
+
   QHBoxLayout *hbox_layout = new QHBoxLayout;
   hbox_layout->addWidget(versionSelector);
   hbox_layout->addStretch();
   hbox_layout->addWidget(playButton);
+  hbox_layout->addSpacing(8);
   hbox_layout->addWidget(cancelButton);
+  hbox_layout->addSpacing(8);
   hbox_layout->addWidget(downloadButton);
   hbox_layout->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
   QHBoxLayout *layout = new QHBoxLayout();
-  layout->insertLayout(0, pixmapLayout);
-  layout->setAlignment(Qt::AlignCenter);
   gameLayout->setMenuBar(menuBar);
   gameLayout->addLayout(layout);
   gameLayout->addLayout(hbox_layout);

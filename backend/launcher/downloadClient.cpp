@@ -11,14 +11,14 @@ DownloadClient::~DownloadClient() {
 }
 
 void DownloadClient::downloadClient(const QString &versionClient) {
-  const QString path = QDir::cleanPath(Path::launcherPath() + "/../" +
-                                       "/MineLaunch/backend/launcher/minecraft/versions/");
+  const QString path =
+      QDir::cleanPath(Path::launcherPath() + "/../" +
+                      "/MineLaunch/backend/launcher/minecraft/versions/");
   QDir dir(path);
   QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
   if (dirs.contains(versionClient)) {
-    QFile file;
-    file.setFileName(path + versionClient + "/version.json");
-
+    const QString filePath = dir.filePath(versionClient + "/version.json");
+    QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
       qDebug() << "Failed open file for read [downloadClient]"
                << file.errorString();

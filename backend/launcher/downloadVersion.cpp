@@ -55,16 +55,23 @@ void DownloadVersion::downloadVersion(const QString &versionGame) noexcept {
     return;
   }
 
-  QFile file;
-  file.setFileName(path + version + "/version.json");
+  const QString filePath =  dir.filePath(version + "/version.json");
+  QFile file(filePath);
   if (!file.open(QIODevice::WriteOnly)) {
     qDebug() << "Error open file for write: " << file.errorString();
     return;
   }
 
-  file.write(reply->readAll());
-  reply->deleteLater();
-  file.close();
+  try {
+    file.write(reply->readAll());
+    file.close();
+  } catch (const std::exception &e) {
+    qDebug() << "Error writing to file: " << e.what();
+    file.remove();
+    return;
+  }
+
+  delete reply;
 }
 
 QString DownloadVersion::getVersionGame() const noexcept {

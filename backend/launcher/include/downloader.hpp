@@ -46,7 +46,7 @@ public slots:
   void stopProgressDialog();
 
 public slots:
-  void getVersionGame(const QString &version);
+  void setVersionGame(const QString &version);
 
 public:
   bool IsDownloading() const noexcept;
