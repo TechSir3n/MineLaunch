@@ -2,7 +2,7 @@
 This Minecraft launcher was written in C++ using Qt, making it cross-platform. The launcher is designed to run Minecraft on Windows, macOS and Linux.
 
 
-![MineLaunch Screenshot](https://github.com/TechSir3n/MineLaunch/blob/main/resources/mangrove-river-1.png)
+![MineLaunch Screenshot](https://github.com/TechSir3n/MineLaunch/blob/main/resources/launcher_view.png)
 
 ## Overview
 MineLaunch is a launcher developed using Qt C++ that allows you to conveniently manage Minecraft mods, launch the game with a specific version, customize the launcher's appearance, and configure initial game settings before launching.
