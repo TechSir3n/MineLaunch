@@ -30,8 +30,7 @@ tr.commands = lupdate \"$$_PRO_FILE_\" && lrelease \"$$_PRO_FILE_\"
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-RESOURCES += resources/mods/config/config.json \
-             res.qrc
+RESOURCES += res.qrc
 
 SOURCES += \
     frontend/signin.cpp \
@@ -53,6 +52,7 @@ SOURCES += \
     backend/launcher/downloadClient.cpp \
     backend/launcher/downloadAssetIndex.cpp \
     backend/launcher/downloadResources.cpp \
+    backend/launcher/downloadMod.cpp \
     backend/launcher/jsonParse.cpp \
     vendor/SmtpClient/src/smtpclient.cpp \
     vendor/SmtpClient/src/quotedprintable.cpp \
@@ -100,6 +100,7 @@ HEADERS += \
     backend/launcher/include/launcher.hpp \
     backend/launcher/include/downloadAssetIndex.hpp \
     backend/launcher/include/downloadResources.hpp \
+    backend/launcher/include/downloadMod.hpp \
     backend/include/updater_data.hpp \
     backend/include/dataHandler.hpp \
     backend/include/server.hpp \

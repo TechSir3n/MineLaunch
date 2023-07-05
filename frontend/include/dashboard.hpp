@@ -3,6 +3,7 @@
 #include "./assistance/clearLogs.hpp"
 #include "./backend/launcher/include/factory.hpp"
 #include "./backend/launcher/include/launcher.hpp"
+#include "./backend/launcher/include/downloadMod.hpp"
 #include "./assistance/custom.hpp"
 #include "signup.hpp"
 #include "user_settings.hpp"
@@ -102,6 +103,8 @@ signals:
 
   void sendMaxAndMinMemory(const std::tuple<int,int>& memoryUse);
 
+  void sendModURL(const QString &url);
+
 private:
   QPushButton *playButton;
   QPushButton *saveButton;
@@ -153,6 +156,7 @@ private:
   Logger logger;
   Downloader *m_download;
   PlayGame *m_play;
+  DownloadMod *m_mod;
   ClearLogs cl;
   Custom *m_custom;
   static constexpr char *ENGLISH_LANG = "en";

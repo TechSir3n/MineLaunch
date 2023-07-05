@@ -4,7 +4,8 @@
 DashBoard::DashBoard(QWidget *parent)
     : QDialog(parent), tabWidget(new QTabWidget(this)),
       modsTable(new QTableWidget()), versionSelector(new QComboBox()),
-      menuBar(new QMenuBar()), m_custom(new Custom()) {
+      menuBar(new QMenuBar()), m_mod(new DownloadMod()),
+      m_custom(new Custom()) {
 
   QString style = settings.value("style").toString();
   if (!style.isEmpty()) {
@@ -42,8 +43,20 @@ DashBoard::DashBoard(QWidget *parent)
   QObject::connect(this, &DashBoard::sendMaxAndMinMemory, m_play,
                    &PlayGame::setdMaxAndMinMemory);
 
+  QObject::connect(this, &DashBoard::sendModURL, m_mod,
+                   &DownloadMod::setUrlAddressMod);
+
   QObject::connect(this, &DashBoard::sendSaveLanguage, m_custom,
                    &Custom::setLanguage);
+
+  QObject::connect(
+      tabWidget, &QTabWidget::currentChanged, this, [this](int index) {
+          if (index == 1) {
+          QMessageBox::information(
+              this, "Tip",
+              "Set url address .jar file which you want to download");
+        }
+      });
 
   tabWidget->setFixedSize(QSize(1350, 880));
   versionSelector->setFixedWidth(100);
@@ -58,6 +71,7 @@ DashBoard::~DashBoard() {
   delete versionSelector;
   delete modsTable;
   delete tabWidget;
+  delete m_mod;
 }
 
 void DashBoard::initalizeUI() noexcept {
@@ -74,13 +88,14 @@ void DashBoard::initalizeUI() noexcept {
 }
 
 void DashBoard::loadMods() noexcept {
+
   QWidget *widgetMods = new QWidget();
   QVBoxLayout *modsLayout = new QVBoxLayout(widgetMods);
   modsTable->setColumnCount(3);
   for (int i = 0; i < 3; i++) {
     modsTable->setColumnWidth(i, 350);
   }
-  modsTable->setHorizontalHeaderLabels({"Name", "Description", "File"});
+  modsTable->setHorizontalHeaderLabels({"Name"});
 
   searchButton = new QPushButton(tr("Search"));
   downloadButton = new QPushButton(tr("Download"));
@@ -91,7 +106,7 @@ void DashBoard::loadMods() noexcept {
   searchLayout->setAlignment(Qt::AlignRight);
 
   editSearch = new QLineEdit();
-  editSearch->setPlaceholderText("What's mod do you need?");
+  editSearch->setPlaceholderText("Set url link mod wish you download");
 
   modsLayout->addWidget(editSearch);
   modsLayout->addLayout(searchLayout);
@@ -99,68 +114,27 @@ void DashBoard::loadMods() noexcept {
 
   tabWidget->addTab(widgetMods, "Mods");
 
-  QFile file(QDir::cleanPath(Path::launcherPath() + "/../" +
-                             "/MineLaunch/resources/mods/config/config.json"));
-  if (!file.open(QIODevice::ReadOnly)) {
-    logger.log(LogLevel::Error, "Failed to open file [addMods]");
-    return;
-  }
+  QDir dir(Path::launcherPath() + "/mods");
+  QFileInfoList fileList = dir.entryInfoList(QDir::Files);
 
-  QByteArray jsonData = file.readAll();
-  QJsonDocument doc = QJsonDocument::fromJson(jsonData);
-
-  if (!doc.isArray()) {
-    logger.log(LogLevel::Error, "Wrong format file");
-    return;
-  }
-
-  QJsonArray modsArr = doc.array();
-  for (const QJsonValue &modValue : modsArr) {
-    QJsonObject modObj = modValue.toObject();
-    QString name = modObj.value("name").toString();
-    QString description = modObj.value("description").toString();
-    QString file = modObj.value("file").toString();
-
-    Mod mod;
-    mod.name = name;
-    mod.description = description;
-    mod.file = file;
-    loadedMods.append(mod);
-  }
-
-  file.close();
-
-  for (const Mod &mod : loadedMods) {
-    const int row = modsTable->rowCount();
-    modsTable->insertRow(row);
-
-    auto *nameItem = new QTableWidgetItem(mod.name);
-    modsTable->setItem(row, 0, nameItem);
-
-    auto *descItem = new QTableWidgetItem(mod.description);
-    modsTable->setItem(row, 1, descItem);
-
-    auto *fileItem = new QTableWidgetItem(QFileInfo(mod.file).fileName());
-    modsTable->setItem(row, 2, fileItem);
-  }
-
-  int rowCount = modsTable->rowCount();
-  int columnCount = modsTable->columnCount();
-
-  for (int row = 0; row < rowCount; row++) {
-    for (int column = 0; column < columnCount; column++) {
-      auto items = modsTable->item(row, column);
-      if (items) {
-        items->setFlags(items->flags() & ~Qt::ItemIsEditable);
-      }
-    }
+  int row = 0;
+  modsTable->setRowCount(fileList.size());
+  for (const auto &fileInfo : fileList) {
+    QTableWidgetItem *item = new QTableWidgetItem(fileInfo.fileName());
+    modsTable->setItem(row, 0, item);
+    row++;
   }
 
   QObject::connect(searchButton, &QPushButton::clicked, this,
                    &DashBoard::searchModsByName);
 
-  QObject::connect(downloadButton, &QPushButton::clicked, this, [&]() {
-
+  QObject::connect(downloadButton, &QPushButton::clicked, this, [this]() {
+    if (!editSearch->text().startsWith("https")) {
+      QMessageBox::warning(this, "Error", "Wrong URL");
+      return;
+    } else {
+      emit sendModURL(editSearch->text());
+    }
   });
 }
 
