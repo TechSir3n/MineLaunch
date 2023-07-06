@@ -105,6 +105,8 @@ signals:
 
   void sendModURL(const QString &url);
 
+  void sendModName(const QStringList &modName);
+
 private:
   QPushButton *playButton;
   QPushButton *saveButton;
@@ -115,6 +117,7 @@ private:
   QPushButton *connectButton;
   QPushButton *updateListButton;
   QPushButton *nextButton;
+  QPushButton *addToGame;
 
   QRadioButton *fullScreen;
   QRadioButton *windowMode;
@@ -159,6 +162,6 @@ private:
   DownloadMod *m_mod;
   ClearLogs cl;
   Custom *m_custom;
-  static constexpr char *ENGLISH_LANG = "en";
-  static constexpr char *RUSSIAN_LANG = "ru";
+  static constexpr char *ENGLISH_LANG { "en" } ;
+  static constexpr char *RUSSIAN_LANG { "ru" };
 };

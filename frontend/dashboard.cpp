@@ -46,12 +46,15 @@ DashBoard::DashBoard(QWidget *parent)
   QObject::connect(this, &DashBoard::sendModURL, m_mod,
                    &DownloadMod::setUrlAddressMod);
 
+  QObject::connect(this, &DashBoard::sendModName, m_play,
+                   &PlayGame::setModsFiels);
+
   QObject::connect(this, &DashBoard::sendSaveLanguage, m_custom,
                    &Custom::setLanguage);
 
   QObject::connect(
       tabWidget, &QTabWidget::currentChanged, this, [this](int index) {
-          if (index == 1) {
+        if (index == 1) {
           QMessageBox::information(
               this, "Tip",
               "Set url address .jar file which you want to download");
@@ -88,15 +91,7 @@ void DashBoard::initalizeUI() noexcept {
 }
 
 void DashBoard::loadMods() noexcept {
-
   QWidget *widgetMods = new QWidget();
-  QVBoxLayout *modsLayout = new QVBoxLayout(widgetMods);
-  modsTable->setColumnCount(3);
-  for (int i = 0; i < 3; i++) {
-    modsTable->setColumnWidth(i, 350);
-  }
-  modsTable->setHorizontalHeaderLabels({"Name"});
-
   searchButton = new QPushButton(tr("Search"));
   downloadButton = new QPushButton(tr("Download"));
 
@@ -107,26 +102,108 @@ void DashBoard::loadMods() noexcept {
 
   editSearch = new QLineEdit();
   editSearch->setPlaceholderText("Set url link mod wish you download");
+  addToGame = new QPushButton(tr("Add Game"));
 
+  QHBoxLayout *buttonLayout = new QHBoxLayout;
+  buttonLayout->addWidget(addToGame);
+  buttonLayout->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
+
+  QVBoxLayout *modsLayout = new QVBoxLayout(widgetMods);
   modsLayout->addWidget(editSearch);
   modsLayout->addLayout(searchLayout);
   modsLayout->addWidget(modsTable);
+  modsLayout->addLayout(buttonLayout);
 
   tabWidget->addTab(widgetMods, "Mods");
 
-  QDir dir(Path::launcherPath() + "/mods");
+  QDir dir(Path::minecraftPath() + "/mods/");
   QFileInfoList fileList = dir.entryInfoList(QDir::Files);
 
   int row = 0;
   modsTable->setRowCount(fileList.size());
+  modsTable->setColumnCount(5);
+  modsTable->setHorizontalHeaderLabels(
+      {"Name", "Extension", "Size Mod", "Last Modified", "Storage Location"});
+  for (int i = 0; i < modsTable->columnCount(); ++i) {
+    modsTable->setColumnWidth(i, 200);
+  }
+
+  QStringList filePaths;
   for (const auto &fileInfo : fileList) {
-    QTableWidgetItem *item = new QTableWidgetItem(fileInfo.fileName());
-    modsTable->setItem(row, 0, item);
+    filePaths.append(fileInfo.absoluteFilePath());
+
+    const qint64 fileSize = fileInfo.size();
+    const QString fileExtension = fileInfo.suffix();
+    QString sizeText;
+
+    if (fileSize < 1024) {
+      sizeText = QString("%1 B").arg(fileSize);
+    } else if (fileSize < 1048576) {
+      sizeText = QString("%1 KB").arg(fileSize / 1024);
+    } else if (fileSize < 1073741824) {
+      sizeText = QString("%1 MB").arg(fileSize / 1048576);
+    }
+
+    QTableWidgetItem *itemFileName = new QTableWidgetItem(fileInfo.baseName());
+    QTableWidgetItem *itemLastModified =
+        new QTableWidgetItem(fileInfo.lastModified().toString());
+    QTableWidgetItem *itemSizeFileMod = new QTableWidgetItem(sizeText);
+    QTableWidgetItem *itemExtensionFileMod =
+        new QTableWidgetItem(fileExtension);
+    QString m_path;
+    for (const auto &path : filePaths) {
+      m_path = path;
+    }
+
+    QTableWidgetItem *itemStorageLocation = new QTableWidgetItem(m_path);
+
+    modsTable->setItem(row, 0, itemFileName);
+    modsTable->setItem(row, 1, itemExtensionFileMod);
+    modsTable->setItem(row, 2, itemSizeFileMod);
+    modsTable->setItem(row, 3, itemLastModified);
+    modsTable->setItem(row, 4, itemStorageLocation);
     row++;
   }
 
   QObject::connect(searchButton, &QPushButton::clicked, this,
                    &DashBoard::searchModsByName);
+
+  QObject::connect(addToGame, &QPushButton::clicked, this, [this]() {
+    const QString modName = editSearch->text();
+    for (int row = 0; row < modsTable->rowCount(); row++) {
+      auto item = modsTable->item(row, 0);
+      if (item && item->text() == modName) {
+        auto modNameLocation = modsTable->item(row, 4);
+        emit sendModName(
+            QStringList() << "-Djava.class.path=" << QDir::toNativeSeparators(modNameLocation->text()));
+        QToolTip::showText(QCursor::pos(), "Mod Success added");
+        break;
+      }
+    }
+
+    if (!modName.isEmpty()) {
+      emit sendModName(QStringList() << "-Djava.class.path=" << modName);
+      QToolTip::showText(QCursor::pos(), "Mod Success added");
+    } else {
+      QObject::connect(
+          modsTable, &QTableWidget::cellClicked, this,
+          [this](int row, int column) {
+            QString storageLocation;
+            if (column == 0) {
+              auto storageLocationItem = modsTable->item(row, 4);
+              if (!storageLocationItem) {
+                return;
+              }
+              storageLocation =
+                  storageLocationItem->data(Qt::DisplayRole).toString();
+            }
+            emit sendModName(QStringList()
+                             << "-Djava.class.path="
+                             << QDir::toNativeSeparators(storageLocation));
+            QToolTip::showText(QCursor::pos(), "Mod Success added");
+          });
+    }
+  });
 
   QObject::connect(downloadButton, &QPushButton::clicked, this, [this]() {
     if (!editSearch->text().startsWith("https")) {
@@ -243,16 +320,21 @@ void DashBoard::addMenuTab() noexcept {
   });
 
   QObject::connect(aboutAction, &QAction::triggered, this, []() {
-    QDesktopServices::openUrl(
-        QUrl(QDir::cleanPath(Path::launcherPath() + "/../" +
-                             "/MineLaunch/resources/aboutLaunch.html")));
+    QDesktopServices::openUrl(QUrl(
+        QDir::toNativeSeparators(Path::launcherPath() + "/../" +
+                                 "/MineLaunch/resources/aboutLaunch.html")));
   });
 
   QObject::connect(clearLogsAction, &QAction::triggered, this,
                    [this]() { cl.clearLogs(); });
 
-  QObject::connect(openAction, &QAction::triggered, this, []() {
-
+  QObject::connect(openAction, &QAction::triggered, this, [this]() {
+    QString directory = QFileDialog::getExistingDirectory(
+        this, tr("Select game directory"), QDir::homePath());
+    if (!directory.isEmpty()) {
+      QMessageBox::warning(this, "Warning",
+                           "Directory is doesn't exists or incorrect");
+    }
   });
 }
 
@@ -493,9 +575,10 @@ void DashBoard::addSettings() noexcept {
 
 void DashBoard::addGameTab() noexcept {
   QWidget *widgetShowGame = new QWidget(this);
-  widgetShowGame->setStyleSheet("background-image: url(" +
-                                Path::launcherPath() + "/../" +
-                                "/MineLaunch/resources/mangrove-river-1.png);");
+  widgetShowGame->setStyleSheet(
+      "background-image: url(" +
+      QDir::toNativeSeparators(Path::launcherPath() + "/../" +
+                               "/MineLaunch/resources/mangrove-river-1.png);"));
 
   QVBoxLayout *gameLayout = new QVBoxLayout(widgetShowGame);
   tabWidget->addTab(widgetShowGame, "Game");

@@ -4,9 +4,6 @@
 
 SignIn::SignIn(QWidget *parent) : QDialog(parent), dialog(new CodeDialog()) {
   setupUI();
-
-
-
 }
 
 SignIn::~SignIn() noexcept {
@@ -32,7 +29,7 @@ void SignIn::setupUI() {
 
   QToolButton *toolButton = new QToolButton();
   toolButton->setIcon(
-      QIcon(QDir::cleanPath(Path::launcherPath() + "/../" +
+      QIcon(QDir::toNativeSeparators(Path::launcherPath() + "/../" +
                             "/MineLaunch/resources/211661_eye_icon.png")));
   toolButton->setCursor(Qt::PointingHandCursor);
 
@@ -45,7 +42,7 @@ void SignIn::setupUI() {
   });
 
   QLabel *logo = new QLabel();
-  QPixmap logoImage(QDir::cleanPath(Path::launcherPath() + "/../" +
+  QPixmap logoImage(QDir::toNativeSeparators(Path::launcherPath() + "/../" +
                                     "MineLaunch/resources/u_ajax.png"));
   logo->setPixmap(logoImage);
   logo->setAlignment(Qt::AlignCenter);
@@ -98,7 +95,7 @@ void SignIn::setupUI() {
   lineEmail->setStyleSheet(lineEditStyle);
 
   auto [x, y] = signup.CalculateCenterMonitor();
-  QIcon icon(QDir::cleanPath(Path::launcherPath() + "/../" +
+  QIcon icon(QDir::toNativeSeparators(Path::launcherPath() + "/../" +
                              "/MineLaunch/resources/u_ajax.png"));
 
   this->setWindowIcon(icon);

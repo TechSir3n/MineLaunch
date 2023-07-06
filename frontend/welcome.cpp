@@ -31,7 +31,7 @@ void WelcomePage::setupUI() {
   QLabel *dummy2 = new QLabel();
   dummy2->setMinimumSize(0, 0);
 
-  const QString path = QDir::cleanPath(
+  const QString path = QDir::toNativeSeparators(
       Path::launcherPath() + "/../" + "/MineLaunch/resources/aboutLaunch.html");
   QLabel *link = new QLabel("<a href=\"" + path + "\">About MineLaucnh</a>");
   link->setTextFormat(Qt::RichText);
@@ -63,7 +63,7 @@ void WelcomePage::setupUI() {
   layout->setSpacing(0);
   layout->setContentsMargins(0, 0, 0, 0);
 
-  QIcon icon(QDir::cleanPath(Path::launcherPath() + "/../" +
+  QIcon icon(QDir::toNativeSeparators(Path::launcherPath() + "/../" +
                              "/MineLaunch/resources/u_ajax.png"));
   this->setFixedSize(550, 380);
   this->setWindowIcon(icon);

@@ -8,7 +8,7 @@
 class ClearLogs {
 public slots:
   void clearLogs() noexcept {
-    QDir logsDir(QDir::cleanPath(Path::launcherPath() + "/../" +
+    QDir logsDir(QDir::toNativeSeparators(Path::launcherPath() + "/../" +
                                  "/MineLaunch/utils/logs_files/"));
 
     QStringList filters;

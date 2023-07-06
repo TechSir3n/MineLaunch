@@ -42,7 +42,7 @@ void PlayGame::start() {
             << "--username" << m_username << "--version" << versionGame
             << "--soundVolume" << m_soundValue << m_extensionArgs
             << m_screenModeArgs << m_gammaArgs << m_qualityArgs
-            << m_connectServerArgs << m_setUseMemory;
+            << m_connectServerArgs << m_setUseMemory << m_modsFiles;
 
   m_process->startDetached("java", arguments);
 
@@ -55,9 +55,12 @@ void PlayGame::start() {
   QObject::connect(m_process, &QProcess::readyReadStandardOutput, this,
                    &PlayGame::onReadyReadStandardOutput);
 
+
   if (m_process->state() != QProcess::Running) {
     logger.log(LogLevel::Error, "Something went wrong while start process");
   }
+
+  m_process->waitForFinished();
 }
 
 bool PlayGame::gameIsRunning() const {
@@ -112,6 +115,11 @@ void PlayGame::setSoundValue(const QString &soundValueArg) {
 
 void PlayGame::setIPAddressAndPort(const QStringList &connectServerArgs) {
   m_connectServerArgs = connectServerArgs;
+}
+
+void PlayGame::setModsFiels(const QStringList &modsFiles)
+{
+  m_modsFiles = modsFiles;
 }
 
 void PlayGame::setdMaxAndMinMemory(const std::tuple<int, int> &memoryUse) {

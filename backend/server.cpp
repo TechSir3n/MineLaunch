@@ -17,7 +17,6 @@ void Server::newConnection() {
 }
 
 void Server::receivedData() {
-
   for (QTcpSocket *client : m_clients) {
     m_client = client;
     auto jsonData = client->readAll();

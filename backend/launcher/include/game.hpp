@@ -42,6 +42,8 @@ public slots:
 
   void setIPAddressAndPort(const QStringList &connectServerArgs);
 
+  void setModsFiels(const QStringList &modsFiles);
+
   void setdMaxAndMinMemory(const std::tuple<int,int> &memoryUse);
 
 private:
@@ -70,6 +72,7 @@ private:
   QStringList m_qualityArgs;
   QStringList m_connectServerArgs;
   QStringList m_setUseMemory;
+  QStringList m_modsFiles;
 
 private:
   static constexpr const char *mainClass = "net.minecraft.client.main.Main";

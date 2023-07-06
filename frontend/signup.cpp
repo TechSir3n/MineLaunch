@@ -5,8 +5,6 @@
 
 SignUp::SignUp(QWidget *parent) : QDialog(parent) {
   setupUI();
-
-
 }
 
 SignUp::~SignUp() noexcept {
@@ -41,7 +39,7 @@ void SignUp::setupUI() {
   checkboxLayout->addStretch();
   checkboxLayout->addWidget(buttonSubmit);
 
-  const QString path = QDir::cleanPath(
+  const QString path = QDir::toNativeSeparators(
       Path::launcherPath() + "/../" + "/MineLaunch/resources/aboutLaunch.html");
   QLabel *labelLink =
       new QLabel("<a href=\"" + path + "\">About MineLaucnh</a>");
@@ -67,8 +65,8 @@ void SignUp::setupUI() {
   browserLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
   QLabel *logo = new QLabel();
-  QPixmap logoImage(Path::launcherPath() + "/../" +
-                    "/MineLaunch/resources/u_ajax.png");
+  QPixmap logoImage(QDir::toNativeSeparators(Path::launcherPath() + "/../" +
+                                             "/MineLaunch/resources/u_ajax.png"));
   logo->setPixmap(logoImage);
   logo->setAlignment(Qt::AlignCenter);
   logo->setFixedSize(230, 130);
@@ -102,7 +100,7 @@ void SignUp::setupUI() {
 
   QToolButton *toolButton = new QToolButton();
   toolButton->setIcon(
-      QIcon(QDir::cleanPath(Path::launcherPath() + "/../" +
+      QIcon(QDir::toNativeSeparators(Path::launcherPath() + "/../" +
                             "/MineLaunch/resources/211661_eye_icon.png")));
   toolButton->setCursor(Qt::PointingHandCursor);
 
@@ -123,7 +121,7 @@ void SignUp::setupUI() {
   linePassword->setStyleSheet(lineEditStyle);
   lineUsername->setStyleSheet(lineEditStyle);
 
-  QIcon icon(QDir::cleanPath(Path::launcherPath() + "/../" +
+  QIcon icon(QDir::toNativeSeparators(Path::launcherPath() + "/../" +
                              "/MineLaunch/resources/u_ajax.png"));
   auto [x, y] = CalculateCenterMonitor();
 
