@@ -1,5 +1,12 @@
 #include "./include/dashboard.hpp"
+#include "./assistance/defines.hpp"
 #include "./assistance/path.hpp"
+
+extern const QString sliderStyle;
+
+extern const QString linkStyle;
+
+extern const QString lineEditStyle;
 
 DashBoard::DashBoard(QWidget *parent)
     : QDialog(parent), tabWidget(new QTabWidget(this)),
@@ -19,38 +26,18 @@ DashBoard::DashBoard(QWidget *parent)
 
   QObject::connect(this, &DashBoard::sendSaveVersionGame, m_download,
                    &Downloader::setVersionGame);
+
   QObject::connect(this, &DashBoard::sendSaveVersionGame, m_play,
                    &PlayGame::setVersionGame);
 
-  QObject::connect(this, &DashBoard::sendSaveExtension, m_play,
-                   &PlayGame::setExtensionSettings);
-
-  QObject::connect(this, &DashBoard::sendSaveScreenMode, m_play,
-                   &PlayGame::setScreenMode);
-
-  QObject::connect(this, &DashBoard::sendSaveSound, m_play,
-                   &PlayGame::setSoundValue);
-
-  QObject::connect(this, &DashBoard::sendSaveGamma, m_play,
-                   &PlayGame::setGamma);
-
-  QObject::connect(this, &DashBoard::sendSaveQuality, m_play,
-                   &PlayGame::setQuality);
-
   QObject::connect(this, &DashBoard::sendIPServerAndPort, m_play,
                    &PlayGame::setIPAddressAndPort);
-
-  QObject::connect(this, &DashBoard::sendMaxAndMinMemory, m_play,
-                   &PlayGame::setdMaxAndMinMemory);
 
   QObject::connect(this, &DashBoard::sendModURL, m_mod,
                    &DownloadMod::setUrlAddressMod);
 
   QObject::connect(this, &DashBoard::sendModName, m_play,
                    &PlayGame::setModsFiels);
-
-  QObject::connect(this, &DashBoard::sendSaveLanguage, m_custom,
-                   &Custom::setLanguage);
 
   QObject::connect(
       tabWidget, &QTabWidget::currentChanged, this, [this](int index) {
@@ -63,8 +50,8 @@ DashBoard::DashBoard(QWidget *parent)
 
   tabWidget->setFixedSize(QSize(1350, 880));
   versionSelector->setFixedWidth(100);
-  initalizeUI();
 
+  initalizeUI();
   this->setAutoFillBackground(true);
 }
 
@@ -170,20 +157,18 @@ void DashBoard::loadMods() noexcept {
 
   QObject::connect(addToGame, &QPushButton::clicked, this, [this]() {
     const QString modName = editSearch->text();
-    for (int row = 0; row < modsTable->rowCount(); row++) {
-      auto item = modsTable->item(row, 0);
-      if (item && item->text() == modName) {
-        auto modNameLocation = modsTable->item(row, 4);
-        emit sendModName(
-            QStringList() << "-Djava.class.path=" << QDir::toNativeSeparators(modNameLocation->text()));
-        QToolTip::showText(QCursor::pos(), "Mod Success added");
-        break;
-      }
-    }
-
     if (!modName.isEmpty()) {
-      emit sendModName(QStringList() << "-Djava.class.path=" << modName);
-      QToolTip::showText(QCursor::pos(), "Mod Success added");
+      for (int row = 0; row < modsTable->rowCount(); row++) {
+        auto item = modsTable->item(row, 0);
+        if (item && item->text() == modName) {
+          auto modNameLocation = modsTable->item(row, 4);
+          emit sendModName(QStringList() << "-Djava.class.path="
+                                         << QDir::toNativeSeparators(
+                                                modNameLocation->text()));
+          QMessageBox::information(this, "Tip", "Mod Success added");
+          break;
+        }
+      }
     } else {
       QObject::connect(
           modsTable, &QTableWidget::cellClicked, this,
@@ -200,7 +185,7 @@ void DashBoard::loadMods() noexcept {
             emit sendModName(QStringList()
                              << "-Djava.class.path="
                              << QDir::toNativeSeparators(storageLocation));
-            QToolTip::showText(QCursor::pos(), "Mod Success added");
+            QMessageBox::information(this, "Tip", "Mod Success added");
           });
     }
   });
@@ -315,9 +300,8 @@ void DashBoard::addMenuTab() noexcept {
 
   QObject::connect(exitAction, &QAction::triggered, qApp, &QApplication::quit);
 
-  QObject::connect(helpAction, &QAction::triggered, this, [this]() {
-
-  });
+  QObject::connect(helpAction, &QAction::triggered, qApp,
+                   &QApplication::aboutQt);
 
   QObject::connect(aboutAction, &QAction::triggered, this, []() {
     QDesktopServices::openUrl(QUrl(
@@ -333,7 +317,7 @@ void DashBoard::addMenuTab() noexcept {
         this, tr("Select game directory"), QDir::homePath());
     if (!directory.isEmpty()) {
       QMessageBox::warning(this, "Warning",
-                           "Directory is doesn't exists or incorrect");
+                           "Directory doesn't exists or incorrect");
     }
   });
 }
@@ -349,31 +333,43 @@ void DashBoard::addSettings() noexcept {
   brightnessSlider->setMinimum(0);
   brightnessSlider->setMaximum(50);
   brightnessSlider->setValue(25);
+  brightnessSlider->setStyleSheet(sliderStyle);
 
   soundSlider = new QSlider(Qt::Horizontal);
   soundSlider->setMinimum(0);
   soundSlider->setMaximum(50);
   soundSlider->setValue(25);
+  soundSlider->setStyleSheet(sliderStyle);
 
   choiceColorButton = new QSlider(Qt::Horizontal);
   choiceColorButton->setMinimum(0);
   choiceColorButton->setValue(25);
   choiceColorButton->setMaximum(50);
+  choiceColorButton->setStyleSheet(sliderStyle);
 
   choiceColorButtonText = new QSlider(Qt::Horizontal);
   choiceColorButtonText->setMinimum(0);
   choiceColorButtonText->setMaximum(50);
   choiceColorButtonText->setValue(25);
+  choiceColorButton->setStyleSheet(sliderStyle);
 
   maximumUseMemory = new QSlider(Qt::Horizontal);
   maximumUseMemory->setValue(4586);
   maximumUseMemory->setMinimum(2048);
   maximumUseMemory->setMaximum(64000);
+  maximumUseMemory->setStyleSheet(sliderStyle);
 
   minimumUseMemory = new QSlider(Qt::Horizontal);
   minimumUseMemory->setValue(4586);
   minimumUseMemory->setMinimum(2048);
   minimumUseMemory->setMaximum(64000);
+  minimumUseMemory->setStyleSheet(sliderStyle);
+
+  choiceColor = new QSlider(Qt::Horizontal);
+  choiceColor->setMinimum(0);
+  choiceColor->setMaximum(50);
+  choiceColor->setValue(25);
+  choiceColor->setStyleSheet(sliderStyle);
 
   screenExtension = new QComboBox();
   screenExtension->addItem(tr("2560x1440"));
@@ -381,12 +377,6 @@ void DashBoard::addSettings() noexcept {
   screenExtension->addItem(tr("1280x720"));
   screenExtension->addItem(tr("1024x768"));
   screenExtension->addItem(tr("854x480"));
-
-  QLabel *colorLabel = new QLabel(tr("Color Launcher"));
-  choiceColor = new QSlider(Qt::Horizontal);
-  choiceColor->setMinimum(0);
-  choiceColor->setMaximum(50);
-  choiceColor->setValue(25);
 
   QLabel *languageLabel = new QLabel(tr("Language"));
   choiceLanguage = new QComboBox();
@@ -425,6 +415,7 @@ void DashBoard::addSettings() noexcept {
   QLabel *qualityLabel = new QLabel(tr("Quality Graphic"));
   QLabel *colorButtonLabel = new QLabel(tr("Color Button"));
   QLabel *colorButtonTextLabel = new QLabel(tr("Color Button Text"));
+  QLabel *colorLabel = new QLabel(tr("Color Launcher"));
   QLabel *minimumUseMemoryLabel = new QLabel(tr("Minimum Use Memory"));
   QLabel *maximumUseMemoryLabel = new QLabel(tr("Maximum Use Memory"));
 
@@ -468,8 +459,12 @@ void DashBoard::addSettings() noexcept {
   settingLayoutGame->addWidget(brightnessSlider);
   settingLayoutGame->addWidget(extenstionLabel);
   settingLayoutGame->addWidget(screenExtension);
+  settingLayoutGame->addSpacing(6);
   settingLayoutGame->addWidget(qualityLabel);
   settingLayoutGame->addWidget(qualityGraphic);
+  settingLayoutGame->addSpacing(6);
+  settingLayoutGame->addWidget(languageLabel);
+  settingLayoutGame->addWidget(choiceLanguage);
 
   groupBoxGame->setLayout(settingLayoutGame);
 
@@ -486,8 +481,6 @@ void DashBoard::addSettings() noexcept {
   settingLauncherLayout->addWidget(colorButtonTextLabel);
   settingLauncherLayout->addWidget(choiceColorButtonText);
   settingLauncherLayout->addWidget(separator);
-  settingLauncherLayout->addWidget(languageLabel);
-  settingLauncherLayout->addWidget(choiceLanguage);
 
   groupBoxLauncher->setLayout(settingLauncherLayout);
 
@@ -521,26 +514,35 @@ void DashBoard::addSettings() noexcept {
                      maximumUseMemoryLabel->setText(textValue);
                    });
 
-  emit sendMaxAndMinMemory(std::make_tuple<int, int>(
-      maximumUseMemory->value(), minimumUseMemory->value()));
+  m_custom->setMaxAndMinMemory(
+      QStringList() << "-Xmx" << QString::number(maximumUseMemory->value())
+                    << "-Xms" << QString::number(minimumUseMemory->value()));
 
   QObject::connect(saveButton, &QPushButton::clicked, this, [this]() {
     const QString extension = screenExtension->currentText();
     const auto argsExtension = QStringList()
                                << "-w" << extension.split("x").at(0) << "-h"
                                << extension.split("x").at(1);
-    emit sendSaveExtension(argsExtension);
+    m_custom->setExtensionGame(argsExtension);
 
     if (fullScreen->isChecked()) {
-      const auto argsFullScreen = QStringList() << "--fullscreen";
-      emit sendSaveScreenMode(argsFullScreen);
+      m_custom->setScreenMode(QStringList() << "--fullscreen");
 
-    } else if (windowMode->isChecked() == true) {
+    } else if (windowMode->isChecked()) {
       const auto argsWindowMode = QStringList() << "--width"
                                                 << "1300"
                                                 << "--height"
                                                 << "750";
-      emit sendSaveScreenMode(argsWindowMode);
+      m_custom->setScreenMode(argsWindowMode);
+    }
+
+    if (choiceLanguage->currentText() == "Russian") {
+      m_custom->setLanguage(QStringList() << "--lang"
+                                          << "ru");
+
+    } else {
+      m_custom->setLanguage(QStringList() << "--lang"
+                                          << "en");
     }
 
     if (launcherOpen->isChecked()) {
@@ -551,15 +553,16 @@ void DashBoard::addSettings() noexcept {
     }
 
     int soundValue = soundSlider->value();
-    emit sendSaveSound(QString::number(soundValue));
+    m_custom->setSound(QStringList()
+                       << "--soundVolume" << QString::number(soundValue));
 
     int gammaValue = brightnessSlider->value();
     auto argsGamma = QStringList() << "--gamma" << QString::number(gammaValue);
-    emit sendSaveGamma(argsGamma);
+    m_custom->setBrightness(argsGamma);
 
     const QString quality = qualityGraphic->currentText();
     const auto argsQuality = QStringList() << "--quality" << quality;
-    emit sendSaveQuality(argsQuality);
+    m_custom->setQualityGraphic(argsQuality);
 
     auto languageSelected = choiceLanguage->currentText();
     if (languageSelected == "Russian") {
@@ -571,6 +574,19 @@ void DashBoard::addSettings() noexcept {
 
   QObject::connect(resetButton, &QPushButton::clicked, this,
                    [this]() { settings.remove("style"); });
+
+  setSaveSettingsUI();
+}
+
+void DashBoard::setSaveSettingsUI() {
+  auto screenMode = m_custom->getScreenMode();
+  if (screenMode.contains("--fullscreen")) {
+    fullScreen->setChecked(true);
+  } else {
+    windowMode->setChecked(true);
+  }
+
+
 }
 
 void DashBoard::addGameTab() noexcept {

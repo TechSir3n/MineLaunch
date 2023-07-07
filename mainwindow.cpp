@@ -5,6 +5,8 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
 
+    QIcon icon(QDir::toNativeSeparators("./resources/u_ajax.png"));
+    this->setWindowIcon(icon);
     this->setWindowTitle("MineLaunch");
 }
 

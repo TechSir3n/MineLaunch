@@ -1,12 +1,22 @@
 #pragma once
 
-#include <QString>
 #include <QCoreApplication>
 #include <QDir>
+#include <QString>
 
 class Path {
 public:
-    static QString launcherPath();
+  [[nodiscard]] static QString launcherPath();
 
-    static QString minecraftPath();
+  [[nodiscard]] static QString minecraftPath();
+
+  [[nodiscard]] static QString librariesPath();
+
+  [[nodiscard]] static QString versionPath();
+
+  [[nodiscard]] static QString logsPath();
+
+  [[nodiscard]] static QString assetsPath();
+
+  [[nodiscard]] static QString modsPath();
 };

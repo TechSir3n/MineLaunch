@@ -49,13 +49,3 @@ void DataHandler::dataHandler(const QJsonObject &object) {
     }
   }
 }
-
-//  if (!valid.isValidEmail(email.toStdString()) ||
-//      !valid.isValidPassword(password.toStdString()) ||
-//      !valid.isValidUsername(username.toStdString())) {
-
-//    QMessageBox msgBox(QMessageBox::Critical, "Incorrect Data",
-//                       "Entered incorrect data");
-//    msgBox.exec();
-//    return;
-//  }

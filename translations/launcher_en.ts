@@ -32,245 +32,245 @@
 <context>
     <name>DashBoard</name>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="95"/>
+        <location filename="../frontend/dashboard.cpp" line="82"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="96"/>
-        <location filename="../frontend/dashboard.cpp" line="588"/>
+        <location filename="../frontend/dashboard.cpp" line="83"/>
+        <location filename="../frontend/dashboard.cpp" line="604"/>
         <source>Download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="105"/>
+        <location filename="../frontend/dashboard.cpp" line="92"/>
         <source>Add Game</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="224"/>
+        <location filename="../frontend/dashboard.cpp" line="209"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="231"/>
+        <location filename="../frontend/dashboard.cpp" line="216"/>
         <source>Enter IP address for connect to server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="234"/>
+        <location filename="../frontend/dashboard.cpp" line="219"/>
         <source>Enter port of address server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="288"/>
+        <location filename="../frontend/dashboard.cpp" line="273"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="289"/>
+        <location filename="../frontend/dashboard.cpp" line="274"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="290"/>
-        <location filename="../frontend/dashboard.cpp" line="298"/>
+        <location filename="../frontend/dashboard.cpp" line="275"/>
+        <location filename="../frontend/dashboard.cpp" line="283"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="296"/>
+        <location filename="../frontend/dashboard.cpp" line="281"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="300"/>
+        <location filename="../frontend/dashboard.cpp" line="285"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="302"/>
+        <location filename="../frontend/dashboard.cpp" line="287"/>
         <source>Clear logs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="303"/>
+        <location filename="../frontend/dashboard.cpp" line="288"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="305"/>
-        <location filename="../frontend/dashboard.cpp" line="402"/>
+        <location filename="../frontend/dashboard.cpp" line="290"/>
+        <location filename="../frontend/dashboard.cpp" line="392"/>
         <source>Settings Game</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="333"/>
+        <location filename="../frontend/dashboard.cpp" line="317"/>
         <source>Select game directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="345"/>
+        <location filename="../frontend/dashboard.cpp" line="329"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="346"/>
+        <location filename="../frontend/dashboard.cpp" line="330"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="379"/>
+        <location filename="../frontend/dashboard.cpp" line="375"/>
         <source>2560x1440</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="380"/>
+        <location filename="../frontend/dashboard.cpp" line="376"/>
         <source>1920x1080</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="381"/>
+        <location filename="../frontend/dashboard.cpp" line="377"/>
         <source>1280x720</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="382"/>
+        <location filename="../frontend/dashboard.cpp" line="378"/>
         <source>1024x768</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="383"/>
+        <location filename="../frontend/dashboard.cpp" line="379"/>
         <source>854x480</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="385"/>
+        <location filename="../frontend/dashboard.cpp" line="418"/>
         <source>Color Launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="391"/>
+        <location filename="../frontend/dashboard.cpp" line="381"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="393"/>
+        <location filename="../frontend/dashboard.cpp" line="383"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="394"/>
+        <location filename="../frontend/dashboard.cpp" line="384"/>
         <source>Russian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="397"/>
+        <location filename="../frontend/dashboard.cpp" line="387"/>
         <source>Low</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="398"/>
+        <location filename="../frontend/dashboard.cpp" line="388"/>
         <source>Medium</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="399"/>
+        <location filename="../frontend/dashboard.cpp" line="389"/>
         <source>High</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="400"/>
+        <location filename="../frontend/dashboard.cpp" line="390"/>
         <source>Ultra</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="403"/>
+        <location filename="../frontend/dashboard.cpp" line="393"/>
         <source>Settings Launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="404"/>
+        <location filename="../frontend/dashboard.cpp" line="394"/>
         <source>After Launch State</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="405"/>
+        <location filename="../frontend/dashboard.cpp" line="395"/>
         <source>Game Memory Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="412"/>
+        <location filename="../frontend/dashboard.cpp" line="402"/>
         <source>Full Screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="413"/>
+        <location filename="../frontend/dashboard.cpp" line="403"/>
         <source>Window Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="414"/>
+        <location filename="../frontend/dashboard.cpp" line="404"/>
         <source>Keep Launcher Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="415"/>
+        <location filename="../frontend/dashboard.cpp" line="405"/>
         <source>Close Launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="421"/>
+        <location filename="../frontend/dashboard.cpp" line="411"/>
         <source>Screen Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="422"/>
+        <location filename="../frontend/dashboard.cpp" line="412"/>
         <source>Brightness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="423"/>
+        <location filename="../frontend/dashboard.cpp" line="413"/>
         <source>Sound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="424"/>
+        <location filename="../frontend/dashboard.cpp" line="414"/>
         <source>Screen Extension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="425"/>
+        <location filename="../frontend/dashboard.cpp" line="415"/>
         <source>Quality Graphic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="426"/>
+        <location filename="../frontend/dashboard.cpp" line="416"/>
         <source>Color Button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="427"/>
+        <location filename="../frontend/dashboard.cpp" line="417"/>
         <source>Color Button Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="428"/>
+        <location filename="../frontend/dashboard.cpp" line="419"/>
         <source>Minimum Use Memory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="429"/>
+        <location filename="../frontend/dashboard.cpp" line="420"/>
         <source>Maximum Use Memory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="586"/>
+        <location filename="../frontend/dashboard.cpp" line="602"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="587"/>
+        <location filename="../frontend/dashboard.cpp" line="603"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>

@@ -84,28 +84,18 @@ private:
 
   void addSettings() noexcept;
 
+  void setSaveSettingsUI();
+
 signals:
   void sendSaveVersionGame(const QString &version);
 
-  void sendSaveExtension(const QStringList &extensionArgs);
-
-  void sendSaveScreenMode(const QStringList &screenModeArgs);
-
-  void sendSaveGamma(const QStringList &gammaArgs);
-
-  void sendSaveQuality(const QStringList &qualityArgs);
-
   void sendIPServerAndPort(const QStringList &connectServerArgs);
 
-  void sendSaveSound(const QString &soundValue);
+  void sendModName(const QStringList &modNameArgs);
 
   void sendSaveLanguage(const char *language);
 
-  void sendMaxAndMinMemory(const std::tuple<int,int>& memoryUse);
-
   void sendModURL(const QString &url);
-
-  void sendModName(const QStringList &modName);
 
 private:
   QPushButton *playButton;

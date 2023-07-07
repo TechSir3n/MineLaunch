@@ -1,31 +1,30 @@
 #include "./include/game.hpp"
 #include "./assistance/path.hpp"
 
-PlayGame::PlayGame() : m_process(new QProcess()), signal(new HandlerSignals()) {
+PlayGame::PlayGame()
+    : m_process(new QProcess()), signal(new HandlerSignals()),
+      m_custom(new Custom()) {
 
   QObject::connect(this, &PlayGame::gameLaunchError, signal,
                    &HandlerSignals::onGameLauncherError);
 }
 
-PlayGame::~PlayGame() { delete m_process; }
+PlayGame::~PlayGame() {
+  delete m_process;
+  delete signal;
+  delete m_custom;
+}
 
 void PlayGame::start() {
 
   QStringList arguments;
 
-  const QString classpath =
-      QDir::cleanPath(Path::launcherPath() + "/../" +
-                      "/MineLaunch/backend/"
-                      "launcher/minecraft/libraries/" +
-                      versionGame + "/" + "*:" + Path::launcherPath() + "/../" +
-                      "/MineLaunch/backend/"
-                      "launcher/minecraft/versions/" +
-                      versionGame + "/client.jar");
+  const QString classpath = Path::librariesPath() + QDir::separator() +
+                            m_versionGame + "/" + "*:" + Path::versionPath() +
+                            QDir::separator() + m_versionGame + "/client.jar";
 
   const QString assetIndex = getAssetIndex();
-  const QString assetDir =
-      QDir::cleanPath(Path::launcherPath() + "/../" +
-                      "/MineLaunch/backend/launcher/minecraft/assets/");
+  const QString assetDir = Path::assetsPath() + QDir::separator();
 
   const QString token =
       "eyJraWQiOiJhYzg0YSIsImFsZyI6IkhTMjU2In0."
@@ -39,10 +38,12 @@ void PlayGame::start() {
 
   arguments << "-cp" << classpath << mainClass << "--accessToken" << token
             << "--assetsDir" << assetDir << "--assetIndex" << assetIndex
-            << "--username" << m_username << "--version" << versionGame
-            << "--soundVolume" << m_soundValue << m_extensionArgs
-            << m_screenModeArgs << m_gammaArgs << m_qualityArgs
-            << m_connectServerArgs << m_setUseMemory << m_modsFiles;
+            << "--username" << m_username << "--version" << m_versionGame
+            << m_custom->getSound() << m_custom->getExtension()
+            << m_custom->getScreenMode() << m_custom->getBrightness()
+            << m_custom->getQualityGraphic() << m_connectServerArgs
+            << m_custom->getUseMemory() << m_modsFiles
+            << m_custom->getLanguageGame();
 
   m_process->startDetached("java", arguments);
 
@@ -54,7 +55,6 @@ void PlayGame::start() {
 
   QObject::connect(m_process, &QProcess::readyReadStandardOutput, this,
                    &PlayGame::onReadyReadStandardOutput);
-
 
   if (m_process->state() != QProcess::Running) {
     logger.log(LogLevel::Error, "Something went wrong while start process");
@@ -96,62 +96,35 @@ void PlayGame::onReadyReadStandardOutput() {
 
 void PlayGame::setUsername(const QString &username) { m_username = username; }
 
-void PlayGame::setExtensionSettings(const QStringList &extensionArgs) {
-
-  m_extensionArgs = extensionArgs;
-}
-
-void PlayGame::setScreenMode(const QStringList &screenModeArgs) {
-  m_screenModeArgs = screenModeArgs;
-}
-
-void PlayGame::setGamma(const QStringList &gammaArgs) {
-  m_gammaArgs = gammaArgs;
-}
-
-void PlayGame::setSoundValue(const QString &soundValueArg) {
-  m_soundValue = soundValueArg;
-}
-
 void PlayGame::setIPAddressAndPort(const QStringList &connectServerArgs) {
   m_connectServerArgs = connectServerArgs;
 }
 
-void PlayGame::setModsFiels(const QStringList &modsFiles)
-{
+void PlayGame::setModsFiels(const QStringList &modsFiles) {
   m_modsFiles = modsFiles;
 }
 
-void PlayGame::setdMaxAndMinMemory(const std::tuple<int, int> &memoryUse) {
-  m_setUseMemory = QStringList() << "-Xmx" << QString::number(std::get<0>(memoryUse)) << "-Xms"
-                                 << QString::number(std::get<1>(memoryUse));
-}
-
-void PlayGame::setQuality(const QStringList &qualityArg) {
-  m_qualityArgs = qualityArg;
-}
-
 void PlayGame::setVersionGame(const QString &t_versionGame) {
-  versionGame = t_versionGame;
+  m_versionGame = t_versionGame;
 }
 
 QString PlayGame::getAssetIndex() noexcept {
-  if (versionGame == "1.19.4-rc1") {
+  if (m_versionGame == "1.19.4-rc1") {
     m_assetIndex = "3";
     return m_assetIndex;
-  } else if (versionGame == "23w03a") {
+  } else if (m_versionGame == "23w03a") {
     m_assetIndex = "2";
     return m_assetIndex;
-  } else if (versionGame == "1.20-pre7") {
+  } else if (m_versionGame == "1.20-pre7") {
     m_assetIndex = "5";
     return m_assetIndex;
-  } else if (versionGame == "1.20-pre4") {
+  } else if (m_versionGame == "1.20-pre4") {
     m_assetIndex = "5";
     return m_assetIndex;
-  } else if (versionGame == "1.19.4-pre4") {
+  } else if (m_versionGame == "1.19.4-pre4") {
     m_assetIndex = "3";
     return m_assetIndex;
-  } else if (versionGame == "23w17a") {
+  } else if (m_versionGame == "23w17a") {
     m_assetIndex = "5";
     return m_assetIndex;
   }

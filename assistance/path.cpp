@@ -1,14 +1,36 @@
 #include "path.hpp"
 
-
-QString Path::launcherPath()
-{
-    return QCoreApplication::applicationDirPath();
+[[nodiscard]] QString Path::launcherPath() {
+  return QCoreApplication::applicationDirPath();
 }
 
-QString Path::minecraftPath()
-{
-    QString path = QCoreApplication::applicationDirPath();
-    path += QDir::toNativeSeparators("/../MineLaunch/backend/launcher/minecraft");
-    return path;
+[[nodiscard]] QString Path::minecraftPath() {
+
+  return QDir::toNativeSeparators(launcherPath() +
+                                  "/../MineLaunch/backend/launcher/minecraft");
+}
+
+[[nodiscard]] QString Path::librariesPath() {
+  return QDir::toNativeSeparators(
+      launcherPath() + "/../MineLaunch/backend/launcher/minecraft/libraries");
+}
+
+[[nodiscard]] QString Path::versionPath() {
+  return QDir::toNativeSeparators(
+      launcherPath() + "/../MineLaunch/backend/launcher/minecraft/versions");
+}
+
+[[nodiscard]] QString Path::logsPath() {
+  return QDir::toNativeSeparators(
+      launcherPath() + "/../MineLaunch/assistance/logs_files");
+}
+
+[[nodiscard]] QString Path::assetsPath() {
+  return QDir::toNativeSeparators(
+      launcherPath() + "/../MineLaunch/backend/launcher/minecraft/assets");
+}
+
+[[nodiscard]] QString Path::modsPath() {
+  return QDir::toNativeSeparators(
+      launcherPath() + "/../MineLaunch/backend/launcher/minecraft/mods");
 }
