@@ -15,9 +15,7 @@ DownloadClient::~DownloadClient() {
 }
 
 void DownloadClient::downloadClient(const QString &versionClient) {
-  const QString path =
-      QDir::cleanPath(Path::launcherPath() + "/../" +
-                      "/MineLaunch/backend/launcher/minecraft/versions/");
+  const QString path = Path::versionPath() + QDir::separator();
   QDir dir(path);
   QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
   if (dirs.contains(versionClient)) {
@@ -61,7 +59,7 @@ void DownloadClient::downloadClient(const QString &versionClient) {
           emit progressChanged(progress);
           emit sendVersion(versionClient);
 
-          if (progress == 0) {
+          if (bytesReceived == bytesTotal) {
             QString shaClientFile = m_client->getClientSHA();
             if (shaClientFile == realSha) {
               emit onFinished();
@@ -80,7 +78,7 @@ void DownloadClient::downloadClient(const QString &versionClient) {
       return;
     } else {
       const QString fileName = "client.jar";
-      QFile fileSave(path + versionClient + "/" + fileName);
+      QFile fileSave(path + versionClient + QDir::separator() + fileName);
 
       if (fileSave.open(QIODevice::WriteOnly)) {
         fileSave.write(reply->readAll());

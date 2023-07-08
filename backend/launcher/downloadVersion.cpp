@@ -25,7 +25,7 @@ void DownloadVersion::downloadVersion(const QString &versionGame) noexcept {
                                         : 0;
                      emit progressChanged(progress);
 
-                     if (progress == 0) {
+                     if (bytesReceived == bytesTotal) {
                        emit onFinished();
                      }
                    });
@@ -41,9 +41,7 @@ void DownloadVersion::downloadVersion(const QString &versionGame) noexcept {
   QStringList parts = fileName.split("/");
   QString version = parts.last().replace(".json", "");
 
-  const QString path =
-      QDir::cleanPath(Path::launcherPath() + "/../" +
-                      "/MineLaunch/backend/launcher/minecraft/versions/");
+  const QString path = QDir::cleanPath(Path::versionPath() + QDir::separator());
   QDir dir(path);
   if (!dir.exists()) {
     qDebug() << "Directory doesn't exists";
@@ -55,7 +53,7 @@ void DownloadVersion::downloadVersion(const QString &versionGame) noexcept {
     return;
   }
 
-  const QString filePath =  dir.filePath(version + "/version.json");
+  const QString filePath = dir.filePath(version + "/version.json");
   QFile file(filePath);
   if (!file.open(QIODevice::WriteOnly)) {
     qDebug() << "Error open file for write: " << file.errorString();

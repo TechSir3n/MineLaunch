@@ -14,9 +14,7 @@ DownloadAssetIndex::~DownloadAssetIndex() {
 }
 
 void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
-  const QString path =
-      QDir::cleanPath(Path::launcherPath() + "/../" +
-                      "/MineLaunch/backend/launcher/minecraft/versions/");
+  const QString path = QDir::cleanPath(Path::versionPath() + QDir::separator());
   QDir dir(path);
   QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
   if (dirs.contains(versionGame)) {
@@ -53,7 +51,7 @@ void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
           emit progressChanged(progress);
           emit sendVersion(versionGame);
 
-          if (progress == 0) {
+          if (bytesReceived == bytesTotal) {
             QString hash = m_index->getAssetIndexSHA();
             if (hash == realSha) {
               emit onFinished();

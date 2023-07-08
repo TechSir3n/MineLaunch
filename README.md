@@ -1,7 +1,6 @@
 # Launcher for Minecraft in C++ using Qt
 This Minecraft launcher was written in C++ using Qt, making it cross-platform. The launcher is designed to run Minecraft on Windows, macOS and Linux.
 
-
 ![MineLaunch Screenshot](https://github.com/TechSir3n/MineLaunch/blob/main/resources/launcher_view.png)
 
 ## Overview
@@ -14,7 +13,7 @@ MineLaunch is a launcher developed using Qt C++ that allows you to conveniently 
 - Configure initial game settings before launching
 
 ## Requirements
-- Qt Framework: version X.X.X or higher
+- Qt Framework: version 5.5.1 or higher
 - C++ compiler: supporting C++14 standard or higher
 - Minecraft game files
 
@@ -23,7 +22,7 @@ To build the launcher from source, follow these steps:
 
 1. Install Qt on your computer
 2. Clone the repository: git clone https://github.com/TechSir3n/MineLaunch.git --recurse submodules
-3. Open the project in Qt Creator or your preferred IDE 
+3. Open the project in Qt Creator or your preferred IDE
 4. Build the project.
 
 ## Usage

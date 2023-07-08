@@ -42,6 +42,8 @@ SOURCES += \
     assistance/path.cpp \
     assistance/custom.cpp \
     backend/server.cpp \
+    backend/api_signin.cpp \
+    backend/api_signup.cpp \
     backend/dataHandler.cpp \
     backend/updater_data.cpp \
     backend/database/sqlite.cpp \
@@ -108,6 +110,8 @@ HEADERS += \
     backend/include/updater_data.hpp \
     backend/include/dataHandler.hpp \
     backend/include/server.hpp \
+    backend/include/api_signin.hpp \
+    backend/include/api_signup.hpp \
     backend/include/smtp.hpp \
     backend/database/include/sqlite.hpp \
     vendor/SmtpClient/src/smtpmime_global.h \

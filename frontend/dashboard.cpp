@@ -8,6 +8,8 @@ extern const QString linkStyle;
 
 extern const QString lineEditStyle;
 
+extern const QString tabStyle;
+
 DashBoard::DashBoard(QWidget *parent)
     : QDialog(parent), tabWidget(new QTabWidget(this)),
       modsTable(new QTableWidget()), versionSelector(new QComboBox()),
@@ -48,6 +50,7 @@ DashBoard::DashBoard(QWidget *parent)
         }
       });
 
+  tabWidget->setStyleSheet(tabStyle);
   tabWidget->setFixedSize(QSize(1350, 880));
   versionSelector->setFixedWidth(100);
 
@@ -351,7 +354,7 @@ void DashBoard::addSettings() noexcept {
   choiceColorButtonText->setMinimum(0);
   choiceColorButtonText->setMaximum(50);
   choiceColorButtonText->setValue(25);
-  choiceColorButton->setStyleSheet(sliderStyle);
+  choiceColorButtonText->setStyleSheet(sliderStyle);
 
   maximumUseMemory = new QSlider(Qt::Horizontal);
   maximumUseMemory->setValue(4586);
@@ -416,8 +419,8 @@ void DashBoard::addSettings() noexcept {
   QLabel *colorButtonLabel = new QLabel(tr("Color Button"));
   QLabel *colorButtonTextLabel = new QLabel(tr("Color Button Text"));
   QLabel *colorLabel = new QLabel(tr("Color Launcher"));
-  QLabel *minimumUseMemoryLabel = new QLabel(tr("Minimum Use Memory"));
-  QLabel *maximumUseMemoryLabel = new QLabel(tr("Maximum Use Memory"));
+  QLabel *minimumUseMemoryLabel = new QLabel(tr("Minimum Use Memory: 2048 MB"));
+  QLabel *maximumUseMemoryLabel = new QLabel(tr("Maximum Use Memory: 2048 MB"));
 
   QFont font("Arial", 11, QFont::Bold);
   screenLabel->setFont(font);

@@ -32,245 +32,253 @@
 <context>
     <name>DashBoard</name>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="82"/>
+        <location filename="../frontend/dashboard.cpp" line="85"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="83"/>
-        <location filename="../frontend/dashboard.cpp" line="604"/>
+        <location filename="../frontend/dashboard.cpp" line="86"/>
+        <location filename="../frontend/dashboard.cpp" line="607"/>
         <source>Download</source>
         <translation>Установка</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="92"/>
+        <location filename="../frontend/dashboard.cpp" line="95"/>
         <source>Add Game</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="209"/>
+        <location filename="../frontend/dashboard.cpp" line="212"/>
         <source>Connect</source>
         <translation>Подключение</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="216"/>
+        <location filename="../frontend/dashboard.cpp" line="219"/>
         <source>Enter IP address for connect to server</source>
         <translation>Введите айпи адресс чтобы подключится к серверу</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="219"/>
+        <location filename="../frontend/dashboard.cpp" line="222"/>
         <source>Enter port of address server</source>
         <translation>Введите порт соответствуещему серверу</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="273"/>
+        <location filename="../frontend/dashboard.cpp" line="276"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="274"/>
+        <location filename="../frontend/dashboard.cpp" line="277"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="275"/>
-        <location filename="../frontend/dashboard.cpp" line="283"/>
+        <location filename="../frontend/dashboard.cpp" line="278"/>
+        <location filename="../frontend/dashboard.cpp" line="286"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="281"/>
+        <location filename="../frontend/dashboard.cpp" line="284"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="285"/>
+        <location filename="../frontend/dashboard.cpp" line="288"/>
         <source>About</source>
         <translation>Об Лаунчер</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="287"/>
+        <location filename="../frontend/dashboard.cpp" line="290"/>
         <source>Clear logs</source>
         <translation>Очистка Логов</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="288"/>
+        <location filename="../frontend/dashboard.cpp" line="291"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="290"/>
-        <location filename="../frontend/dashboard.cpp" line="392"/>
+        <location filename="../frontend/dashboard.cpp" line="293"/>
+        <location filename="../frontend/dashboard.cpp" line="395"/>
         <source>Settings Game</source>
         <translation>Настройки Игры</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="317"/>
+        <location filename="../frontend/dashboard.cpp" line="320"/>
         <source>Select game directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать директорию игры</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="329"/>
+        <location filename="../frontend/dashboard.cpp" line="332"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="330"/>
+        <location filename="../frontend/dashboard.cpp" line="333"/>
         <source>Reset</source>
         <translation>Сбросить</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="375"/>
+        <location filename="../frontend/dashboard.cpp" line="378"/>
         <source>2560x1440</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="376"/>
+        <location filename="../frontend/dashboard.cpp" line="379"/>
         <source>1920x1080</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="377"/>
+        <location filename="../frontend/dashboard.cpp" line="380"/>
         <source>1280x720</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="378"/>
+        <location filename="../frontend/dashboard.cpp" line="381"/>
         <source>1024x768</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="379"/>
+        <location filename="../frontend/dashboard.cpp" line="382"/>
         <source>854x480</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="418"/>
+        <location filename="../frontend/dashboard.cpp" line="421"/>
         <source>Color Launcher</source>
         <translation>Цвет Лаунчера</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="381"/>
+        <location filename="../frontend/dashboard.cpp" line="422"/>
+        <source>Minimum Use Memory: 2048 MB</source>
+        <translation>Минимальное использование памяти</translation>
+    </message>
+    <message>
+        <location filename="../frontend/dashboard.cpp" line="423"/>
+        <source>Maximum Use Memory: 2048 MB</source>
+        <translation>Максимальное использование памяти</translation>
+    </message>
+    <message>
+        <location filename="../frontend/dashboard.cpp" line="384"/>
         <source>Language</source>
         <translation>Язык</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="383"/>
+        <location filename="../frontend/dashboard.cpp" line="386"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="384"/>
+        <location filename="../frontend/dashboard.cpp" line="387"/>
         <source>Russian</source>
         <translation>Русский</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="387"/>
+        <location filename="../frontend/dashboard.cpp" line="390"/>
         <source>Low</source>
         <translation>Низкое</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="388"/>
+        <location filename="../frontend/dashboard.cpp" line="391"/>
         <source>Medium</source>
         <translation>Среднее</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="389"/>
+        <location filename="../frontend/dashboard.cpp" line="392"/>
         <source>High</source>
         <translation>Высокое</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="390"/>
+        <location filename="../frontend/dashboard.cpp" line="393"/>
         <source>Ultra</source>
         <translation>Максимальное</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="393"/>
+        <location filename="../frontend/dashboard.cpp" line="396"/>
         <source>Settings Launcher</source>
         <translation>Настройки Лаунчера</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="394"/>
+        <location filename="../frontend/dashboard.cpp" line="397"/>
         <source>After Launch State</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="395"/>
+        <location filename="../frontend/dashboard.cpp" line="398"/>
         <source>Game Memory Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="402"/>
+        <location filename="../frontend/dashboard.cpp" line="405"/>
         <source>Full Screen</source>
         <translation>Полно Экранный Режим</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="403"/>
+        <location filename="../frontend/dashboard.cpp" line="406"/>
         <source>Window Mode</source>
         <translation>Оконный Режим</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="404"/>
+        <location filename="../frontend/dashboard.cpp" line="407"/>
         <source>Keep Launcher Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Не закрывать Лаунчер</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="405"/>
+        <location filename="../frontend/dashboard.cpp" line="408"/>
         <source>Close Launcher</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрыть Лаунчер</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="411"/>
+        <location filename="../frontend/dashboard.cpp" line="414"/>
         <source>Screen Mode</source>
         <translation>Экранный режим</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="412"/>
+        <location filename="../frontend/dashboard.cpp" line="415"/>
         <source>Brightness</source>
         <translation>Яркость</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="413"/>
+        <location filename="../frontend/dashboard.cpp" line="416"/>
         <source>Sound</source>
         <translation>Звук</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="414"/>
+        <location filename="../frontend/dashboard.cpp" line="417"/>
         <source>Screen Extension</source>
         <translation>Расширение Экрана</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="415"/>
+        <location filename="../frontend/dashboard.cpp" line="418"/>
         <source>Quality Graphic</source>
         <translation>Графика Игры</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="416"/>
+        <location filename="../frontend/dashboard.cpp" line="419"/>
         <source>Color Button</source>
         <translation>Цвет Кнопки</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="417"/>
+        <location filename="../frontend/dashboard.cpp" line="420"/>
         <source>Color Button Text</source>
         <translation>Цвет Кнопки Текста </translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="419"/>
         <source>Minimum Use Memory</source>
-        <translation>Минимальное использование памяти</translation>
+        <translation type="vanished">Минимальное использование памяти</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="420"/>
         <source>Maximum Use Memory</source>
-        <translation>Максимальное использование памяти</translation>
+        <translation type="vanished">Максимальное использование памяти</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="602"/>
+        <location filename="../frontend/dashboard.cpp" line="605"/>
         <source>Play</source>
         <translation>Играть</translation>
     </message>
     <message>
-        <location filename="../frontend/dashboard.cpp" line="603"/>
+        <location filename="../frontend/dashboard.cpp" line="606"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
@@ -278,7 +286,7 @@
 <context>
     <name>DownloadAssetIndex</name>
     <message>
-        <location filename="../backend/launcher/downloadAssetIndex.cpp" line="62"/>
+        <location filename="../backend/launcher/downloadAssetIndex.cpp" line="60"/>
         <source>The file assetIndex was installed but not fully, the hash amount does not match</source>
         <translation type="unfinished"></translation>
     </message>
@@ -286,7 +294,7 @@
 <context>
     <name>DownloadClient</name>
     <message>
-        <location filename="../backend/launcher/downloadClient.cpp" line="70"/>
+        <location filename="../backend/launcher/downloadClient.cpp" line="68"/>
         <source>The file client.jar was installed but not fully, the hash amount does not match</source>
         <translation type="unfinished"></translation>
     </message>
@@ -294,13 +302,17 @@
 <context>
     <name>DownloadLibraries</name>
     <message>
-        <location filename="../backend/launcher/downloadLibraries.cpp" line="85"/>
+        <location filename="../backend/launcher/downloadLibraries.cpp" line="79"/>
         <source>Libraries was installed,but not full,something went wrong while installing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DownloadMod</name>
+    <message>
+        <source>Unknow type file mod</source>
+        <translation type="obsolete">Неизвестный тип файл мода</translation>
+    </message>
     <message>
         <location filename="../backend/launcher/downloadMod.cpp" line="41"/>
         <source>Unknow type file&apos;s mod</source>
@@ -310,14 +322,14 @@
 <context>
     <name>DownloadResources</name>
     <message>
-        <location filename="../backend/launcher/downloadResources.cpp" line="75"/>
+        <location filename="../backend/launcher/downloadResources.cpp" line="72"/>
         <source>Resources was installed,but not full,something went wrong while installing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../backend/launcher/downloadResources.cpp" line="85"/>
+        <location filename="../backend/launcher/downloadResources.cpp" line="82"/>
         <source>Error downloading resources: </source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка загрузки ресурса игры</translation>
     </message>
 </context>
 <context>
@@ -348,7 +360,7 @@
     <message>
         <location filename="../frontend/include/handler_signals.hpp" line="13"/>
         <source>Startup error,exit code: </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../frontend/include/handler_signals.hpp" line="18"/>
@@ -357,7 +369,7 @@
         <location filename="../frontend/include/handler_signals.hpp" line="30"/>
         <location filename="../frontend/include/handler_signals.hpp" line="34"/>
         <source>Error download</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка скачивания</translation>
     </message>
 </context>
 <context>

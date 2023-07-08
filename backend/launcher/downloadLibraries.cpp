@@ -15,11 +15,8 @@ DownloadLibraries::~DownloadLibraries() {
 }
 
 void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
-  const QString path =
-      QDir::cleanPath(Path::launcherPath() + "/../" +
-                      "/MineLaunch/backend/launcher/minecraft/versions/");
+  const QString path = Path::versionPath() + QDir::separator();
   QDir dir(path);
-
   QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
   if (dirs.contains(versionGame)) {
     const QString filePath = dir.filePath(versionGame + "/version.json");
@@ -40,10 +37,7 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
       m_hashes.emplace_back(hash);
 
       const auto &urlString = obj["downloads"]["artifact"]["url"].toString();
-      // to do this
-      if (!urlString.contains("windows") && !urlString.contains("macos")) {
-        urls.push_back(QUrl(urlString));
-      }
+       urls.push_back(QUrl(urlString));
     }
   }
 
@@ -74,7 +68,7 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
                        emit progressChanged(progress);
                        emit sendVersion(versionGame);
 
-                       if (progress == 0) {
+                       if (bytesReceived == bytesTotal) {
                          QVector<QString> indexSHA =
                              m_libraries->getLibrariesSHA();
                          for (const QString &hash : indexSHA) {

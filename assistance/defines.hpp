@@ -35,6 +35,11 @@ static const QString linkStyle = "a{"
                                  "text-decoration: none;"
                                  "}";
 
+static const QString tabStyle = "QTabWidget::tab:selected {"
+                         "background-color: #FF0000;" // Красный цвет фона
+                         "color: #FFFFFF;" // Белый цвет текста
+                         "}";
+
 static const QString sliderStyle =
     "QSlider::groove:horizontal {"
     "border: 1px solid #999999;"

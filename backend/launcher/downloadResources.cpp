@@ -11,9 +11,7 @@ DownloadResources::~DownloadResources() {
 }
 
 void DownloadResources::downloadResources(const QString &versionHash) {
-  const QString path =
-      QDir::cleanPath(Path::launcherPath() + "/../" +
-                      "/MineLaunch/backend/launcher/minecraft/assets/indexes/");
+  const QString path = Path::assetIndexPath() + QDir::separator();
 
   QFile file(path + versionHash + ".json");
   if (!file.open(QIODevice::ReadOnly)) {
@@ -34,8 +32,7 @@ void DownloadResources::downloadResources(const QString &versionHash) {
   }
 
   const QString savePath =
-      QDir::cleanPath(Path::launcherPath() + "/../" +
-                      "/MineLaunch/backend/launcher/minecraft/assets/objects/");
+      QDir::cleanPath(Path::assetsPath() + QDir::separator());
   QDir saveDir(savePath);
   if (!saveDir.exists()) {
     qDebug() << "Error directory,inccorect enter path or it doesn't exists";
@@ -67,8 +64,8 @@ void DownloadResources::downloadResources(const QString &versionHash) {
                        emit progressChanged(progress);
 
                        QVector<QString> assetSHA = m_asset->getAssetsSHA();
-                       if (progress == 0) {
-                         for (const auto& sha : assetSHA) {
+                       if (bytesReceived == bytesTotal) {
+                         for (const auto &sha : assetSHA) {
                            if (hashes.contains(sha)) {
                              emit onFinished();
                            } else {
