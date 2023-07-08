@@ -18,5 +18,9 @@ public:
 
   [[nodiscard]] static QString assetsPath();
 
+  [[nodscard]] static QString assetIndexPath();
+
   [[nodiscard]] static QString modsPath();
+
+  [[nodiscard]] static QString clientPath();
 };

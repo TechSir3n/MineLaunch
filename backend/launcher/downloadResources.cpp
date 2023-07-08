@@ -2,11 +2,18 @@
 #include "assistance/path.hpp"
 
 DownloadResources::DownloadResources(QObject *parent)
-    : QObject(parent), m_manager(new QNetworkAccessManager()) {}
+    : QObject(parent), m_manager(new QNetworkAccessManager()),
+      m_asset(new CheckAssets()) {}
+
+DownloadResources::~DownloadResources() {
+  delete m_manager;
+  delete m_asset;
+}
 
 void DownloadResources::downloadResources(const QString &versionHash) {
-    const QString path = QDir::cleanPath(Path::launcherPath() + "/../" +
-                                         "/MineLaunch/backend/launcher/minecraft/assets/indexes/");
+  const QString path =
+      QDir::cleanPath(Path::launcherPath() + "/../" +
+                      "/MineLaunch/backend/launcher/minecraft/assets/indexes/");
 
   QFile file(path + versionHash + ".json");
   if (!file.open(QIODevice::ReadOnly)) {
@@ -28,7 +35,7 @@ void DownloadResources::downloadResources(const QString &versionHash) {
 
   const QString savePath =
       QDir::cleanPath(Path::launcherPath() + "/../" +
-                                           "/MineLaunch/backend/launcher/minecraft/assets/objects/");
+                      "/MineLaunch/backend/launcher/minecraft/assets/objects/");
   QDir saveDir(savePath);
   if (!saveDir.exists()) {
     qDebug() << "Error directory,inccorect enter path or it doesn't exists";
@@ -59,14 +66,23 @@ void DownloadResources::downloadResources(const QString &versionHash) {
                                           : 0;
                        emit progressChanged(progress);
 
+                       QVector<QString> assetSHA = m_asset->getAssetsSHA();
                        if (progress == 0) {
-                         emit onFinished();
+                         for (const auto& sha : assetSHA) {
+                           if (hashes.contains(sha)) {
+                             emit onFinished();
+                           } else {
+                             emit errorDownloadResources(tr(
+                                 "Resources was installed,but not "
+                                 "full,something went wrong while installing"));
+                           }
+                         }
                        }
                      });
     loop.exec();
 
     if (reply->error() != QNetworkReply::NoError) {
-      emit errorDownloadResources("Error downloading resources: " +
+      emit errorDownloadResources(tr("Error downloading resources: ") +
                                   reply->errorString());
       return;
     }
@@ -89,8 +105,6 @@ void DownloadResources::stopIsDownloadingResources() {
   auto reply = getReply();
   reply->abort();
 }
-
-DownloadResources::~DownloadResources() { delete m_manager; }
 
 QNetworkReply *DownloadResources::getReply(QNetworkReply *reply) noexcept {
   return reply;

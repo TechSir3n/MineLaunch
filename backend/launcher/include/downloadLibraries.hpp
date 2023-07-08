@@ -1,5 +1,6 @@
 #pragma once
 
+#include "./check/include/checkLibraries.hpp"
 #include <QByteArray>
 #include <QCoreApplication>
 #include <QDir>
@@ -43,8 +44,11 @@ signals:
 
   void onFinished();
 
+  void sendVersion(const QString &version);
 private:
   QNetworkAccessManager *m_manager;
   QStringList listLibraries;
   QVector<QUrl> urls;
+  QVector<QString> m_hashes;
+  CheckLibraries *m_libraries;
 };

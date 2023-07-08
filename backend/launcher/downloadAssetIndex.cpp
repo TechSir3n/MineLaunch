@@ -2,13 +2,21 @@
 #include "./assistance/path.hpp"
 
 DownloadAssetIndex::DownloadAssetIndex(QObject *parent)
-    : QObject(parent), m_manager(new QNetworkAccessManager()) {}
+    : QObject(parent), m_manager(new QNetworkAccessManager()),
+      m_index(new CheckAssetIndex()) {
+  QObject::connect(this, &DownloadAssetIndex::sendVersion, m_index,
+                   &CheckAssetIndex::setVersionAssetIndex);
+}
 
-DownloadAssetIndex::~DownloadAssetIndex() { delete m_manager; }
+DownloadAssetIndex::~DownloadAssetIndex() {
+  delete m_manager;
+  delete m_index;
+}
 
 void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
-    const QString path = QDir::cleanPath(Path::launcherPath() + "/../" +
-                                         "/MineLaunch/backend/launcher/minecraft/versions/");
+  const QString path =
+      QDir::cleanPath(Path::launcherPath() + "/../" +
+                      "/MineLaunch/backend/launcher/minecraft/versions/");
   QDir dir(path);
   QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
   if (dirs.contains(versionGame)) {
@@ -26,8 +34,10 @@ void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
     QJsonObject obj = doc.object();
     QJsonValue assetIndexValue =
         obj.value("assetIndex").toObject().value("url");
-
     QString httpHashVersion = assetIndexValue.toString().split("/").last();
+
+    QJsonValue indexValueSha = obj.value("assetIndex").toObject().value("sha1");
+    QString realSha = indexValueSha.toString();
 
     QNetworkRequest request(assetIndexValue.toString());
     QNetworkReply *reply = m_manager->get(request);
@@ -35,17 +45,25 @@ void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
 
     QEventLoop loop;
     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-    QObject::connect(reply, &QNetworkReply::downloadProgress, this,
-                     [=](qint64 bytesReceived, qint64 bytesTotal) {
-                       int progress = (bytesTotal > 0)
-                                          ? (bytesReceived * 100 / bytesTotal)
-                                          : 0;
-                       emit progressChanged(progress);
+    QObject::connect(
+        reply, &QNetworkReply::downloadProgress, this,
+        [=](qint64 bytesReceived, qint64 bytesTotal) {
+          int progress =
+              (bytesTotal > 0) ? (bytesReceived * 100 / bytesTotal) : 0;
+          emit progressChanged(progress);
+          emit sendVersion(versionGame);
 
-                       if (progress == 0) {
-                         emit onFinished();
-                       }
-                     });
+          if (progress == 0) {
+            QString hash = m_index->getAssetIndexSHA();
+            if (hash == realSha) {
+              emit onFinished();
+            } else {
+              emit errorDownloadAssetIndex(
+                  tr("The file assetIndex was installed but not fully, "
+                     "the hash amount does not match"));
+            }
+          }
+        });
 
     loop.exec();
 
@@ -55,8 +73,9 @@ void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
       return;
     }
 
-    const QString savePath = QDir::cleanPath(Path::launcherPath() + "/../" +
-                                             "/MineLaunch/backend/launcher/minecraft/assets/indexes/");
+    const QString savePath = QDir::cleanPath(
+        Path::launcherPath() + "/../" +
+        "/MineLaunch/backend/launcher/minecraft/assets/indexes/");
 
     QDir saveDir(savePath);
     if (!saveDir.exists()) {

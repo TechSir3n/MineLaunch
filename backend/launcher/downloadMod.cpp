@@ -38,7 +38,7 @@ void DownloadMod::setUrlAddressMod(const QString &url) {
     }
 
   } else {
-    emit errorDownloadMod("Unknow type file's mod");
+    emit errorDownloadMod(tr("Unknow type file's mod"));
     return;
   }
 

@@ -276,6 +276,91 @@
     </message>
 </context>
 <context>
+    <name>DownloadAssetIndex</name>
+    <message>
+        <location filename="../backend/launcher/downloadAssetIndex.cpp" line="62"/>
+        <source>The file assetIndex was installed but not fully, the hash amount does not match</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadClient</name>
+    <message>
+        <location filename="../backend/launcher/downloadClient.cpp" line="70"/>
+        <source>The file client.jar was installed but not fully, the hash amount does not match</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadLibraries</name>
+    <message>
+        <location filename="../backend/launcher/downloadLibraries.cpp" line="85"/>
+        <source>Libraries was installed,but not full,something went wrong while installing</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadMod</name>
+    <message>
+        <location filename="../backend/launcher/downloadMod.cpp" line="41"/>
+        <source>Unknow type file&apos;s mod</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadResources</name>
+    <message>
+        <location filename="../backend/launcher/downloadResources.cpp" line="75"/>
+        <source>Resources was installed,but not full,something went wrong while installing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../backend/launcher/downloadResources.cpp" line="85"/>
+        <source>Error downloading resources: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Downloader</name>
+    <message>
+        <location filename="../backend/launcher/downloader.cpp" line="41"/>
+        <source>This version is already installed by default </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../backend/launcher/downloader.cpp" line="143"/>
+        <source>Downloading...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../backend/launcher/downloader.cpp" line="144"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Отменить</translation>
+    </message>
+</context>
+<context>
+    <name>HandlerSignals</name>
+    <message>
+        <location filename="../frontend/include/handler_signals.hpp" line="12"/>
+        <source>Error</source>
+        <translation type="unfinished">Ошибка</translation>
+    </message>
+    <message>
+        <location filename="../frontend/include/handler_signals.hpp" line="13"/>
+        <source>Startup error,exit code: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../frontend/include/handler_signals.hpp" line="18"/>
+        <location filename="../frontend/include/handler_signals.hpp" line="22"/>
+        <location filename="../frontend/include/handler_signals.hpp" line="26"/>
+        <location filename="../frontend/include/handler_signals.hpp" line="30"/>
+        <location filename="../frontend/include/handler_signals.hpp" line="34"/>
+        <source>Error download</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="14"/>

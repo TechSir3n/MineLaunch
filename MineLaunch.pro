@@ -72,7 +72,10 @@ SOURCES += \
     vendor/SmtpClient/src/mimebase64encoder.cpp \
     vendor/SmtpClient/src/mimeattachment.cpp \
     vendor/SmtpClient/src/emailaddress.cpp \
-    check/checkAssets.cpp
+    check/checkAssets.cpp \
+    check/checkAssetIndex.cpp \
+    check/checkLibraries.cpp \
+    check/checkClient.cpp
 
 HEADERS += \
     frontend/include/signin.hpp \
@@ -126,7 +129,12 @@ HEADERS += \
     vendor/SmtpClient/src/mimebase64encoder.h \
     vendor/SmtpClient/src/mimeattachment.h \
     vendor/SmtpClient/src/emailaddress.h \
-    check/include/checkAssets.hpp
+    check/include/checkAssets.hpp \
+    check/include/checkAssets.hpp \
+    check/include/checkAssetIndex.hpp \
+    check/include/checkLibraries.hpp \
+    check/include/checkClient.hpp
+
 
 SOURCES += \
     main.cpp \

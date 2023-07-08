@@ -1,5 +1,6 @@
 #pragma once
 
+#include "./check/include/checkAssetIndex.hpp"
 #include <QByteArray>
 #include <QCoreApplication>
 #include <QDir>
@@ -36,10 +37,13 @@ signals:
 
   void onFinished();
 
+  void sendVersion(const QString &version);
+
 private:
   QNetworkReply *getReply(QNetworkReply *reply = nullptr) noexcept;
 
 private:
   QNetworkAccessManager *m_manager;
+  CheckAssetIndex *m_index;
   QString m_assetIndex;
 };

@@ -38,7 +38,7 @@ Downloader::~Downloader() {
 
 void Downloader::start() {
   if (versionStr == "1.19.4-rc1") {
-    emit downloadError("This version is already installed by default ");
+      emit downloadError(tr("This version is already installed by default "));
 
   } else if (versionStr == "23w03a") {
     startProgressDialog();
@@ -140,8 +140,8 @@ void Downloader::stop() {
 
 void Downloader::startProgressDialog() {
 
-  m_progress->setLabelText("Downloading...");
-  m_progress->setCancelButtonText("Cancel");
+  m_progress->setLabelText(tr("Downloading..."));
+  m_progress->setCancelButtonText(tr("Cancel"));
   m_progress->setRange(0, 100);
   m_progress->setMinimumDuration(0);
   m_progress->setWindowModality(Qt::WindowModal);

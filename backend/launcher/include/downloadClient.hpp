@@ -1,5 +1,6 @@
 #pragma once
 
+#include "./check/include/checkClient.hpp"
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
@@ -38,6 +39,8 @@ signals:
 
   void progressChanged(int progress);
 
+  void sendVersion(const QString &version);
+
   void onFinished();
 
 private:
@@ -48,4 +51,5 @@ private:
 private:
   QNetworkAccessManager *m_manager;
   QProcess *m_process;
+  CheckClient *m_client;
 };

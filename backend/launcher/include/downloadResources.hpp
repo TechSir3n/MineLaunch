@@ -1,5 +1,6 @@
 #pragma once
 
+#include "./check/include/checkAssets.hpp"
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
@@ -46,4 +47,5 @@ private:
 private:
   QNetworkAccessManager *m_manager;
   QVector<QString> hashes;
+  CheckAssets *m_asset;
 };

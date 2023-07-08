@@ -2,9 +2,17 @@
 #include "./assistance/path.hpp"
 
 DownloadLibraries::DownloadLibraries(QObject *parent)
-    : QObject(parent), m_manager(new QNetworkAccessManager()) {}
+    : QObject(parent), m_manager(new QNetworkAccessManager()),
+      m_libraries(new CheckLibraries()) {
 
-DownloadLibraries::~DownloadLibraries() { delete m_manager; }
+  QObject::connect(this, &DownloadLibraries::sendVersion, m_libraries,
+                   &CheckLibraries::setVersionLibraries);
+}
+
+DownloadLibraries::~DownloadLibraries() {
+  delete m_manager;
+  delete m_libraries;
+}
 
 void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
   const QString path =
@@ -28,13 +36,18 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
 
     for (const auto &library : libraries) {
       const auto &obj = library.toObject();
+      const auto &hash = obj["downloads"]["artifact"]["sha1"].toString();
+      m_hashes.emplace_back(hash);
+
       const auto &urlString = obj["downloads"]["artifact"]["url"].toString();
+      // to do this
       if (!urlString.contains("windows") && !urlString.contains("macos")) {
         urls.push_back(QUrl(urlString));
       }
     }
   }
-  const QString savePath = QDir::cleanPath(
+
+  const QString savePath = QDir::toNativeSeparators(
       Path::launcherPath() + QDir::separator() + ".." + QDir::separator() +
       "/MineLaunch/backend/launcher/minecraft/libraries/");
   QDir librariesDir(savePath);
@@ -53,16 +66,26 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
     getReply(reply);
     QEventLoop loop;
     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-
     QObject::connect(reply, &QNetworkReply::downloadProgress, this,
                      [=](qint64 bytesReceived, qint64 bytesTotal) {
                        int progress = (bytesTotal > 0)
                                           ? (bytesReceived * 100 / bytesTotal)
                                           : 0;
                        emit progressChanged(progress);
+                       emit sendVersion(versionGame);
 
                        if (progress == 0) {
-                         emit onFinished();
+                         QVector<QString> indexSHA =
+                             m_libraries->getLibrariesSHA();
+                         for (const QString &hash : indexSHA) {
+                           if (!m_hashes.contains(hash)) {
+                             emit onFinished();
+                           } else {
+                             emit errorDownloadLibraries(
+                                 tr("Libraries was installed,but not "
+                                    "full,something went wrong while installing"));
+                           }
+                         }
                        }
                      });
 

@@ -21,16 +21,27 @@
 }
 
 [[nodiscard]] QString Path::logsPath() {
-  return QDir::toNativeSeparators(
-      launcherPath() + "/../MineLaunch/assistance/logs_files");
+  return QDir::toNativeSeparators(launcherPath() +
+                                  "/../MineLaunch/assistance/logs_files");
 }
 
 [[nodiscard]] QString Path::assetsPath() {
   return QDir::toNativeSeparators(
-      launcherPath() + "/../MineLaunch/backend/launcher/minecraft/assets");
+      launcherPath() + "/../MineLaunch/backend/launcher/minecraft/assets/objects");
+}
+
+[[nodiscard]] QString Path::assetIndexPath() {
+  return QDir::toNativeSeparators(
+      launcherPath() +
+      "/../MineLaunch/backend/launcher/minecraft/assets/indexes");
 }
 
 [[nodiscard]] QString Path::modsPath() {
   return QDir::toNativeSeparators(
       launcherPath() + "/../MineLaunch/backend/launcher/minecraft/mods");
+}
+
+[[nodiscard]] QString Path::clientPath() {
+  return QDir::toNativeSeparators(
+      launcherPath() + "/../MineLaunch/backend/launcher/minecraft/versions");
 }

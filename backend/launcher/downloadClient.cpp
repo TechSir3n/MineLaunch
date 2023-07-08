@@ -3,11 +3,15 @@
 
 DownloadClient::DownloadClient(QObject *parent)
     : QObject(parent), m_manager(new QNetworkAccessManager()),
-      m_process(new QProcess()) {}
+      m_process(new QProcess()), m_client(new CheckClient()) {
+  QObject::connect(this, &DownloadClient::sendVersion, m_client,
+                   &CheckClient::setVersionClient);
+}
 
 DownloadClient::~DownloadClient() {
   delete m_manager;
   delete m_process;
+  delete m_client;
 }
 
 void DownloadClient::downloadClient(const QString &versionClient) {
@@ -35,6 +39,13 @@ void DownloadClient::downloadClient(const QString &versionClient) {
                                  .value("url")
                                  .toString();
 
+    QJsonValue shaValue = obj.value("downloads")
+                              .toObject()
+                              .value("client")
+                              .toObject()
+                              .value("sha1");
+    QString realSha = shaValue.toString();
+
     QNetworkRequest request(clientValue.toString());
     QNetworkReply *reply = m_manager->get(request);
     getReply(reply);
@@ -42,17 +53,25 @@ void DownloadClient::downloadClient(const QString &versionClient) {
     QEventLoop loop;
     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
 
-    QObject::connect(reply, &QNetworkReply::downloadProgress, this,
-                     [=](qint64 bytesReceived, qint64 bytesTotal) {
-                       int progress = (bytesTotal > 0)
-                                          ? (bytesReceived * 100 / bytesTotal)
-                                          : 0;
-                       emit progressChanged(progress);
+    QObject::connect(
+        reply, &QNetworkReply::downloadProgress, this,
+        [=](qint64 bytesReceived, qint64 bytesTotal) {
+          int progress =
+              (bytesTotal > 0) ? (bytesReceived * 100 / bytesTotal) : 0;
+          emit progressChanged(progress);
+          emit sendVersion(versionClient);
 
-                       if (progress == 0) {
-                         emit onFinished();
-                       }
-                     });
+          if (progress == 0) {
+            QString shaClientFile = m_client->getClientSHA();
+            if (shaClientFile == realSha) {
+              emit onFinished();
+            } else {
+              emit errorDownloadClient(
+                  tr("The file client.jar was installed but not fully, "
+                     "the hash amount does not match"));
+            }
+          }
+        });
 
     loop.exec();
 
