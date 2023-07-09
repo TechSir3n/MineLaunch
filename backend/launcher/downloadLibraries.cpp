@@ -37,7 +37,7 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
       m_hashes.emplace_back(hash);
 
       const auto &urlString = obj["downloads"]["artifact"]["url"].toString();
-       urls.push_back(QUrl(urlString));
+      urls.push_back(QUrl(urlString));
     }
   }
 
@@ -75,9 +75,9 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
                            if (!m_hashes.contains(hash)) {
                              emit onFinished();
                            } else {
-                             emit errorDownloadLibraries(
-                                 tr("Libraries was installed,but not "
-                                    "full,something went wrong while installing"));
+                             emit errorDownloadLibraries(tr(
+                                 "Libraries was installed,but not "
+                                 "full,something went wrong while installing"));
                            }
                          }
                        }

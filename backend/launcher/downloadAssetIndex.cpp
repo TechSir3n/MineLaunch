@@ -14,17 +14,15 @@ DownloadAssetIndex::~DownloadAssetIndex() {
 }
 
 void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
-  const QString path = QDir::cleanPath(Path::versionPath() + QDir::separator());
+  const QString path = Path::versionPath() + QDir::separator();
   QDir dir(path);
   QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
   if (dirs.contains(versionGame)) {
     QFile file;
     file.setFileName(path + versionGame + "/version.json");
-
     if (!file.open(QIODevice::ReadOnly)) {
-      qDebug() << "Failed open file for read [downloadClient]"
-               << file.errorString();
-      return;
+      throw OpenFileException("Failed open file for read [downloadAssetIndex]" +
+                              file.errorString().toStdString());
     }
 
     QByteArray jsonData = file.readAll();
@@ -71,22 +69,19 @@ void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
       return;
     }
 
-    const QString savePath = QDir::cleanPath(
-        Path::launcherPath() + "/../" +
-        "/MineLaunch/backend/launcher/minecraft/assets/indexes/");
-
-    QDir saveDir(savePath);
+    QDir saveDir(Path::assetIndexPath() + QDir::separator());
     if (!saveDir.exists()) {
       qDebug() << "Directory where you wanted saved doesn't exists "
                   "[downloadAssetIndex]";
       return;
     }
 
-    QFile saveFile(savePath + httpHashVersion);
+    QFile saveFile(Path::assetIndexPath() + QDir::separator() +
+                   httpHashVersion);
     if (!saveFile.open(QIODevice::WriteOnly)) {
-      qDebug() << "Failed to open file for write [downloadAssetIndex]: "
-               << file.errorString();
-      return;
+      throw OpenFileException(
+          "Failed to open file for write [downloadAssetIndex]:" +
+          saveFile.errorString().toStdString());
     }
 
     saveFile.write(reply->readAll());

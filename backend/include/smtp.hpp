@@ -47,13 +47,12 @@ public:
     return code;
   }
 
-
-  int generateCode() noexcept{
+  int generateCode() noexcept {
     srand(time(nullptr));
 
     int rand_num = 0;
-    for(int i = 0;i < COUNT;i++) {
-      rand_num  = rand_num *  10 + rand() % 10;
+    for (int i = 0; i < COUNT; i++) {
+      rand_num = rand_num * 10 + rand() % 10;
     }
 
     return rand_num;

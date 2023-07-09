@@ -17,7 +17,7 @@ void UserSettings::getProfileData(const QString &name, const QString &email,
 
 void UserSettings::initalizeGuiSettings(QTabWidget *m_tab) noexcept {
   QWidget *profileWidget = new QWidget();
-  m_tab->addTab(profileWidget, "User Account");
+  m_tab->addTab(profileWidget, tr("User Account"));
   profileWidget->setFixedSize(980, 590);
 
   QFrame *frameUsername = new QFrame();

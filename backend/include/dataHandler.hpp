@@ -1,36 +1,37 @@
 #pragma once
 
 #include "../include/smtp.hpp"
+#include "./frontend/include/user_settings.hpp"
 #include "assistance/hashing.hpp"
 #include "assistance/logger.hpp"
-#include "backend/database/include/sqlite.hpp"
-#include "./frontend/include/user_settings.hpp"
-#include "server.hpp"
 #include "assistance/validator.hpp"
-#include <QObject>
+#include "backend/database/include/sqlite.hpp"
+#include "server.hpp"
 #include <QJsonObject>
+#include <QMessageBox>
+#include <QObject>
 #include <cstdlib>
 #include <ctime>
-#include <QMessageBox>
 
 class DataHandler : public QObject {
-    Q_OBJECT
+  Q_OBJECT
 public:
-    explicit DataHandler(QObject *parent  = nullptr);
+  explicit DataHandler(QObject *parent = nullptr);
 
-    ~DataHandler();
+  ~DataHandler();
 
 signals:
-    void sendString(const QString &str);
+  void sendString(const QString &str);
 
-    void sendUsername(const QString &name,const QString &email,const QString &password);
+  void sendUsername(const QString &name, const QString &email,
+                    const QString &password);
 
 public slots:
-    void dataHandler(const QJsonObject &object);
+  void dataHandler(const QJsonObject &object);
 
 private:
-    Logger logger;
-    Smtp smtp;
-    Validator valid;
-    Hash hash;
+  Logger logger;
+  Smtp smtp;
+  Validator valid;
+  Hash hash;
 };

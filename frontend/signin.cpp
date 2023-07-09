@@ -28,9 +28,9 @@ void SignIn::setupUI() {
   buttonSubmit = new QPushButton(tr("Sign in"));
 
   QToolButton *toolButton = new QToolButton();
-  toolButton->setIcon(
-      QIcon(QDir::toNativeSeparators(Path::launcherPath() + "/../" +
-                            "/MineLaunch/resources/211661_eye_icon.png")));
+  toolButton->setIcon(QIcon(
+      QDir::toNativeSeparators(Path::launcherPath() + "/../" +
+                               "/MineLaunch/resources/211661_eye_icon.png")));
   toolButton->setCursor(Qt::PointingHandCursor);
 
   QObject::connect(toolButton, &QToolButton::clicked, this, [=]() {
@@ -42,8 +42,8 @@ void SignIn::setupUI() {
   });
 
   QLabel *logo = new QLabel();
-  QPixmap logoImage(QDir::toNativeSeparators(Path::launcherPath() + "/../" +
-                                    "MineLaunch/resources/u_ajax.png"));
+  QPixmap logoImage(QDir::toNativeSeparators(
+      Path::launcherPath() + "/../" + "MineLaunch/resources/u_ajax.png"));
   logo->setPixmap(logoImage);
   logo->setAlignment(Qt::AlignCenter);
   logo->setFixedSize(230, 130);
@@ -96,7 +96,7 @@ void SignIn::setupUI() {
 
   auto [x, y] = signup.CalculateCenterMonitor();
   QIcon icon(QDir::toNativeSeparators(Path::launcherPath() + "/../" +
-                             "/MineLaunch/resources/u_ajax.png"));
+                                      "/MineLaunch/resources/u_ajax.png"));
 
   this->setWindowIcon(icon);
   this->setFixedSize(550, 700);

@@ -38,13 +38,15 @@ void DataHandler::dataHandler(const QJsonObject &object) {
       emit sendString("badRequest");
     }
   } else if (message == "login") {
-    auto [hashed_password,name,email] = Database::getInstance().searchUserByEmail(l_email);
-    if (hash.comparePassword(l_password,hashed_password)) {
+    auto [hashed_password, name, email] =
+        Database::getInstance().searchUserByEmail(l_email);
+    if (hash.comparePassword(l_password, hashed_password)) {
       emit sendString("success_login");
-      emit sendUsername(name,email,hashed_password);
+      emit sendUsername(name, email, hashed_password);
     } else {
       QMessageBox::critical(
-          nullptr, "Error", "Failed to login,enter incorrect password or login");
+          nullptr, "Error",
+          "Failed to login,enter incorrect password or login");
       emit sendString("badRequest");
     }
   }

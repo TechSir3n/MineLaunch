@@ -1,6 +1,7 @@
 #pragma once
 
 #include "./check/include/checkAssetIndex.hpp"
+#include "../../../exception/exception.hpp"
 #include <QByteArray>
 #include <QCoreApplication>
 #include <QDir>

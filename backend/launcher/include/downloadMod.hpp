@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../../exception/exception.hpp"
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>

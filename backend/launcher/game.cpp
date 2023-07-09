@@ -24,7 +24,7 @@ void PlayGame::start() {
                             QDir::separator() + m_versionGame + "/client.jar";
 
   const QString assetIndex = getAssetIndex();
-  const QString assetDir = Path::assetsPath() + QDir::separator();
+  const QString assetDir = Path::minecraftPath() + QDir::separator() + "assets";
 
   const QString token =
       "eyJraWQiOiJhYzg0YSIsImFsZyI6IkhTMjU2In0."

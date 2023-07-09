@@ -3,9 +3,7 @@
 #include "./include/code_submit.hpp"
 #include "./include/signin.hpp"
 
-SignUp::SignUp(QWidget *parent) : QDialog(parent) {
-  setupUI();
-}
+SignUp::SignUp(QWidget *parent) : QDialog(parent) { setupUI(); }
 
 SignUp::~SignUp() noexcept {
   delete labelUsername;
@@ -65,8 +63,8 @@ void SignUp::setupUI() {
   browserLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
   QLabel *logo = new QLabel();
-  QPixmap logoImage(QDir::toNativeSeparators(Path::launcherPath() + "/../" +
-                                             "/MineLaunch/resources/u_ajax.png"));
+  QPixmap logoImage(QDir::toNativeSeparators(
+      Path::launcherPath() + "/../" + "/MineLaunch/resources/u_ajax.png"));
   logo->setPixmap(logoImage);
   logo->setAlignment(Qt::AlignCenter);
   logo->setFixedSize(230, 130);
@@ -99,9 +97,9 @@ void SignUp::setupUI() {
   labelPassword->setFont(labelFont);
 
   QToolButton *toolButton = new QToolButton();
-  toolButton->setIcon(
-      QIcon(QDir::toNativeSeparators(Path::launcherPath() + "/../" +
-                            "/MineLaunch/resources/211661_eye_icon.png")));
+  toolButton->setIcon(QIcon(
+      QDir::toNativeSeparators(Path::launcherPath() + "/../" +
+                               "/MineLaunch/resources/211661_eye_icon.png")));
   toolButton->setCursor(Qt::PointingHandCursor);
 
   QObject::connect(toolButton, &QToolButton::clicked, this, [=]() {
@@ -122,7 +120,7 @@ void SignUp::setupUI() {
   lineUsername->setStyleSheet(lineEditStyle);
 
   QIcon icon(QDir::toNativeSeparators(Path::launcherPath() + "/../" +
-                             "/MineLaunch/resources/u_ajax.png"));
+                                      "/MineLaunch/resources/u_ajax.png"));
   auto [x, y] = CalculateCenterMonitor();
 
   this->setWindowIcon(icon);

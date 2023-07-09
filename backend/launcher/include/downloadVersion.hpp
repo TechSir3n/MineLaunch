@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../../exception/exception.hpp"
 #include <QByteArray>
 #include <QCoreApplication>
 #include <QDir>

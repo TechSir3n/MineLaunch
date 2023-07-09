@@ -38,6 +38,10 @@ DashBoard::DashBoard(QWidget *parent)
   QObject::connect(this, &DashBoard::sendModURL, m_mod,
                    &DownloadMod::setUrlAddressMod);
 
+  QObject::connect(
+      m_mod, &DownloadMod::errorDownloadMod,
+      [](const QString &error) { HandlerSignals().onDownloadModError(error); });
+
   QObject::connect(this, &DashBoard::sendModName, m_play,
                    &PlayGame::setModsFiels);
 
@@ -104,7 +108,7 @@ void DashBoard::loadMods() noexcept {
   modsLayout->addWidget(modsTable);
   modsLayout->addLayout(buttonLayout);
 
-  tabWidget->addTab(widgetMods, "Mods");
+  tabWidget->addTab(widgetMods, tr("Mods"));
 
   QDir dir(Path::minecraftPath() + "/mods/");
   QFileInfoList fileList = dir.entryInfoList(QDir::Files);
@@ -247,7 +251,7 @@ void DashBoard::loadServers() noexcept {
 
   container->setLayout(layout);
 
-  tabWidget->addTab(container, "Servers");
+  tabWidget->addTab(container, tr("Servers"));
 
   QObject::connect(connectButton, &QPushButton::clicked, this, [this]() {
     const QString IPAddress = editIPServer->text();
@@ -327,7 +331,7 @@ void DashBoard::addMenuTab() noexcept {
 
 void DashBoard::addSettings() noexcept {
   QWidget *widgetSettings = new QWidget(this);
-  tabWidget->addTab(widgetSettings, "Settings");
+  tabWidget->addTab(widgetSettings, tr("Settings"));
 
   saveButton = new QPushButton(tr("Save"));
   resetButton = new QPushButton(tr("Reset"));
@@ -588,8 +592,6 @@ void DashBoard::setSaveSettingsUI() {
   } else {
     windowMode->setChecked(true);
   }
-
-
 }
 
 void DashBoard::addGameTab() noexcept {
@@ -600,7 +602,7 @@ void DashBoard::addGameTab() noexcept {
                                "/MineLaunch/resources/mangrove-river-1.png);"));
 
   QVBoxLayout *gameLayout = new QVBoxLayout(widgetShowGame);
-  tabWidget->addTab(widgetShowGame, "Game");
+  tabWidget->addTab(widgetShowGame, tr("Game"));
 
   playButton = new QPushButton(tr("Play"));
   cancelButton = new QPushButton(tr("Cancel"));

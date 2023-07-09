@@ -1,28 +1,24 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "./backend/database/include/sqlite.hpp"
-#include "./backend/include/dataHandler.hpp"
+#include "./assistance/path.hpp"
+#include "./frontend/include/welcome.hpp"
 #include "./backend/include/server.hpp"
-#include "./backend/include/smtp.hpp"
-#include "./backend/include/updater_data.hpp"
-#include "./backend/launcher/include/downloadResources.hpp"
-#include "./frontend/include/dashboard.hpp"
-#include "./frontend/include/signin.hpp"
-#include "./frontend/include/signup.hpp"
-#include "./frontend/include/user_settings.hpp"
-#include <QInputDialog>
+#include "./backend/include/dataHandler.hpp"
 #include <QMainWindow>
 #include <QObject>
-#include <QStringList>
+#include <QDir>
+#include <QIcon>
 #include <QTranslator>
 
-
-class MainWindow : public QMainWindow {
+class MineLaunch : public QMainWindow {
   Q_OBJECT
 
 public:
-  MainWindow(QWidget *parent = nullptr);
-  ~MainWindow();
+  explicit MineLaunch(QWidget *parent = nullptr);
+
+  ~MineLaunch();
+
+  void run();
 };
 #endif // MAINWINDOW_H

@@ -140,11 +140,11 @@ private:
   QSlider *minimumUseMemory;
 
   QMenuBar *menuBar;
-
   QGroupBox *groupBoxGame;
   QGroupBox *groupBoxLauncher;
   QGroupBox *groupLauncherState;
   QGroupBox *groupMemorySettings;
+
 private:
   Logger logger;
   Downloader *m_download;

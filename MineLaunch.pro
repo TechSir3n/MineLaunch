@@ -42,8 +42,6 @@ SOURCES += \
     assistance/path.cpp \
     assistance/custom.cpp \
     backend/server.cpp \
-    backend/api_signin.cpp \
-    backend/api_signup.cpp \
     backend/dataHandler.cpp \
     backend/updater_data.cpp \
     backend/database/sqlite.cpp \
@@ -52,10 +50,10 @@ SOURCES += \
     backend/launcher/downloadVersion.cpp \
     backend/launcher/downloadLibraries.cpp \
     backend/launcher/downloadClient.cpp \
+    backend/launcher/concurrency.cpp \
     backend/launcher/downloadAssetIndex.cpp \
     backend/launcher/downloadResources.cpp \
     backend/launcher/downloadMod.cpp \
-    backend/launcher/jsonParse.cpp \
     vendor/SmtpClient/src/smtpclient.cpp \
     vendor/SmtpClient/src/quotedprintable.cpp \
     vendor/SmtpClient/src/mimetext.cpp \
@@ -96,7 +94,6 @@ HEADERS += \
     assistance/defines.hpp \
     assistance/validator.hpp \
     assistance/hashing.hpp \
-    backend/launcher/include/jsonParse.hpp \
     backend/launcher/include/downloadLibraries.hpp \
     backend/launcher/include/downloadClient.hpp \
     backend/launcher/include/game.hpp \
@@ -104,14 +101,13 @@ HEADERS += \
     backend/launcher/include/factory.hpp \
     backend/launcher/include/downloader.hpp \
     backend/launcher/include/launcher.hpp \
+    backend/launcher/include/concurrency.hpp \
     backend/launcher/include/downloadAssetIndex.hpp \
     backend/launcher/include/downloadResources.hpp \
     backend/launcher/include/downloadMod.hpp \
     backend/include/updater_data.hpp \
     backend/include/dataHandler.hpp \
     backend/include/server.hpp \
-    backend/include/api_signin.hpp \
-    backend/include/api_signup.hpp \
     backend/include/smtp.hpp \
     backend/database/include/sqlite.hpp \
     vendor/SmtpClient/src/smtpmime_global.h \
@@ -137,15 +133,16 @@ HEADERS += \
     check/include/checkAssets.hpp \
     check/include/checkAssetIndex.hpp \
     check/include/checkLibraries.hpp \
-    check/include/checkClient.hpp
+    check/include/checkClient.hpp \
+    exception/exception.hpp
 
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    minelaunch.cpp
 
 HEADERS += \
-    mainwindow.h
+    minelaunch.hpp
 
 FORMS += \
     mainwindow.ui

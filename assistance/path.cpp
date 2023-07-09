@@ -27,7 +27,8 @@
 
 [[nodiscard]] QString Path::assetsPath() {
   return QDir::toNativeSeparators(
-      launcherPath() + "/../MineLaunch/backend/launcher/minecraft/assets/objects");
+      launcherPath() +
+      "/../MineLaunch/backend/launcher/minecraft/assets/objects");
 }
 
 [[nodiscard]] QString Path::assetIndexPath() {

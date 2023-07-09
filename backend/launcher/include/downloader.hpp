@@ -1,20 +1,15 @@
 #pragma once
 
-#include "../../../frontend/include/handler_signals.hpp"
-#include "downloadClient.hpp"
-#include "downloadLibraries.hpp"
-#include "downloadResources.hpp"
-#include "downloadVersion.hpp"
-#include "downloadAssetIndex.hpp"
+#include "concurrency.hpp"
 #include "launcher.hpp"
 #include <QLCDNumber>
+#include <QObject>
 #include <QProcess>
+#include <QProgressDialog>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QSysInfo>
-#include <QObject>
-#include <QThread>
-#include <QProgressDialog>
+#include <QThreadPool>
 
 class Downloader : public Launcher {
   Q_OBJECT
@@ -39,11 +34,7 @@ signals:
 public slots:
   void start() override;
 
-  void stop() override;
-
-  void startProgressDialog();
-
-  void stopProgressDialog();
+    void stop() override { }
 
 public slots:
   void setVersionGame(const QString &version);
@@ -52,17 +43,14 @@ public:
   bool IsDownloading() const noexcept;
 
 private:
-  QProcess *m_process;
-  HandlerSignals *handler;
   QString versionStr;
-  QProgressDialog *m_progress;
-  bool IsStopped;
   QString m_IsDownloading = "stop";
+  QThreadPool *m_pool;
 
 private:
-  DownloadVersion *m_version;
-  DownloadLibraries *m_library;
-  DownloadClient *m_client;
-  DownloadAssetIndex *m_index;
-  DownloadResources * m_resources;
+  DownloadAssetIndexTask *m_assetIndexTask;
+  DownloadClientTask *m_clientTask;
+  DownloadLibrariesTask *m_libraryTask;
+  DownloadVersionTask *m_versionTask;
+  DownloadResourcesTask *m_resourceTask;
 };

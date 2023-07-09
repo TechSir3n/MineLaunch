@@ -1,6 +1,7 @@
 #pragma once
 
 #include "./check/include/checkClient.hpp"
+#include "../../../exception/exception.hpp"
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
@@ -52,4 +53,5 @@ private:
   QNetworkAccessManager *m_manager;
   QProcess *m_process;
   CheckClient *m_client;
+
 };

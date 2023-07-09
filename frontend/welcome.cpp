@@ -2,7 +2,8 @@
 #include "./assistance/path.hpp"
 #include "./include/signin.hpp"
 
-WelcomePage::WelcomePage(QWidget *parent) : QDialog(parent),signup(new SignUp()) {
+WelcomePage::WelcomePage(QWidget *parent)
+    : QDialog(parent), signup(new SignUp()) {
   setupUI();
 }
 
@@ -64,13 +65,13 @@ void WelcomePage::setupUI() {
   layout->setContentsMargins(0, 0, 0, 0);
 
   QIcon icon(QDir::toNativeSeparators(Path::launcherPath() + "/../" +
-                             "/MineLaunch/resources/u_ajax.png"));
+                                      "/MineLaunch/resources/u_ajax.png"));
   this->setFixedSize(550, 380);
   this->setWindowIcon(icon);
 
   QObject::connect(getStarted, &QPushButton::clicked, this, [&, this]() {
     this->close();
-      signup->show();
+    signup->show();
   });
 
   QObject::connect(logIn, &QPushButton::clicked, this, [&, this]() {
