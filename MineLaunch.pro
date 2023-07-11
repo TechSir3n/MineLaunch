@@ -144,9 +144,6 @@ SOURCES += \
 HEADERS += \
     minelaunch.hpp
 
-FORMS += \
-    mainwindow.ui
-
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

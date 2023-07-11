@@ -1,5 +1,4 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "minelaunch.hpp"
 
 MineLaunch::MineLaunch(QWidget *parent) : QMainWindow(parent) {
 

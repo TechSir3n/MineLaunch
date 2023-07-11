@@ -20,6 +20,7 @@ DownloadVersionTask::DownloadVersionTask(const QString &url)
                    &QProgressDialog::setValue);
 }
 
+
 void DownloadVersionTask::run() {
   if (m_version != nullptr) {
     try {
@@ -137,7 +138,6 @@ DownloadAssetIndexTask::DownloadAssetIndexTask(const QString &version)
 void DownloadAssetIndexTask::run() {
   if (m_index != nullptr) {
     try {
-
       m_index->downloadAssetIndex(m_version);
     } catch (const std::exception &e) {
       qDebug() << "Exception Caught" << e.what();

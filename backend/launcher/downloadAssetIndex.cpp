@@ -91,7 +91,6 @@ void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
 }
 
 void DownloadAssetIndex::stopIsDownloadingAssetIndex() {
-
   auto reply = getReply();
   reply->abort();
 }

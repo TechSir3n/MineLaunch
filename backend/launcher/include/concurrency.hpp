@@ -15,8 +15,7 @@
 
 class DownloadVersionTask : public QObject, public QRunnable {
 public:
-  explicit DownloadVersionTask(
-                               const QString &url = "");
+  explicit DownloadVersionTask(const QString &url);
 
   ~DownloadVersionTask();
 
@@ -36,8 +35,7 @@ private:
 
 class DownloadClientTask : public QObject, public QRunnable {
 public:
-  explicit DownloadClientTask(
-                              const QString &version = "");
+  explicit DownloadClientTask(const QString &version);
 
   ~DownloadClientTask();
 
@@ -57,8 +55,7 @@ private:
 
 class DownloadLibrariesTask : public QObject, public QRunnable {
 public:
-  explicit DownloadLibrariesTask(
-                                 const QString &version = "");
+  explicit DownloadLibrariesTask(const QString &version);
 
   ~DownloadLibrariesTask();
 
@@ -78,8 +75,7 @@ private:
 
 class DownloadAssetIndexTask : public QObject, public QRunnable {
 public:
-  explicit DownloadAssetIndexTask(
-                                  const QString &version = "");
+  explicit DownloadAssetIndexTask(const QString &version);
 
   ~DownloadAssetIndexTask();
 
@@ -100,8 +96,7 @@ private:
 class DownloadResourcesTask : public QObject, public QRunnable {
 
 public:
-  explicit DownloadResourcesTask(
-                                 const QString &version = "");
+  explicit DownloadResourcesTask(const QString &version);
 
   ~DownloadResourcesTask();
 

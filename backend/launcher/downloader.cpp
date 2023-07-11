@@ -2,7 +2,7 @@
 
 Downloader::Downloader() : m_pool(new QThreadPool()) {
   m_IsDownloading = "downloading";
-  m_pool->setMaxThreadCount(5);
+  m_pool->setMaxThreadCount(4);
 }
 
 Downloader::~Downloader() {
@@ -24,19 +24,17 @@ void Downloader::start() {
     m_pool->start(m_versionTask);
     m_pool->waitForDone();
 
-    m_clientTask = new DownloadClientTask("23w03a");
-    m_pool->start(m_clientTask);
-
-    m_libraryTask = new DownloadLibrariesTask("23w03a");
-    m_pool->start(m_libraryTask);
-
+    m_mutex.lock();
     m_assetIndexTask = new DownloadAssetIndexTask("23w03a");
-    m_pool->start(m_assetIndexTask);
-
+    m_clientTask = new DownloadClientTask("23w03a");
+    m_libraryTask = new DownloadLibrariesTask("23w03a");
     m_resourceTask = new DownloadResourcesTask("2");
-    m_pool->start(m_resourceTask);
+    m_mutex.unlock();
 
-    m_pool->waitForDone();
+    m_pool->start(m_assetIndexTask);
+    m_pool->start(m_libraryTask);
+    m_pool->start(m_clientTask);
+    m_pool->start(m_resourceTask);
   } else if (versionStr == "1.20-pre7") {
     m_versionTask = new DownloadVersionTask(
         "https://piston-meta.mojang.com/v1/packages/"
@@ -44,19 +42,17 @@ void Downloader::start() {
     m_pool->start(m_versionTask);
     m_pool->waitForDone();
 
-    m_clientTask = new DownloadClientTask("1.20-pre7");
-    m_pool->start(m_clientTask);
-
-    m_libraryTask = new DownloadLibrariesTask("1.20-pre7");
-    m_pool->start(m_libraryTask);
-
+    m_mutex.lock();
     m_assetIndexTask = new DownloadAssetIndexTask("1.20-pre7");
-    m_pool->start(m_assetIndexTask);
-
+    m_clientTask = new DownloadClientTask("1.20-pre7");
+    m_libraryTask = new DownloadLibrariesTask("1.20-pre7");
     m_resourceTask = new DownloadResourcesTask("5");
-    m_pool->start(m_resourceTask);
+    m_mutex.unlock();
 
-    m_pool->waitForDone();
+    m_pool->start(m_assetIndexTask);
+    m_pool->start(m_clientTask);
+    m_pool->start(m_libraryTask);
+    m_pool->start(m_resourceTask);
   } else if (versionStr == "1.20-pre4") {
     m_versionTask = new DownloadVersionTask(
         "https://piston-meta.mojang.com/v1/packages/"
@@ -64,38 +60,37 @@ void Downloader::start() {
     m_pool->start(m_versionTask);
     m_pool->waitForDone();
 
-    m_clientTask = new DownloadClientTask("1.20-pre4");
-    m_pool->start(m_clientTask);
-
-    m_libraryTask = new DownloadLibrariesTask("1.20-pre4");
-    m_pool->start(m_libraryTask);
-
+    m_mutex.lock();
     m_assetIndexTask = new DownloadAssetIndexTask("1.20-pre4");
-    m_pool->start(m_assetIndexTask);
-
+    m_clientTask = new DownloadClientTask("1.20-pre4");
+    m_libraryTask = new DownloadLibrariesTask("1.20-pre4");
     m_resourceTask = new DownloadResourcesTask("5");
-    m_pool->start(m_resourceTask);
+    m_mutex.unlock();
 
-    m_pool->waitForDone();
+    m_pool->start(m_assetIndexTask);
+    m_pool->start(m_clientTask);
+    m_pool->start(m_libraryTask);
+    m_pool->start(m_resourceTask);
   } else if (versionStr == "1.19.4-pre4") {
     m_versionTask = new DownloadVersionTask(
         "https://piston-meta.mojang.com/v1/packages/"
         "bfc041cde4125e6fb9da3fa1386ee881c663ca22/1.19.4-pre4.json");
+
     m_pool->start(m_versionTask);
+
     m_pool->waitForDone();
 
-    m_clientTask = new DownloadClientTask("1.19.4-pre4");
-    m_pool->start(m_clientTask);
-
-    m_libraryTask = new DownloadLibrariesTask("1.19.4-pre4");
-    m_pool->start(m_libraryTask);
-
+    m_mutex.lock();
     m_assetIndexTask = new DownloadAssetIndexTask("1.19.4-pre4");
-    m_pool->start(m_assetIndexTask);
+    m_clientTask = new DownloadClientTask("1.19.4-pre4");
     m_resourceTask = new DownloadResourcesTask("3");
-    m_pool->start(m_resourceTask);
+    m_libraryTask = new DownloadLibrariesTask("1.19.4-pre4");
+    m_mutex.unlock();
 
-    m_pool->waitForDone();
+    m_pool->start(m_assetIndexTask);
+    m_pool->start(m_clientTask);
+    m_pool->start(m_libraryTask);
+    m_pool->start(m_resourceTask);
   } else if (versionStr == "23w17a") {
     m_versionTask = new DownloadVersionTask(
         "https://piston-meta.mojang.com/v1/packages/"
@@ -103,19 +98,17 @@ void Downloader::start() {
     m_pool->start(m_versionTask);
     m_pool->waitForDone();
 
-    m_clientTask = new DownloadClientTask("23w17a");
-    m_pool->start(m_clientTask);
-
-    m_libraryTask = new DownloadLibrariesTask("23w17a");
-    m_pool->start(m_libraryTask);
-
+    m_mutex.lock();
     m_assetIndexTask = new DownloadAssetIndexTask("23w17a");
-    m_pool->start(m_assetIndexTask);
-
+    m_clientTask = new DownloadClientTask("23w17a");
+    m_libraryTask = new DownloadLibrariesTask("23w17a");
     m_resourceTask = new DownloadResourcesTask("5");
-    m_pool->start(m_resourceTask);
+    m_mutex.unlock();
 
-    m_pool->waitForDone();
+    m_pool->start(m_assetIndexTask);
+    m_pool->start(m_clientTask);
+    m_pool->start(m_libraryTask);
+    m_pool->start(m_resourceTask);
   }
 }
 

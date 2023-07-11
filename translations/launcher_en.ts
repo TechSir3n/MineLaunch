@@ -302,12 +302,12 @@
 <context>
     <name>DownloadAssetIndexTask</name>
     <message>
-        <location filename="../backend/launcher/concurrency.cpp" line="123"/>
+        <location filename="../backend/launcher/concurrency.cpp" line="124"/>
         <source>Downloading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../backend/launcher/concurrency.cpp" line="124"/>
+        <location filename="../backend/launcher/concurrency.cpp" line="125"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -323,12 +323,12 @@
 <context>
     <name>DownloadClientTask</name>
     <message>
-        <location filename="../backend/launcher/concurrency.cpp" line="46"/>
+        <location filename="../backend/launcher/concurrency.cpp" line="47"/>
         <source>Downloading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../backend/launcher/concurrency.cpp" line="47"/>
+        <location filename="../backend/launcher/concurrency.cpp" line="48"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -336,7 +336,7 @@
 <context>
     <name>DownloadLibraries</name>
     <message>
-        <location filename="../backend/launcher/downloadLibraries.cpp" line="75"/>
+        <location filename="../backend/launcher/downloadLibraries.cpp" line="74"/>
         <source>Libraries was installed,but not full,something went wrong while installing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -344,12 +344,12 @@
 <context>
     <name>DownloadLibrariesTask</name>
     <message>
-        <location filename="../backend/launcher/concurrency.cpp" line="85"/>
+        <location filename="../backend/launcher/concurrency.cpp" line="86"/>
         <source>Downloading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../backend/launcher/concurrency.cpp" line="86"/>
+        <location filename="../backend/launcher/concurrency.cpp" line="87"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -429,14 +429,6 @@
         <location filename="../frontend/include/handler_signals.hpp" line="34"/>
         <location filename="../frontend/include/handler_signals.hpp" line="38"/>
         <source>Error download</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>MainWindow</name>
-    <message>
-        <location filename="../mainwindow.ui" line="14"/>
-        <source>MainWindow</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

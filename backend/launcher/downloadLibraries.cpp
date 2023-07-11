@@ -3,7 +3,6 @@
 
 DownloadLibraries::DownloadLibraries(QObject *parent)
     : QObject(parent), m_libraries(new CheckLibraries()) {
-
   moveToThread(parent->thread());
   m_manager = new QNetworkAccessManager(this);
 
