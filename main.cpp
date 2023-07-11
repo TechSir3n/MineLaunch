@@ -1,7 +1,9 @@
 #include "./assistance/custom.hpp"
+#include "./frontend/include/signin.hpp"
 #include "./backend/launcher/include/downloadResources.hpp"
 #include "mainwindow.h"
 #include <QApplication>
+
 
 int main(int argc, char *argv[]) {
   qRegisterMetaType<DataHandler *>("DataHandler*");
@@ -9,11 +11,13 @@ int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
   a.setStyle("fusion");
 
-  WelcomePage page;
-  page.show();
 
   Server::getInstance();
   DataHandler handler;
+
+  WelcomePage page;
+  page.show();
+
 
   QString language = Custom().getLanguage();
   QTranslator ts;

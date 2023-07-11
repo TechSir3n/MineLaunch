@@ -1,8 +1,8 @@
 #include "./include/concurrency.hpp"
 
 DownloadVersionTask::DownloadVersionTask(const QString &url)
-    : m_url(url), m_handler(new HandlerSignals()),
-      m_progress(new QProgressDialog()), m_version(new DownloadVersion()) {
+    : m_handler(new HandlerSignals()), m_progress(new QProgressDialog()),
+      m_version(new DownloadVersion(this)), m_url(url) {
   QObject::connect(m_version, &DownloadVersion::errorDownloadVersion, m_handler,
                    &HandlerSignals::onDownloadVersionError);
 
@@ -25,7 +25,7 @@ void DownloadVersionTask::run() {
     try {
       m_version->downloadVersion(m_url);
     } catch (const std::runtime_error &e) {
-      qDebug() << "Exception Caught" << e.what() ;
+      qDebug() << "Exception Caught" << e.what();
     }
   } else {
     throw NullPointerException("DownloladVersionTask has null pointer");
@@ -35,12 +35,11 @@ void DownloadVersionTask::run() {
 DownloadVersionTask::~DownloadVersionTask() {
   delete m_handler;
   delete m_progress;
-  delete m_version;
 }
 
 DownloadClientTask::DownloadClientTask(const QString &version)
-    : m_version(version), m_handler(new HandlerSignals()),
-      m_client(new DownloadClient()), m_progress(new QProgressDialog()) {
+    : m_handler(new HandlerSignals()), m_client(new DownloadClient(this)),
+      m_progress(new QProgressDialog()), m_version(version) {
   QObject::connect(m_client, &DownloadClient::errorDownloadClient, m_handler,
                    &HandlerSignals::onDownloadClientError);
 
@@ -61,6 +60,7 @@ DownloadClientTask::DownloadClientTask(const QString &version)
 void DownloadClientTask::run() {
   if (m_client != nullptr) {
     try {
+
       m_client->downloadClient(m_version);
     } catch (const std::runtime_error &e) {
       qDebug() << "Exception Caught" << e.what();
@@ -73,12 +73,11 @@ void DownloadClientTask::run() {
 DownloadClientTask::~DownloadClientTask() {
   delete m_handler;
   delete m_progress;
-  delete m_client;
 }
 
 DownloadLibrariesTask::DownloadLibrariesTask(const QString &version)
-    : m_version(version), m_handler(new HandlerSignals()),
-      m_progress(new QProgressDialog()), m_library(new DownloadLibraries()) {
+    : m_handler(new HandlerSignals()), m_progress(new QProgressDialog()),
+      m_library(new DownloadLibraries(this)), m_version(version) {
 
   QObject::connect(m_library, &DownloadLibraries::errorDownloadLibraries,
                    m_handler, &HandlerSignals::onDownloadLibrariesError);
@@ -112,12 +111,11 @@ void DownloadLibrariesTask::run() {
 DownloadLibrariesTask::~DownloadLibrariesTask() {
   delete m_handler;
   delete m_progress;
-  delete m_library;
 }
 
 DownloadAssetIndexTask::DownloadAssetIndexTask(const QString &version)
-    : m_version(version), m_handler(new HandlerSignals()),
-      m_progress(new QProgressDialog()), m_index(new DownloadAssetIndex()) {
+    : m_handler(new HandlerSignals()), m_progress(new QProgressDialog()),
+      m_index(new DownloadAssetIndex(this)), m_version(version) {
 
   QObject::connect(m_index, &DownloadAssetIndex::errorDownloadAssetIndex,
                    m_handler, &HandlerSignals::onDownloadAssetIndexError);
@@ -139,6 +137,7 @@ DownloadAssetIndexTask::DownloadAssetIndexTask(const QString &version)
 void DownloadAssetIndexTask::run() {
   if (m_index != nullptr) {
     try {
+
       m_index->downloadAssetIndex(m_version);
     } catch (const std::exception &e) {
       qDebug() << "Exception Caught" << e.what();
@@ -150,13 +149,12 @@ void DownloadAssetIndexTask::run() {
 
 DownloadAssetIndexTask::~DownloadAssetIndexTask() {
   delete m_handler;
-  delete m_index;
   delete m_progress;
 }
 
 DownloadResourcesTask::DownloadResourcesTask(const QString &version)
-    : m_version(version), m_handler(new HandlerSignals),
-      m_progress(new QProgressDialog()), m_resources(new DownloadResources()) {
+    : m_handler(new HandlerSignals), m_progress(new QProgressDialog()),
+      m_resources(new DownloadResources(this)), m_version(version) {
 
   QObject::connect(m_resources, &DownloadResources::errorDownloadResources,
                    m_handler, &HandlerSignals::onDownloadAssetResoucresError);
@@ -189,6 +187,5 @@ void DownloadResourcesTask::run() {
 
 DownloadResourcesTask::~DownloadResourcesTask() {
   delete m_handler;
-  delete m_resources;
   delete m_progress;
 }

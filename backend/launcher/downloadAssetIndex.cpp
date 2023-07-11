@@ -2,16 +2,16 @@
 #include "./assistance/path.hpp"
 
 DownloadAssetIndex::DownloadAssetIndex(QObject *parent)
-    : QObject(parent), m_manager(new QNetworkAccessManager()),
-      m_index(new CheckAssetIndex()) {
+    : QObject(parent), m_index(new CheckAssetIndex()) {
+  moveToThread(parent->thread());
+  m_manager = new QNetworkAccessManager(this);
+
+
   QObject::connect(this, &DownloadAssetIndex::sendVersion, m_index,
                    &CheckAssetIndex::setVersionAssetIndex);
 }
 
-DownloadAssetIndex::~DownloadAssetIndex() {
-  delete m_manager;
-  delete m_index;
-}
+DownloadAssetIndex::~DownloadAssetIndex() { delete m_index; }
 
 void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
   const QString path = Path::versionPath() + QDir::separator();
@@ -71,9 +71,9 @@ void DownloadAssetIndex::downloadAssetIndex(const QString &versionGame) {
 
     QDir saveDir(Path::assetIndexPath() + QDir::separator());
     if (!saveDir.exists()) {
-      qDebug() << "Directory where you wanted saved doesn't exists "
-                  "[downloadAssetIndex]";
-      return;
+      throw OpenDirectoryException(
+          "Directory where you wanted saved doesn't exists "
+          "[downloadAssetIndex]");
     }
 
     QFile saveFile(Path::assetIndexPath() + QDir::separator() +

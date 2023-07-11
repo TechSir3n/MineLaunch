@@ -310,12 +310,12 @@
 <context>
     <name>DownloadAssetIndexTask</name>
     <message>
-        <location filename="../backend/launcher/concurrency.cpp" line="125"/>
+        <location filename="../backend/launcher/concurrency.cpp" line="123"/>
         <source>Downloading...</source>
         <translation type="unfinished">Загрузка..</translation>
     </message>
     <message>
-        <location filename="../backend/launcher/concurrency.cpp" line="126"/>
+        <location filename="../backend/launcher/concurrency.cpp" line="124"/>
         <source>Cancel</source>
         <translation type="unfinished">Отменить</translation>
     </message>
@@ -331,12 +331,12 @@
 <context>
     <name>DownloadClientTask</name>
     <message>
-        <location filename="../backend/launcher/concurrency.cpp" line="47"/>
+        <location filename="../backend/launcher/concurrency.cpp" line="46"/>
         <source>Downloading...</source>
         <translation type="unfinished">Загрузка..</translation>
     </message>
     <message>
-        <location filename="../backend/launcher/concurrency.cpp" line="48"/>
+        <location filename="../backend/launcher/concurrency.cpp" line="47"/>
         <source>Cancel</source>
         <translation type="unfinished">Отменить</translation>
     </message>
@@ -344,7 +344,7 @@
 <context>
     <name>DownloadLibraries</name>
     <message>
-        <location filename="../backend/launcher/downloadLibraries.cpp" line="78"/>
+        <location filename="../backend/launcher/downloadLibraries.cpp" line="75"/>
         <source>Libraries was installed,but not full,something went wrong while installing</source>
         <translation>Библиотеки установились, но не полностью, что-то пошло не так при установке</translation>
     </message>
@@ -352,12 +352,12 @@
 <context>
     <name>DownloadLibrariesTask</name>
     <message>
-        <location filename="../backend/launcher/concurrency.cpp" line="86"/>
+        <location filename="../backend/launcher/concurrency.cpp" line="85"/>
         <source>Downloading...</source>
         <translation type="unfinished">Загрузка..</translation>
     </message>
     <message>
-        <location filename="../backend/launcher/concurrency.cpp" line="87"/>
+        <location filename="../backend/launcher/concurrency.cpp" line="86"/>
         <source>Cancel</source>
         <translation type="unfinished">Отменить</translation>
     </message>
@@ -377,12 +377,12 @@
 <context>
     <name>DownloadResources</name>
     <message>
-        <location filename="../backend/launcher/downloadResources.cpp" line="72"/>
+        <location filename="../backend/launcher/downloadResources.cpp" line="70"/>
         <source>Resources was installed,but not full,something went wrong while installing</source>
         <translation>Ресурсы установились, но не полные, что-то пошло не так при установке</translation>
     </message>
     <message>
-        <location filename="../backend/launcher/downloadResources.cpp" line="82"/>
+        <location filename="../backend/launcher/downloadResources.cpp" line="80"/>
         <source>Error downloading resources: </source>
         <translation>Ошибка загрузки ресурса игры</translation>
     </message>
@@ -390,12 +390,12 @@
 <context>
     <name>DownloadResourcesTask</name>
     <message>
-        <location filename="../backend/launcher/concurrency.cpp" line="164"/>
+        <location filename="../backend/launcher/concurrency.cpp" line="162"/>
         <source>Downloading...</source>
         <translation type="unfinished">Загрузка..</translation>
     </message>
     <message>
-        <location filename="../backend/launcher/concurrency.cpp" line="165"/>
+        <location filename="../backend/launcher/concurrency.cpp" line="163"/>
         <source>Cancel</source>
         <translation type="unfinished">Отменить</translation>
     </message>

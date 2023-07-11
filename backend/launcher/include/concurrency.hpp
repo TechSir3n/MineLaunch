@@ -1,19 +1,22 @@
 #pragma once
 
-#include "../../../frontend/include/handler_signals.hpp"
 #include "../../../exception/exception.hpp"
+#include "../../../frontend/include/handler_signals.hpp"
 #include "downloadAssetIndex.hpp"
 #include "downloadClient.hpp"
 #include "downloadLibraries.hpp"
 #include "downloadResources.hpp"
 #include "downloadVersion.hpp"
+#include <QNetworkAccessManager>
+#include <QObject>
 #include <QProgressDialog>
 #include <QRunnable>
 #include <QThreadPool>
 
 class DownloadVersionTask : public QObject, public QRunnable {
 public:
-  explicit DownloadVersionTask(const QString &url);
+  explicit DownloadVersionTask(
+                               const QString &url = "");
 
   ~DownloadVersionTask();
 
@@ -25,15 +28,16 @@ protected:
   void run() override;
 
 private:
-  QString m_url;
   HandlerSignals *m_handler;
   QProgressDialog *m_progress;
   DownloadVersion *m_version;
+  QString m_url;
 };
 
 class DownloadClientTask : public QObject, public QRunnable {
 public:
-  explicit DownloadClientTask(const QString &version);
+  explicit DownloadClientTask(
+                              const QString &version = "");
 
   ~DownloadClientTask();
 
@@ -45,15 +49,16 @@ protected:
   void run() override;
 
 private:
-  QString m_version;
   HandlerSignals *m_handler;
-  QProgressDialog *m_progress;
   DownloadClient *m_client;
+  QProgressDialog *m_progress;
+  QString m_version;
 };
 
 class DownloadLibrariesTask : public QObject, public QRunnable {
 public:
-  explicit DownloadLibrariesTask(const QString &version);
+  explicit DownloadLibrariesTask(
+                                 const QString &version = "");
 
   ~DownloadLibrariesTask();
 
@@ -65,15 +70,16 @@ protected:
   void run() override;
 
 private:
-  QString m_version;
   HandlerSignals *m_handler;
   QProgressDialog *m_progress;
   DownloadLibraries *m_library;
+  QString m_version;
 };
 
 class DownloadAssetIndexTask : public QObject, public QRunnable {
 public:
-  explicit DownloadAssetIndexTask(const QString &version);
+  explicit DownloadAssetIndexTask(
+                                  const QString &version = "");
 
   ~DownloadAssetIndexTask();
 
@@ -85,16 +91,17 @@ protected:
   void run() override;
 
 private:
-  QString m_version;
   HandlerSignals *m_handler;
   QProgressDialog *m_progress;
   DownloadAssetIndex *m_index;
-
+  QString m_version;
 };
 
 class DownloadResourcesTask : public QObject, public QRunnable {
+
 public:
-  explicit DownloadResourcesTask(const QString &version);
+  explicit DownloadResourcesTask(
+                                 const QString &version = "");
 
   ~DownloadResourcesTask();
 
@@ -106,8 +113,8 @@ protected:
   void run() override;
 
 private:
-  QString m_version;
   HandlerSignals *m_handler;
   QProgressDialog *m_progress;
   DownloadResources *m_resources;
+  QString m_version;
 };

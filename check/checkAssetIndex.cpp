@@ -13,8 +13,7 @@
     QByteArray result = hash.result();
     return result.toHex();
   } else {
-    qDebug() << "Failed to calculate hash [getAssetIndexSHA]";
-    return QString();
+    throw ErrorCalculateHash("Failed to calculate hash [getAssetIndexSHA]");
   }
 }
 

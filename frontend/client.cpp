@@ -3,7 +3,7 @@
 
 Client::Client(QObject *parent) : QObject(parent) {
   m_socket = new QTcpSocket(this);
-  m_socket->connectToHost("127.0.0.1", 8090);
+  m_socket->connectToHost("127.0.0.1", 8080);
   if (!m_socket->waitForConnected()) {
     logger.log(LogLevel::Error, m_socket->errorString().toStdString());
   }

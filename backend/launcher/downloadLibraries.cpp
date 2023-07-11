@@ -2,17 +2,16 @@
 #include "./assistance/path.hpp"
 
 DownloadLibraries::DownloadLibraries(QObject *parent)
-    : QObject(parent), m_manager(new QNetworkAccessManager()),
-      m_libraries(new CheckLibraries()) {
+    : QObject(parent), m_libraries(new CheckLibraries()) {
+
+  moveToThread(parent->thread());
+  m_manager = new QNetworkAccessManager(this);
 
   QObject::connect(this, &DownloadLibraries::sendVersion, m_libraries,
                    &CheckLibraries::setVersionLibraries);
 }
 
-DownloadLibraries::~DownloadLibraries() {
-  delete m_manager;
-  delete m_libraries;
-}
+DownloadLibraries::~DownloadLibraries() { delete m_libraries; }
 
 void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
   const QString path = Path::versionPath() + QDir::separator();
@@ -22,9 +21,8 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
     const QString filePath = dir.filePath(versionGame + "/version.json");
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
-      qDebug() << "Failed open file for read [downloadLibraries] "
-               << file.errorString();
-      return;
+      throw OpenFileException("Failed open file for read [downloadLibraries] " +
+                              file.errorString().toStdString());
     }
 
     QByteArray jsonData = file.readAll();
@@ -46,12 +44,11 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
       "/MineLaunch/backend/launcher/minecraft/libraries/");
   QDir librariesDir(savePath);
   if (!librariesDir.exists()) {
-    qDebug() << "like this directory doesn't exits";
-    return;
+    throw OpenDirectoryException("Like this directory doesn't exits");
   }
   if (!librariesDir.mkdir(versionGame)) {
-    qDebug() << "Error create directory,maybe it created already";
-    return;
+    throw OpenDirectoryException(
+        "Error create directory,maybe it created already");
   }
 
   for (const auto &url : urls) {
@@ -99,8 +96,8 @@ void DownloadLibraries::downloadLibraries(const QString &versionGame) noexcept {
       file.write(reply->readAll());
       file.close();
     } else {
-      qDebug() << "Failed to save file: " << file.errorString();
-      return;
+      throw OpenFileException("Failed to save file: " +
+                              file.errorString().toStdString());
     }
 
     reply->deleteLater();

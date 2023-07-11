@@ -2,14 +2,15 @@
 #include "./assistance/path.hpp"
 
 DownloadClient::DownloadClient(QObject *parent)
-    : QObject(parent), m_manager(new QNetworkAccessManager()),
-      m_process(new QProcess()), m_client(new CheckClient()) {
+    : QObject(parent), m_process(new QProcess()), m_client(new CheckClient()) {
+  moveToThread(parent->thread());
+  m_manager = new QNetworkAccessManager(this);
+
   QObject::connect(this, &DownloadClient::sendVersion, m_client,
                    &CheckClient::setVersionClient);
 }
 
 DownloadClient::~DownloadClient() {
-  delete m_manager;
   delete m_process;
   delete m_client;
 }
@@ -22,9 +23,8 @@ void DownloadClient::downloadClient(const QString &versionClient) {
     const QString filePath = dir.filePath(versionClient + "/version.json");
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
-      qDebug() << "Failed open file for read [downloadClient]"
-               << file.errorString();
-      return;
+      throw OpenFileException("Failed open file for read [downloadClient]" +
+                              file.errorString().toStdString());
     }
 
     QByteArray jsonData = file.readAll();
@@ -79,23 +79,20 @@ void DownloadClient::downloadClient(const QString &versionClient) {
     } else {
       const QString fileName = "client.jar";
       QFile fileSave(path + versionClient + QDir::separator() + fileName);
-
       if (fileSave.open(QIODevice::WriteOnly)) {
         fileSave.write(reply->readAll());
         fileSave.close();
 
       } else {
-        qDebug() << "Error open file for write [downloadClient]"
-                 << fileSave.errorString();
-        return;
+        throw OpenFileException("Error open file for write [downloadClient]" +
+                                fileSave.errorString().toStdString());
       }
 
       file.close();
       reply->deleteLater();
     }
   } else {
-    qDebug() << "path doesn't exists";
-    return;
+    throw OpenDirectoryException("Path doesn't exists");
   }
 }
 

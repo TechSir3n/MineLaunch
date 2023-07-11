@@ -130,7 +130,6 @@ bool SignIn::automaticLogin() const noexcept {
 void SignIn::showEvent(QShowEvent *event) {
   QDialog::showEvent(event);
   if (!automaticLogin()) {
-    setupUI();
   }
 }
 

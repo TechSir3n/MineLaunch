@@ -10,6 +10,7 @@
 #include <QRegularExpressionMatch>
 #include <QSysInfo>
 #include <QThreadPool>
+#include <mutex>
 
 class Downloader : public Launcher {
   Q_OBJECT
@@ -34,7 +35,7 @@ signals:
 public slots:
   void start() override;
 
-    void stop() override { }
+  void stop() override {}
 
 public slots:
   void setVersionGame(const QString &version);
@@ -46,6 +47,9 @@ private:
   QString versionStr;
   QString m_IsDownloading = "stop";
   QThreadPool *m_pool;
+  std::mutex m_mutex;
+  std::condition_variable m_cv;
+  bool IsReady = false;
 
 private:
   DownloadAssetIndexTask *m_assetIndexTask;

@@ -11,6 +11,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QObject>
+#include <QThread>
 
 class DownloadVersion : public QObject {
   Q_OBJECT
@@ -27,6 +28,7 @@ public:
   void downloadVersion(const QString &versionGame) noexcept;
 
   QString getVersionGame() const noexcept;
+
 
 private:
   QNetworkReply *getReply(QNetworkReply *reply = nullptr) noexcept;

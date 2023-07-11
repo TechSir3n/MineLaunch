@@ -17,6 +17,7 @@
 #include <QStandardPaths>
 #include <QStringList>
 #include <QVector>
+#include <QThread>
 
 class DownloadLibraries : public QObject {
   Q_OBJECT

@@ -22,8 +22,7 @@ CheckLibraries::getLibrariesSHA() const noexcept {
       QByteArray result = hash.result();
       m_hashes.emplace_back(result.toHex());
     } else {
-      qDebug() << "Failed to calculate Hash [getLibrariesSHA]";
-      return QVector<QString>();
+      throw ErrorCalculateHash("Failed to calculate Hash [getLibrariesSHA]");
     }
   }
 

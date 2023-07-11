@@ -3,7 +3,7 @@
 Server::Server(QObject *parent) : QObject(parent) {
   m_server = new QTcpServer(this);
   connect(m_server, &QTcpServer::newConnection, this, &Server::newConnection);
-  if (!m_server->listen(QHostAddress::Any, 8090)) {
+  if (!m_server->listen(QHostAddress::Any, 8080)) {
     logger.log(LogLevel::Critical, "Failed to run server");
   } else {
     logger.log(LogLevel::Info, "Server run ...");

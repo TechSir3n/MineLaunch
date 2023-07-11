@@ -1,6 +1,7 @@
 #pragma once
 
 #include "./check/include/checkAssets.hpp"
+#include "../../../exception/exception.hpp"
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
@@ -14,6 +15,7 @@
 #include <QByteArray>
 #include <QJsonValue>
 #include <QFile>
+#include <QThread>
 
 #define HTTP "https://resources.download.minecraft.net"
 
@@ -47,5 +49,6 @@ private:
 private:
   QNetworkAccessManager *m_manager;
   QVector<QString> hashes;
+
   CheckAssets *m_asset;
 };

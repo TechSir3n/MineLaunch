@@ -1,10 +1,12 @@
 #include "./include/downloadVersion.hpp"
 #include "assistance/path.hpp"
 
-DownloadVersion::DownloadVersion(QObject *parent)
-    : QObject(parent), m_manager(new QNetworkAccessManager()) {}
+DownloadVersion::DownloadVersion(QObject *parent) : QObject(parent) {
+  moveToThread(parent->thread());
+  m_manager = new QNetworkAccessManager(this);
+}
 
-DownloadVersion::~DownloadVersion() { delete m_manager; }
+DownloadVersion::~DownloadVersion() {}
 
 void DownloadVersion::downloadVersion(const QString &versionGame) noexcept {
   m_versionGame = versionGame;
@@ -15,9 +17,7 @@ void DownloadVersion::downloadVersion(const QString &versionGame) noexcept {
   getReply(reply);
 
   QEventLoop loop;
-
   QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-
   QObject::connect(reply, &QNetworkReply::downloadProgress, this,
                    [=](qint64 bytesReceived, qint64 bytesTotal) {
                      int progress = (bytesTotal > 0)
@@ -44,20 +44,19 @@ void DownloadVersion::downloadVersion(const QString &versionGame) noexcept {
   const QString path = QDir::cleanPath(Path::versionPath() + QDir::separator());
   QDir dir(path);
   if (!dir.exists()) {
-    qDebug() << "Directory doesn't exists";
-    return;
+    throw OpenDirectoryException("Directory doesn't exists");
   }
 
   if (!dir.mkdir(version)) {
-    qDebug() << "Error creating directory: " << version;
-    return;
+    throw OpenDirectoryException("Error creating directory: " +
+                                 version.toStdString());
   }
 
   const QString filePath = dir.filePath(version + "/version.json");
   QFile file(filePath);
   if (!file.open(QIODevice::WriteOnly)) {
-    qDebug() << "Error open file for write: " << file.errorString();
-    return;
+    throw OpenFileException("Error open file for write: " +
+                            file.errorString().toStdString());
   }
 
   try {
@@ -69,7 +68,7 @@ void DownloadVersion::downloadVersion(const QString &versionGame) noexcept {
     return;
   }
 
-  delete reply;
+  reply->deleteLater();
 }
 
 QString DownloadVersion::getVersionGame() const noexcept {

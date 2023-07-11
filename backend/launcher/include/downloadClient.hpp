@@ -13,10 +13,10 @@
 #include <QNetworkRequest>
 #include <QObject>
 #include <QProcess>
+#include <QThread>
 
 class DownloadClient : public QObject {
   Q_OBJECT
-
 public:
   DownloadClient(QObject *parent = nullptr);
 
@@ -53,5 +53,4 @@ private:
   QNetworkAccessManager *m_manager;
   QProcess *m_process;
   CheckClient *m_client;
-
 };

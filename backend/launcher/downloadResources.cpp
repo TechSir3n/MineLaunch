@@ -2,22 +2,20 @@
 #include "assistance/path.hpp"
 
 DownloadResources::DownloadResources(QObject *parent)
-    : QObject(parent), m_manager(new QNetworkAccessManager()),
-      m_asset(new CheckAssets()) {}
-
-DownloadResources::~DownloadResources() {
-  delete m_manager;
-  delete m_asset;
+    : QObject(parent), m_asset(new CheckAssets()) {
+  moveToThread(parent->thread());
+  m_manager = new QNetworkAccessManager(this);
 }
+
+DownloadResources::~DownloadResources() { delete m_asset; }
 
 void DownloadResources::downloadResources(const QString &versionHash) {
   const QString path = Path::assetIndexPath() + QDir::separator();
 
   QFile file(path + versionHash + ".json");
   if (!file.open(QIODevice::ReadOnly)) {
-    qDebug() << "Failed open file for read [downloadResources] "
-             << file.errorString();
-    return;
+    throw OpenFileException("Failed open file for read [downloadResources] " +
+                            file.errorString().toStdString());
   }
 
   QByteArray data = file.readAll();
@@ -35,8 +33,8 @@ void DownloadResources::downloadResources(const QString &versionHash) {
       QDir::cleanPath(Path::assetsPath() + QDir::separator());
   QDir saveDir(savePath);
   if (!saveDir.exists()) {
-    qDebug() << "Error directory,inccorect enter path or it doesn't exists";
-    return;
+    throw OpenDirectoryException(
+        "Error directory,inccorect enter path or it doesn't exists");
   }
 
   for (const auto &hash : hashes) {
@@ -45,8 +43,8 @@ void DownloadResources::downloadResources(const QString &versionHash) {
     QDir dir(dirPath);
     if (!dir.exists()) {
       if (!dir.mkpath(dirPath)) {
-        qDebug() << "Error creating directory: " << dirPath;
-        return;
+        throw OpenDirectoryException("Error creating directory: " +
+                                     dirPath.toStdString());
       }
     }
 
@@ -88,8 +86,8 @@ void DownloadResources::downloadResources(const QString &versionHash) {
     QString filePath = dir.filePath(fileName);
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly)) {
-      qDebug() << "Error open file[downloadResources]: " << file.errorString();
-      return;
+      throw OpenFileException("Error open file[downloadResources]: " +
+                              file.errorString().toStdString());
     }
 
     file.write(reply->readAll());
