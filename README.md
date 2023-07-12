@@ -21,7 +21,7 @@ MineLaunch is a launcher developed using Qt C++ that allows you to conveniently 
 To build the launcher from source, follow these steps:
 
 1. Install Qt on your computer
-2. Clone the repository: git clone https://github.com/TechSir3n/MineLaunch.git --recurse submodules
+2. Clone the repository: git clone https://github.com/TechSir3n/MineLaunch.git --recurse
 3. Open the project in Qt Creator or your preferred IDE
 4. Build the project.
 
