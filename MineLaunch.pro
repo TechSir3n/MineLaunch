@@ -54,24 +54,24 @@ SOURCES += \
     backend/launcher/downloadAssetIndex.cpp \
     backend/launcher/downloadResources.cpp \
     backend/launcher/downloadMod.cpp \
-    SmtpClient/src/smtpclient.cpp \
-    SmtpClient/src/quotedprintable.cpp \
-    SmtpClient/src/mimetext.cpp \
-    SmtpClient/src/mimeqpformatter.cpp \
-    SmtpClient/src/mimeqpencoder.cpp \
-    SmtpClient/src/mimepart.cpp \
-    SmtpClient/src/mimemultipart.cpp \
-    SmtpClient/src/mimemessage.cpp \
-    SmtpClient/src/mimeinlinefile.cpp \
-    SmtpClient/src/mimehtml.cpp \
-    SmtpClient/src/mimefile.cpp \
-    SmtpClient/src/mimecontentformatter.cpp \
-    SmtpClient/src/mimecontentencoder.cpp \
-    SmtpClient/src/mimebytearrayattachment.cpp \
-    SmtpClient/src/mimebase64formatter.cpp \
-    SmtpClient/src/mimebase64encoder.cpp \
-    SmtpClient/src/mimeattachment.cpp \
-    SmtpClient/src/emailaddress.cpp \
+    vendor/SmtpClient/src/smtpclient.cpp \
+    vendor/SmtpClient/src/quotedprintable.cpp \
+    vendor/SmtpClient/src/mimetext.cpp \
+    vendor/SmtpClient/src/mimeqpformatter.cpp \
+    vendor/SmtpClient/src/mimeqpencoder.cpp \
+    vendor/SmtpClient/src/mimepart.cpp \
+    vendor/SmtpClient/src/mimemultipart.cpp \
+    vendor/SmtpClient/src/mimemessage.cpp \
+    vendor/SmtpClient/src/mimeinlinefile.cpp \
+    vendor/SmtpClient/src/mimehtml.cpp \
+    vendor/SmtpClient/src/mimefile.cpp \
+    vendor/SmtpClient/src/mimecontentformatter.cpp \
+    vendor/SmtpClient/src/mimecontentencoder.cpp \
+    vendor/SmtpClient/src/mimebytearrayattachment.cpp \
+    vendor/SmtpClient/src/mimebase64formatter.cpp \
+    vendor/SmtpClient/src/mimebase64encoder.cpp \
+    vendor/SmtpClient/src/mimeattachment.cpp \
+    vendor/SmtpClient/src/emailaddress.cpp \
     check/checkAssets.cpp \
     check/checkAssetIndex.cpp \
     check/checkLibraries.cpp \
@@ -110,25 +110,25 @@ HEADERS += \
     backend/include/server.hpp \
     backend/include/smtp.hpp \
     backend/database/include/sqlite.hpp \
-    SmtpClient/src/smtpmime_global.h \
-    SmtpClient/src/smtpclient.h \
-    SmtpClient/src/quotedprintable.h \
-    SmtpClient/src/mimetext.h \
-    SmtpClient/src/mimeqpformatter.h \
-    SmtpClient/src/mimeqpencoder.h \
-    SmtpClient/src/mimepart.h \
-    SmtpClient/src/mimemultipart.h \
-    SmtpClient/src/mimemessage.h \
-    SmtpClient/src/mimeinlinefile.h \
-    SmtpClient/src/mimehtml.h \
-    SmtpClient/src/mimefile.h \
-    SmtpClient/src/mimecontentformatter.h \
-    SmtpClient/src/mimecontentencoder.h \
-    SmtpClient/src/mimebytearrayattachment.h \
-    SmtpClient/src/mimebase64formatter.h \
-    SmtpClient/src/mimebase64encoder.h \
-    SmtpClient/src/mimeattachment.h \
-    SmtpClient/src/emailaddress.h \
+      vendor/SmtpClient/src/smtpmime_global.h \
+      vendor/SmtpClient/src/smtpclient.h \
+     vendor/SmtpClient/src/quotedprintable.h \
+     vendor/SmtpClient/src/mimetext.h \
+     vendor/SmtpClient/src/mimeqpformatter.h \
+      vendor/SmtpClient/src/mimeqpencoder.h \
+      vendor/SmtpClient/src/mimepart.h \
+     vendor/SmtpClient/src/mimemultipart.h \
+     vendor/SmtpClient/src/mimemessage.h \
+      vendor/SmtpClient/src/mimeinlinefile.h \
+     vendor/SmtpClient/src/mimehtml.h \
+      vendor/SmtpClient/src/mimefile.h \
+      vendor/SmtpClient/src/mimecontentformatter.h \
+     vendor/SmtpClient/src/mimecontentencoder.h \
+     vendor/SmtpClient/src/mimebytearrayattachment.h \
+     vendor/SmtpClient/src/mimebase64formatter.h \
+      vendor/SmtpClient/src/mimebase64encoder.h \
+      vendor/SmtpClient/src/mimeattachment.h \
+      vendor/SmtpClient/src/emailaddress.h \
     check/include/checkAssets.hpp \
     check/include/checkAssets.hpp \
     check/include/checkAssetIndex.hpp \

@@ -1,7 +1,9 @@
 #pragma once
 
-#include "../../SmtpClient/src/SmtpMime"
-#include "../../SmtpClient/src/smtpclient.h"
+#include "../../vendor/SmtpClient/src/SmtpMime"
+#include "../../vendor/SmtpClient/src/smtpclient.h"
+
+using namespace SimpleMail;
 
 class Smtp {
 public:
@@ -12,7 +14,7 @@ public:
     message.setSender(sender);
 
     EmailAddress to(email, username);
-    message.addRecipient(to);
+    message.addTo(to);
 
     int code = generateCode();
 
