@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../vendor/SmtpClient/src/SmtpMime"
-#include "../../vendor/SmtpClient/src/smtpclient.h"
+#include "../../SmtpClient/src/SmtpMime"
+#include "../../SmtpClient/src/smtpclient.h"
 
 class Smtp {
 public:
