@@ -3,7 +3,6 @@
 #include "../../vendor/SmtpClient/src/SmtpMime"
 #include "../../vendor/SmtpClient/src/smtpclient.h"
 
-using namespace SimpleMail;
 
 class Smtp {
 public:
